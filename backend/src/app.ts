@@ -6,6 +6,7 @@ import rateLimit from "express-rate-limit";
 import { router as auth } from "./routes/authRoute";
 import { router as user } from "./routes/userRoute";
 import { router as student } from "./routes/studentRoute";
+import { router as group } from "./routes/groupRoute";
 import CustomError from "./services/CustomError";
 import { NOT_FOUND, TOO_MANY_REQUESTS } from "./constants/httpCodes";
 import { TOOMANYREQUEST } from "./constants/errors";
@@ -47,7 +48,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Routes
 app.use("/v1/auth", auth);
 app.use("/v1/users", user);
-app.use("/v1/students", student)
+app.use("/v1/students", student);
+app.use("/v1/groups", group);
 // Global 404 handler
 app.use("*splat", (req: Request, _res: Response, next: NextFunction) => {
   next(
