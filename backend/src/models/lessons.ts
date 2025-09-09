@@ -13,7 +13,11 @@ const lessonsSchema = new Schema<ILesson>({
     ref: "Group",
     required: true,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
   students: [{student: Schema.ObjectId, present: Boolean, grade: Number,}]
 }, {timestamps: true})
 
-export const Lesson = model<ILesson>("Lesson", lessonsSchema);
+export const Lesson = model<ILesson>("Lesson", lessonsSchema)

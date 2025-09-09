@@ -8,11 +8,7 @@ import {
   SUCCESS,
   WRONGCREDENTIALS,
 } from "../constants/errors";
-import {
-  BAD_REQUEST,
-  FORBIDDEN,
-  OK,
-} from "../constants/httpCodes";
+import { BAD_REQUEST, FORBIDDEN, OK } from "../constants/httpCodes";
 import { User } from "../models/users";
 import { IUser } from "../types/schemas";
 import jwt from "jsonwebtoken";

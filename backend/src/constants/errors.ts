@@ -11,6 +11,7 @@ export const EMPTYBODY = "Requet body cannot be empty";
 export const NOIDPROVIDED = "No id was provided";
 export const INVALIDID = "Invalid id";
 export const NOUSERFOUND = (documentName:string)=> `No ${documentName} was found`;
+export const NODATEPROVIDED = "No date is provided";
 export const SUCCESS = "success";
 export const FAIL = "fail";
 export const ERROR = "error";
