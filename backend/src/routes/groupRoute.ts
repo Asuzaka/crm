@@ -5,6 +5,7 @@ import { acessTo } from "../controllers/authController";
 
 const router = express.Router();
 
+// auth
 router.use(protect);
 
 router.route("/").get(getGroups).post(acessTo("owner"), createGroup);

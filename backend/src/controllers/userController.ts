@@ -3,11 +3,11 @@ import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
 import { User } from "../models/users";
 import { IUser } from "../types/schemas";
-import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from "../constants/httpCodes";
+import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
 import {
   INVALIDID,
+  NODOCUMENTFOUND,
   NOIDPROVIDED,
-  NOUSERFOUND,
   SUCCESS,
 } from "../constants/errors";
 import CustomError from "../services/CustomError";
@@ -49,7 +49,7 @@ export const getUser = catchAsync(
     const user: IUser | null = await User.findById(id);
 
     if (user == null) {
-      return next(new CustomError(NOUSERFOUND("user"), BAD_REQUEST));
+      return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
     }
 
     res.status(OK).json({ status: SUCCESS, data: user });
@@ -88,14 +88,25 @@ export const updateUser = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // updating user (only owner)
     const updateUser: Partial<IUser> = req.body;
+    const { id } = req.params
+
+    if (!id){
+      return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
+    }
+
+    if (!mongoose.isValidObjectId(id)){
+      return next(new CustomError(INVALIDID, BAD_REQUEST));
+    }
+
+
     const updatedUser: IUser | null = await User.findByIdAndUpdate(
-      updateUser._id,
+      id,
       updateUser,
       { new: true, runValidators: false }
     );
 
     if (updatedUser == null) {
-      return next(new CustomError(NOUSERFOUND("user"), BAD_REQUEST));
+      return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
     }
 
     res.status(OK).json({ status: SUCCESS, data: updatedUser });

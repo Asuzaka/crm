@@ -5,7 +5,7 @@ import { createLesson, deleteLesson, getLesson, getLessons, updateLesson } from 
 
 const router = express.Router();
 
-
+// auth
 router.use(protect);
 
 router.route("/").post(createLesson);

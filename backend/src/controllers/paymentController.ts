@@ -128,8 +128,6 @@ export const deletePayments = catchAsync(
     if(!id){
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
-
-
     
     await Payment.deleteMany({ _id: { $in: id } });
 

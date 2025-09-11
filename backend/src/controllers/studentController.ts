@@ -4,9 +4,9 @@ import { AuthenticatedRequest } from "../types/route";
 import CustomError from "../services/CustomError";
 import {
   INVALIDID,
+  NODOCUMENTFOUND,
   NOIDPROVIDED,
   NOPERMISSION,
-  NOUSERFOUND,
   SUCCESS,
 } from "../constants/errors";
 import {
@@ -14,6 +14,8 @@ import {
   CREATED,
   FORBIDDEN,
   NO_CONTENT,
+  NOT_EXTENDED,
+  NOT_FOUND,
   OK,
 } from "../constants/httpCodes";
 import { Student } from "../models/students";
@@ -65,7 +67,7 @@ export const getStudent = catchAsync(
     const student: IStudent | null = await Student.findById(id);
 
     if (student == null) {
-      return next(new CustomError(NOUSERFOUND("student"), BAD_REQUEST));
+      return next(new CustomError(NODOCUMENTFOUND("student"), NOT_FOUND));
     }
 
     res.status(OK).json({ status: SUCCESS, data: student });
@@ -97,19 +99,24 @@ export const createStudent = catchAsync(
 export const updateStudent = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const filtered: Partial<IStudent> = filterout(req.body, "coins");
+    const { id } = req.params;
 
-    if (!filtered._id || !mongoose.isValidObjectId(filtered._id)) {
+
+    if(!id){
+      return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
+    }
+
+    if(!mongoose.isValidObjectId(id)){
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const updatedStudent: IStudent | null = await Student.findByIdAndUpdate(
-      filtered._id,
+    const updatedStudent: IStudent | null = await Student.findByIdAndUpdate(id,
       filtered,
       { new: true, runValidators: false }
     );
 
     if (updatedStudent == null) {
-      return next(new CustomError(NOUSERFOUND("student"), BAD_REQUEST));
+      return next(new CustomError(NODOCUMENTFOUND("student"), NOT_FOUND));
     }
 
     res.status(OK).json({ status: SUCCESS, data: updatedStudent });

@@ -4,11 +4,12 @@ import { AuthenticatedRequest } from "../types/route";
 import CustomError from "../services/CustomError";
 import {
   NOCREDENTIALS,
+  NODOCUMENTFOUND,
   NOPERMISSION,
   SUCCESS,
   WRONGCREDENTIALS,
 } from "../constants/errors";
-import { BAD_REQUEST, FORBIDDEN, OK } from "../constants/httpCodes";
+import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, OK } from "../constants/httpCodes";
 import { User } from "../models/users";
 import { IUser } from "../types/schemas";
 import jwt from "jsonwebtoken";
@@ -38,9 +39,14 @@ export const login = catchAsync(
     // Finding user by email
     const user: IUser | null = await User.findOne({ email: email });
     // Checking if the password is right or user exists
-    if (!user || !(await user.confirmPassword(password, user.password))) {
+    if (!(await user.confirmPassword(password, user.password))) {
       return next(new CustomError(WRONGCREDENTIALS, BAD_REQUEST));
     }
+
+    if (!user){
+      return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
+    }
+
     // Send the response
     createAndSendToken(user, res, OK);
   }

@@ -3,11 +3,11 @@ import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
 import { IGroup } from "../types/schemas";
 import { Group } from "../models/groups";
-import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from "../constants/httpCodes";
+import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
 import {
   INVALIDID,
+  NODOCUMENTFOUND,
   NOIDPROVIDED,
-  NOUSERFOUND,
   SUCCESS,
 } from "../constants/errors";
 import CustomError from "../services/CustomError";
@@ -48,7 +48,7 @@ export const getGroup = catchAsync(
     const group: IGroup | null = await Group.findById(id);
 
     if (group === null) {
-      return next(new CustomError(NOUSERFOUND("group"), BAD_REQUEST));
+      return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
     }
 
     res.status(OK).json({ status: SUCCESS, data: group });
@@ -92,10 +92,13 @@ export const updateGroup = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const updatedGroup = await Group.findByIdAndUpdate(id, filteredBody, {
+    const updatedGroup : IGroup | null  = await Group.findByIdAndUpdate(id, filteredBody, {
       new: true,
-      runValidators: false,
     });
+
+    if(updatedGroup === null){
+      return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
+    }
 
     res.status(OK).json({ status: SUCCESS, data: updatedGroup });
   }

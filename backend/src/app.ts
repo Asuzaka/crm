@@ -11,12 +11,12 @@ import { router as lesson } from "./routes/lessonRoute";
 import { router as payment } from "./routes/paymentRoute";
 import CustomError from "./services/CustomError";
 import { NOT_FOUND, TOO_MANY_REQUESTS } from "./constants/httpCodes";
-import { TOOMANYREQUEST } from "./constants/errors";
+import { CANNOTREACH, TOOMANYREQUEST } from "./constants/errors";
 import { catchError } from "./controllers/errorController";
 
 // CorsOptions
 const cortOptions: CorsOptions = {
-  origin: ["https://localhost:5173", "frotendfromdb"],
+  origin: ["https://localhost:5173", "put-here-deployed-url-by-env"],
   credentials: true,
 };
 
@@ -57,12 +57,10 @@ app.use("/v1/payments", payment);
 // Global 404 handler
 app.use("*splat", (req: Request, _res: Response, next: NextFunction) => {
   next(
-    new CustomError(`Can't reach ${req.originalUrl} on this server`, NOT_FOUND)
+    new CustomError(CANNOTREACH(req.originalUrl), NOT_FOUND)
   );
 });
 
-
-//check github branch
 // ErrorCatcher
 app.use(catchError);
 

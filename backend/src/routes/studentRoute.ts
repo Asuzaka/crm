@@ -11,6 +11,8 @@ import { protect } from "../middleware/protect";
 
 const router = express.Router();
 
+
+// auth
 router.use(protect);
 
 router

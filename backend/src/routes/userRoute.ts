@@ -12,8 +12,7 @@ import {
 
 const router = express.Router();
 
-// applies to all router after this line
-
+// auth
 router.use(protect);
 
 router

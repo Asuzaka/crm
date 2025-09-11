@@ -6,14 +6,15 @@ import CustomError from "../services/CustomError";
 import {
   INVALIDID,
   NODATEPROVIDED,
+  NODOCUMENTFOUND,
   NOIDPROVIDED,
-  NOUSERFOUND,
   SUCCESS,
 } from "../constants/errors";
-import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from "../constants/httpCodes";
+import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
 import mongoose from "mongoose";
 import { ILesson } from "../types/schemas";
 import { filterout, getDateRange } from "../services/helpers";
+import { updatePayments } from "./paymentController";
 
 // get "A" groups "A-week?\A-month?"
 export const getLessons = catchAsync(
@@ -68,7 +69,7 @@ export const getLesson = catchAsync(
     const lesson: ILesson | null = await Lesson.findById(id);
 
     if (lesson === null) {
-      return next(new CustomError(NOUSERFOUND("lesson"), BAD_REQUEST));
+      return next(new CustomError(NODOCUMENTFOUND("lesson"), NOT_FOUND));
     }
 
     res.status(200).json({ status: SUCCESS, data: lesson });
@@ -109,9 +110,13 @@ export const updateLesson = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const updatedLesson = await Lesson.findByIdAndUpdate(id, filtered, {
+    const updatedLesson : ILesson | null = await Lesson.findByIdAndUpdate(id, filtered, {
       new: true,
     });
+
+    if(updatedLesson === null){
+      return next(new CustomError(NODOCUMENTFOUND("lesson"), NOT_FOUND));
+    }
 
     res.status(OK).json({ status: SUCCESS, data: updatedLesson });
   }
