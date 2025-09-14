@@ -16,7 +16,7 @@ import { catchError } from "./controllers/errorController";
 
 // CorsOptions
 const cortOptions: CorsOptions = {
-  origin: ["https://localhost:5173", "put-here-deployed-url-by-env"],
+  origin: ["http://localhost:5173", "put-here-deployed-url-by-env"],
   credentials: true,
 };
 

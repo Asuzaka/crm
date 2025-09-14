@@ -21,8 +21,8 @@ export const protect: RequestHandler = catchAsync(
     // 1. Getting token
     if (req.headers.authorization?.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
-    } else if (req.signedCookies.jwt) {
-      token = req.signedCookies.jwt;
+    } else if (req.cookies.jwt) {
+      token = req.cookies.jwt;
     }
 
     if (!token) {
@@ -34,7 +34,7 @@ export const protect: RequestHandler = catchAsync(
       token,
       config.JWT_SECRET
     )) as DecodedToken;
-
+    
     // 3. Check if user still exitst
     const user = await User.findById(decoded.id);
     if (!user) {

@@ -17,7 +17,7 @@ export const catchError = (
   err.status = err.status || "error";
   err.statusCode = err.statusCode || INTERNAL_SERVER_ERROR;
 
-  let error: any = { ...err, message: err.message };
+  let error: any = { ...err, message: err.message, stack : err.stack };
 
   // Handle known errors
   if (error.name === "CastError") {
@@ -41,7 +41,7 @@ export const catchError = (
 
   // Log unexpected errors
   if (!error.isOperational) {
-    console.error("Unexpected Error:", error);
+    console.error("Unexpected Error:", error.stack, error);
   }
 
   res.status(error.statusCode).json({

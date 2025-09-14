@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export type role = "owner" | "manager";
-export type status = "active" | "frozen" | "debtor" | "archived";
+export type status = "active" | "archived";
 export type grade = 1 | 2 | 3 | 4 | 5;
 
 export interface IPermissions {

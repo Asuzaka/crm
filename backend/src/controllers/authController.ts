@@ -37,14 +37,13 @@ export const login = catchAsync(
     if (!email || !password)
       return next(new CustomError(NOCREDENTIALS, BAD_REQUEST));
     // Finding user by email
-    const user: IUser | null = await User.findOne({ email: email });
+    const user: IUser | null = await User.findOne({ email: email }).select("+password");
     // Checking if the password is right or user exists
-    if (!(await user.confirmPassword(password, user.password))) {
-      return next(new CustomError(WRONGCREDENTIALS, BAD_REQUEST));
-    }
-
     if (!user){
       return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
+    }
+    if (!(await user.confirmPassword(password, user.password))) {
+      return next(new CustomError(WRONGCREDENTIALS, BAD_REQUEST));
     }
 
     // Send the response
@@ -68,9 +67,11 @@ function createAndSendToken(user: IUser, res: Response, code: number) {
     sameSite: "none",
   };
 
+  user.password = undefined;
+
   // sending cookies
   res.cookie("jwt", token, cookieOptions);
-  res.status(code).json({ status: SUCCESS, token });
+  res.status(code).json({ status: SUCCESS, token, data: user });
 }
 
 export const acessTo =
