@@ -14,11 +14,16 @@ export function RegisterForm() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) });
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { responsible: [], role: "manager" },
+  });
   const { mutate, isPending } = useRegister();
   const { data: availableGroups, isLoading } = useGroupOptions();
+  console.log(errors);
 
   const Submit = (data: RegisterFormData) => {
+    console.log("i am alive");
     mutate(data, {
       onSuccess: () => toast.success("User Created!"),
       onError: (err) => toast.error(err.message),
@@ -114,10 +119,11 @@ export function RegisterForm() {
         <Controller
           control={control}
           name="responsible"
+          defaultValue={[]}
           render={({ field }) => (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {availableGroups?.data.map((group) => {
-                const isChecked = field.value.includes(group.id);
+                const isChecked = field.value?.includes(group.id);
                 return (
                   <div
                     key={group.id}
@@ -129,8 +135,8 @@ export function RegisterForm() {
                     onClick={() =>
                       field.onChange(
                         isChecked
-                          ? field.value.filter((id) => id !== group.id)
-                          : [...field.value, group.id]
+                          ? field.value?.filter((id) => id !== group.id)
+                          : [...(field.value || []), group.id]
                       )
                     }
                   >
@@ -141,8 +147,8 @@ export function RegisterForm() {
                         onChange={() =>
                           field.onChange(
                             isChecked
-                              ? field.value.filter((id) => id !== group.id)
-                              : [...field.value, group.id]
+                              ? field.value?.filter((id) => id !== group.id)
+                              : [...(field.value || []), group.id]
                           )
                         }
                         className="h-4 w-4"
@@ -161,6 +167,7 @@ export function RegisterForm() {
           </p>
         )}
       </div>
+      <input type="hidden" {...register("role")} value="manager" />
 
       {/* --- Submit --- */}
       <div className="pt-4">

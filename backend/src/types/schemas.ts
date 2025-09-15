@@ -31,14 +31,13 @@ export interface IUser extends Document {
 export interface IStudent extends Document {
   _id: Types.ObjectId;
   name: string;
-  role: role;
   groups: Types.ObjectId[];
-  phoneNumber: number;
-  additionalNumber: number;
+  phoneNumber: string;
+  additionalNumber: string;
   fathersName: string;
-  fathersNumber: number;
+  fathersNumber: string;
   mothersName: string;
-  mothersNumber: number;
+  mothersNumber: string;
   birthDate: Date;
   adress: string;
   status: status;

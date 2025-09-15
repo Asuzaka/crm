@@ -1,0 +1,21 @@
+import { z } from "zod";
+
+export const studentSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  groups: z.array(z.string()),
+  phoneNumber: z.string().min(13, "Enter valid Number"),
+  additionalNumber: z.string().optional(),
+  fathersName: z.string().min(2, "Father's name required"),
+  fathersNumber: z.string().optional(),
+  mothersName: z.string().min(2, "Mother's name required"),
+  mothersNumber: z.string().optional(),
+  birthDate: z.coerce
+    .date()
+    .refine((d) => d instanceof Date && !isNaN(d.getTime()), {
+      message: "Birth date is required",
+    }),
+  adress: z.string().min(3, "Address required"),
+  notes: z.string().optional(),
+});
+
+export type StudentFormData = z.infer<typeof studentSchema>;

@@ -6,6 +6,7 @@ import { MainLayout } from "../../layout/main-layout";
 import { ROUTES } from "../../../shared/consts/routes";
 import { DashboardPage } from "../../../pages/dashboard";
 import { Register } from "../../../pages/new-manager";
+import { Students } from "../../../pages/students";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,11 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.newManager,
-        element: <Register />,
+        element: <Register />
+      },
+      {
+        path: ROUTES.students,
+        element: <Students />
       }
     ],
   },

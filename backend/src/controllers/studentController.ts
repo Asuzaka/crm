@@ -14,7 +14,6 @@ import {
   CREATED,
   FORBIDDEN,
   NO_CONTENT,
-  NOT_EXTENDED,
   NOT_FOUND,
   OK,
 } from "../constants/httpCodes";
@@ -27,6 +26,7 @@ import { apiFeatures } from "../services/apiFeatures";
 export const getStudents = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    const { populate } = req.query;
 
     let query;
 
@@ -41,6 +41,13 @@ export const getStudents = catchAsync(
       query = Student.find({ groups: { $in: id } });
     }
 
+    if (populate === "true") {
+      query = query.populate("groups", "id name");
+    }
+
+    // Count total before pagination
+    const totalResults = await query.clone().countDocuments();
+
     const features = new apiFeatures(query, req.query)
       .filter()
       .sort()
@@ -49,9 +56,13 @@ export const getStudents = catchAsync(
 
     const students: IStudent[] = await features.getQuery();
 
+
+    const limit = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limit);
+
     res
       .status(OK)
-      .json({ status: SUCCESS, data: students, results: students.length });
+      .json({ status: SUCCESS, data: students, results: students.length, pages : totalPages });
   }
 );
 
@@ -143,6 +154,7 @@ export const requirePermission = (
 ): RequestHandler => {
   return (req, res, next) => {
     const authReq = req as AuthenticatedRequest; // cast when needed
+    console.log(authReq.user,!authReq.user.permissions[permission])
     if (!authReq.user || !authReq.user.permissions[permission]) {
       return next(new CustomError(NOPERMISSION, FORBIDDEN));
     }

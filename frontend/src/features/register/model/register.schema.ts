@@ -13,7 +13,7 @@ export const registerSchema = z.object({
   password: z.string().min(8),
   name: z.string().min(2),
   role: roleEnum,
-  responsible: z.array(z.string()), 
+  responsible: z.array(z.string()),
   permissions: permissionsSchema,
 });
 

@@ -1,4 +1,4 @@
-import { HomeIcon, UsersIcon, LayersIcon, DollarSignIcon, UserIcon, ClipboardListIcon, UserPlusIcon } from "lucide-react";
+import { HomeIcon, UsersIcon, LayersIcon, DollarSignIcon, UserIcon, ClipboardListIcon, UserPlusIcon, CreditCardIcon } from "lucide-react";
 import type { User } from "../../../entities/user";
 
 export function getNavigation(currentUser: User | null) {
@@ -11,6 +11,11 @@ export function getNavigation(currentUser: User | null) {
 
   if (currentUser?.role === "owner") {
     navigation.push(
+      {
+        name: 'Expenses',
+        href: '/expenses',
+        icon: CreditCardIcon,
+      },
       { name: "Managers", href: "/managers", icon: UserIcon },
       { name: "Activity History", href: "/activity", icon: ClipboardListIcon },
       { name: "Register Manager", href: "/register", icon: UserPlusIcon },

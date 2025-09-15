@@ -8,7 +8,7 @@ export interface Permissions {
 
 
 export interface User extends IUser {
-  id: string;
+  _id: string;
 }
 
 export interface IUser {
