@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../../app/providers/store/authStore";
-import { login } from "../../../shared/api/endpoints/login";
+import { login } from "../../../shared/api/endpoints";
 import { useNavigate } from "react-router";
 import { ROUTES } from "../../../shared/consts/routes";
 
@@ -12,7 +12,7 @@ export function useLogin() {
     mutationFn: login,
     onSuccess: (data) => {
       setUser(data.data);
-      navigate(ROUTES.home);
+      navigate(ROUTES.home)
     },
   });
 }

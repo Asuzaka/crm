@@ -47,3 +47,7 @@ export interface CreateStudent
   mothersNumber?: string;
   fathersNumber?: string;
 }
+
+export interface StudentGet extends Omit<Student, "groups"> {
+  groups: GroupForStudentList[];
+}

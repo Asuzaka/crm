@@ -1,1 +1,2 @@
-export { useOutsideClick } from "./outSideClick"
+export { useOutsideClick } from "./outSideClick";
+export { useDebounce } from "./useDebounce";

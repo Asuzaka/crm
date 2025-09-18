@@ -5,6 +5,7 @@ import { IGroup } from "../types/schemas";
 import { Group } from "../models/groups";
 import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
 import {
+  INVALIDQUERORNOQUERY,
   INVALIDID,
   NODOCUMENTFOUND,
   NOIDPROVIDED,
@@ -118,3 +119,18 @@ export const deleteGroup = catchAsync(
     res.status(NO_CONTENT).json({ status: SUCCESS });
   }
 );
+
+export const searchGroups = catchAsync(async(req:AuthenticatedRequest, res: Response, next: NextFunction) => {
+  // search for groups 
+  const { query } = req.query;
+  if (!query){
+    return next(new CustomError(INVALIDQUERORNOQUERY, BAD_REQUEST));
+  }
+
+  const groups = await Group.find({
+      name: { $regex: query, $options: "i" },})
+      .limit(10)
+      .select("_id name");
+      
+  res.json({ status: SUCCESS, data: groups });
+})

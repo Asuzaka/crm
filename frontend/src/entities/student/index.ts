@@ -1,2 +1,2 @@
 export { useStudentsList } from "./hook/useStudentsList";
-export type { IStudent, Student, StudentList, CreateStudent } from "./model/types";
+export type { IStudent, Student, StudentList, CreateStudent, StudentGet } from "./model/types";

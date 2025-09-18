@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAuthStore } from "../store/authStore";
-import { authenticated } from "../../../shared/api/endpoints/authenticated";
+import { authenticated } from "../../../shared/api/endpoints";
 
 export function AutoAuth({ children }: { children: React.ReactNode }) {
   const { setUser, startLoading, finishLoading } = useAuthStore();

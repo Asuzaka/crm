@@ -14,7 +14,6 @@ import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/ht
 import mongoose from "mongoose";
 import { ILesson } from "../types/schemas";
 import { filterout, getDateRange } from "../services/helpers";
-import { updatePayments } from "./paymentController";
 
 // get "A" groups "A-week?\A-month?"
 export const getLessons = catchAsync(

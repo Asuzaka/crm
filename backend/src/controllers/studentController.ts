@@ -4,6 +4,7 @@ import { AuthenticatedRequest } from "../types/route";
 import CustomError from "../services/CustomError";
 import {
   INVALIDID,
+  INVALIDQUERORNOQUERY,
   NODOCUMENTFOUND,
   NOIDPROVIDED,
   NOPERMISSION,
@@ -71,11 +72,15 @@ export const getStudent = catchAsync(
     // Case for persanal page
     const { id } = req.params;
 
-    if (!id || mongoose.isValidObjectId(id)) {
+    if (!id) {
+      return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
+    }
+
+    if (!mongoose.isValidObjectId(id)){
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const student: IStudent | null = await Student.findById(id);
+    const student: IStudent | null = await Student.findById(id).populate("groups", "id name");
 
     if (student == null) {
       return next(new CustomError(NODOCUMENTFOUND("student"), NOT_FOUND));
@@ -148,13 +153,33 @@ export const deleteStudent = catchAsync(
   }
 );
 
+export const searchStudents = catchAsync(
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const { query } = req.query;
+
+    if(!query){
+      return next(new CustomError(INVALIDQUERORNOQUERY, BAD_REQUEST));
+    }
+
+    const students = await Student.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+      ],
+    })
+      .limit(10)
+      .select("_id name");
+
+     res.json({ status: SUCCESS, data: students });
+  }
+)
+
 // good trick  AuthenticatedRequest["user"]["permissions"] -> the type describing object not runtime object !!
 export const requirePermission = (
   permission: keyof AuthenticatedRequest["user"]["permissions"]
 ): RequestHandler => {
   return (req, res, next) => {
     const authReq = req as AuthenticatedRequest; // cast when needed
-    console.log(authReq.user,!authReq.user.permissions[permission])
+    console.log(authReq.user,authReq.user.permissions[permission])
     if (!authReq.user || !authReq.user.permissions[permission]) {
       return next(new CustomError(NOPERMISSION, FORBIDDEN));
     }

@@ -4,7 +4,7 @@ import { AuthenticatedRequest } from "../types/route";
 import { IPayment } from "../types/schemas";
 import { Payment } from "../models/payments";
 import { BAD_REQUEST, CREATED, FORBIDDEN, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
-import { INVALIDID, NOIDPROVIDED, NOPERMISSION, NOUSERFOUND, SUCCESS } from "../constants/errors";
+import { INVALIDID, NOIDPROVIDED, NOPERMISSION, NODOCUMENTFOUND, SUCCESS } from "../constants/errors";
 import CustomError from "../services/CustomError";
 import mongoose from "mongoose";
 import { getDateRange } from "../services/helpers";
@@ -76,9 +76,10 @@ export const getPayment = catchAsync(
     const payment : IPayment | null = await Payment.findById(id);
 
     if (payment === null){
-      return next(new CustomError(NOUSERFOUND("payment"), NOT_FOUND));
+      return next(new CustomError(NODOCUMENTFOUND("payment"), NOT_FOUND));
     }
 
+    res.status(OK).json({status: SUCCESS, data: payment});
   }
 );
 
@@ -112,7 +113,7 @@ export const updatePayments = catchAsync(
     const payment : IPayment | null = await Payment.findById(id);
 
     if (payment === null){
-      return next(new CustomError(NOUSERFOUND("payment"),NOT_FOUND));
+      return next(new CustomError(NODOCUMENTFOUND("payment"),NOT_FOUND));
     }
 
     res.status(OK).json({status: SUCCESS, data : payment});

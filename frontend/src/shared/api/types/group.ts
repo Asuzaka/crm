@@ -5,3 +5,8 @@ export interface GroupOptionResponse {
   data: GroupOption[];
   results: number;
 }
+
+export interface GroupsSearchResponse {
+  status: string;
+  data: GroupOption[];
+}

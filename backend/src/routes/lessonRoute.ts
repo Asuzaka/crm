@@ -8,9 +8,9 @@ const router = express.Router();
 // auth
 router.use(protect);
 
-router.route("/").post(createLesson);
+router.route("/").post(createLesson).delete(deleteLesson);
 router.route("/group/:id").get(getLessons);
-router.route("/:id").get(getLesson).patch(updateLesson).delete(deleteLesson);
+router.route("/:id").get(getLesson).patch(updateLesson);
 
 
 export { router };

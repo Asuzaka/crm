@@ -5,6 +5,7 @@ import {
   getStudent,
   getStudents,
   requirePermission,
+  searchStudents,
   updateStudent,
 } from "../controllers/studentController";
 import { protect } from "../middleware/protect";
@@ -18,12 +19,13 @@ router.use(protect);
 router
   .route("/")
   .get(getStudents)
-  .post(requirePermission("addStudents"), createStudent);
+  .post(requirePermission("addStudents"), createStudent).delete(requirePermission("deleteStudents"), deleteStudent);
 router.route("/group/:id").get(getStudents);
+router.route("/search").get(searchStudents);
 router
   .route("/:id")
   .get(getStudent)
   .patch(requirePermission("addPayments"), updateStudent)
-  .delete(requirePermission("deleteStudents"), deleteStudent);
+
 
 export { router };
