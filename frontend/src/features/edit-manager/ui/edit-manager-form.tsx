@@ -4,11 +4,12 @@ import toast from "react-hot-toast";
 import { Form } from "../../../widgets/manager-form";
 import { registerSchema, type RegisterFormData } from "../../add-manager";
 import { useUpdateUser } from "../hooks/useUpdateUser";
-import { useGetUser } from "../hooks/useGetUser";
 import { mapUserResponse } from "../util/normalize-object";
+import type { UserGetResponse } from "../../../shared/api/types";
+import { queryClient } from "../../../shared/api/queryClient";
 
-export function UpdateForm({ id }: { id: string }) {
-  const { data, isLoading, isError } = useGetUser(id);
+export function UpdateForm({ data, id }: { id: string,  data:  UserGetResponse }) {
+
 
   const {
     register,
@@ -17,20 +18,20 @@ export function UpdateForm({ id }: { id: string }) {
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    defaultValues: data?.data
+    defaultValues: data.data
       ? mapUserResponse(data)
       : { responsible: [], role: "manager" },
   });
 
   const { isPending, mutate } = useUpdateUser(id);
-
-  if (isLoading || !data) return <p>Loading...</p>;
-
-  if (isError) return <p>Error happened...</p>;
-
+  
   const Submit = (data: RegisterFormData) => {
     mutate(data, {
-      onSuccess: () => toast.success("User Updated"),
+      onSuccess: () => {
+        toast.success("User Updated") 
+        queryClient.invalidateQueries({queryKey: ["user", id]})
+        queryClient.invalidateQueries({queryKey: ["users"]})
+      },
       onError: (err) => toast.error(err.message),
     });
   };

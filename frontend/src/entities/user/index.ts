@@ -1,1 +1,2 @@
-export type { User, IUser, GetUser } from "./model/types";
+export type { User, IUser, GetUser, UsersAsList } from "./model/types";
+export { useUserList } from "./hook/useUserList";

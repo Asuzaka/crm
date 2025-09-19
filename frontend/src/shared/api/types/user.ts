@@ -1,4 +1,4 @@
-import type { User, GetUser } from "../../../entities/user";
+import type { User, GetUser, UsersAsList } from "../../../entities/user";
 
 export interface CreateUserResponseDTO {
   status: string;
@@ -7,7 +7,7 @@ export interface CreateUserResponseDTO {
 
 export interface GetUsersResponse {
   status: string;
-  data: User[];
+  data: UsersAsList[];
   results: number;
 }
 

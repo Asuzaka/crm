@@ -5,7 +5,7 @@ export function useGroupSearch(search: string) {
   return useQuery({
     queryFn: async () => {
       const data = await searchGroups(search);
-      return data.data;
+      return data;
     },
     queryKey: ["search-group"],
   });

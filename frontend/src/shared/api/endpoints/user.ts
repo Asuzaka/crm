@@ -39,7 +39,7 @@ export function deleteUsers(id: string[]) {
 }
 
 export function getUsers(page: number, limit: number) {
-  return client<GetUsersResponse>(`/v1/students?page=${page}&limit=${limit}`, {
+  return client<GetUsersResponse>(`/v1/users?page=${page}&limit=${limit}`, {
     method: "GET",
   });
 }

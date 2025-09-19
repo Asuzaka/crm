@@ -25,3 +25,8 @@ export interface IUser {
 export interface GetUser extends Omit<User, "responsible"> {
   responsible: { _id: string; name: string }[];
 }
+
+export interface UsersAsList
+  extends Pick<User, "name" | "email" | "permissions" | "lastLogin" | "_id"> {
+  responsible: { _id: string; name: string }[];
+}

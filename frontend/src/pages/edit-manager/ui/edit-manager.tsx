@@ -1,13 +1,24 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
-import { UpdateForm } from "../../../features/edit-manager";
+import { UpdateForm, useGetUser } from "../../../features/edit-manager";
+import { Loader } from "../../../shared/components";
+import { Error } from "../../error";
 
 export function EditManager() {
   const navigate = useNavigate();
 
   const { id } = useParams();
 
-  if (!id) return <p> No id | invalid id </p>;
+  const { data, error, isLoading } = useGetUser(id!);
+
+  if (isLoading) return <Loader />;
+
+  if (!id) return <Error title="No id" message="no id was provided" />;
+
+  if (error)
+    return <Error title="Failed to get user" message={error.message} />;
+
+  if (!data) return;
 
   return (
     <>
@@ -19,7 +30,7 @@ export function EditManager() {
           <ArrowLeftIcon className="h-5 w-5" />
         </button>
       </div>
-      <UpdateForm id={id}/>
+      <UpdateForm id={id} data={data} />
     </>
   );
 }
