@@ -60,7 +60,7 @@ const UserSchema: Schema<IUser> = new Schema(
 // Pre-save hook for password to save as crypted
 UserSchema.pre("save", async function (next) {
   // Only run if password was modified
-  if (!this.isModified()) return next();
+  if (!this.isModified("password")) return next();
 
   // Hash the password
   this.password = await bcrypt.hash(this.password, 12);

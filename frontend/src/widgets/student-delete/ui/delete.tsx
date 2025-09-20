@@ -1,14 +1,18 @@
+import { useDeleteStudent } from "../../../features/delete-student";
+
 interface DeleteProps {
   name?: string;
   onCloseModal?: () => void;
-  handleDelete: () => void;
+  id: string;
 }
 
-export function DeleteConfirm({
+export function Delete({
   onCloseModal,
   name = "uknown",
-  handleDelete,
+  id,
 }: DeleteProps) {
+  const {mutate} = useDeleteStudent([id])
+
   return (
     <>
       <h3 className="text-lg font-medium text-gray-900 mb-4">
@@ -25,7 +29,7 @@ export function DeleteConfirm({
           Cancel
         </button>
         <button
-          onClick={handleDelete}
+          onClick={()=>mutate()}
           className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
         >
           Delete

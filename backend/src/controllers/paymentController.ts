@@ -9,6 +9,7 @@ import CustomError from "../services/CustomError";
 import mongoose from "mongoose";
 import { getDateRange } from "../services/helpers";
 import { apiFeatures } from "../services/apiFeatures";
+import { Record } from "../models/records";
 
 // case 1: Global payments // only admin
 // case 2: Group payments 
@@ -48,7 +49,10 @@ export const getPayments = catchAsync(
     }
 
     // use helper to work with query
-    const features = new apiFeatures(query, req.query);
+    const features = new apiFeatures(query, req.query).filter()
+      .sort()
+      .limitFields()
+      .pagination();
 
     const payments : IPayment[] = await features.getQuery();
 
@@ -94,6 +98,16 @@ export const createPayments = catchAsync(
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: payment });
+
+    // take a record
+    await Record.create({
+      user: req.user._id,
+      actionType: "CREATE",
+      entityType: "Payment",
+      entityId:  payment._id,
+      description: `Added payment of ${payment.amount} UZS by ${payment.student}.`,
+      metadata: { amount: payment.amount, student: payment.student },
+    })
   }
 );
 
@@ -117,6 +131,16 @@ export const updatePayments = catchAsync(
     }
 
     res.status(OK).json({status: SUCCESS, data : payment});
+
+    // take a record
+    await Record.create({
+      user: req.user._id,
+      actionType: "CREATE",
+      entityType: "Payment",
+      entityId:  payment._id,
+      description: `Update payment of ${payment.amount} UZS by ${payment.student}.`,
+      metadata: { amount: payment.amount, student: payment.student },
+    })
   }
 );
 
@@ -126,11 +150,34 @@ export const deletePayments = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const id : string[] | undefined = req.body.id;
 
-    if(!id){
+    if(!id || id.length === 0){
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
     
+    // find payments before deletion for logging
+    const payments = await Payment.find({ _id: { $in: id } });
+
+    if (payments.length === 0) {
+      return next(new CustomError(NODOCUMENTFOUND("payments"), NOT_FOUND));
+    }
+
+    // delete them
     await Payment.deleteMany({ _id: { $in: id } });
+
+    // log each deletion
+    const records = payments.map((payment) => ({
+      user: req.user._id,
+      actionType: "DELETE",
+      entityType: "Payment",
+      entityId: payment._id,
+      description: `Deleted payment of ${payment.amount} UZS by ${payment.student}`,
+      metadata: {
+        amount: payment.amount,
+        method: payment.method,
+      },
+    }));
+
+    await Record.insertMany(records);
 
     res.status(NO_CONTENT).json({ status: SUCCESS });
   }

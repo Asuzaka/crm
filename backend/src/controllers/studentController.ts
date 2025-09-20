@@ -23,6 +23,7 @@ import { IStudent } from "../types/schemas";
 import { filterout } from "../services/helpers";
 import mongoose from "mongoose";
 import { apiFeatures } from "../services/apiFeatures";
+import { Record } from "../models/records";
 
 export const getStudents = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -109,6 +110,16 @@ export const createStudent = catchAsync(
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: student });
+    
+    // take a record
+    await Record.create({
+      user: req.user._id,
+      actionType: "CREATE",
+      entityType: "Student",
+      entityId:  student._id,
+      description: `Created "${student.name}" student.`,
+      metadata: { groups: student.groups },
+    })
   }
 );
 
@@ -136,6 +147,16 @@ export const updateStudent = catchAsync(
     }
 
     res.status(OK).json({ status: SUCCESS, data: updatedStudent });
+
+    // take a record
+    await Record.create({
+      user: req.user._id,
+      actionType: "UPDATE",
+      entityType: "Student",
+      entityId:  updatedStudent._id,
+      description: `Updated "${updatedStudent.name}" student.`,
+      metadata: { groups: updatedStudent.groups },
+    })
   }
 );
 
@@ -143,11 +164,33 @@ export const deleteStudent = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const id: string[] | undefined = req.body.id;
 
-    if (!id) {
+    if (!id || id.length === 0) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
+    
+    // find students before deletion (to log info)
+    const students = await Student.find({ _id: { $in: id } });
 
+    if (students.length === 0) {
+      return next(new CustomError(NODOCUMENTFOUND("students"), NOT_FOUND));
+    }
+
+    // delete them
     await Student.deleteMany({ _id: { $in: id } });
+
+    // create audit records
+    const records = students.map((student) => ({
+      user: req.user._id,
+      actionType: "DELETE",
+      entityType: "Student",
+      entityId: student._id,
+      description: `Deleted student "${student.name}".`,
+      metadata: {
+        groups: student.groups
+      },
+    }));
+
+    await Record.insertMany(records);
 
     res.status(NO_CONTENT).json({ status: SUCCESS });
   }

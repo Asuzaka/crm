@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 export type role = "owner" | "manager";
 export type status = "active" | "archived";
 export type grade = 1 | 2 | 3 | 4 | 5;
+export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT"| "OTHER";
 
 export interface IPermissions {
   addStudents: boolean;
@@ -46,6 +47,7 @@ export interface IStudent extends Document {
 }
 
 export interface IGroup extends Document {
+  _id: Types.ObjectId;
   name: string;
   teacher: Types.ObjectId;
   students: Types.ObjectId[];
@@ -58,6 +60,7 @@ export interface IGroup extends Document {
 }
 
 export interface ILesson extends Document {
+  _id: Types.ObjectId;
   group: Types.ObjectId;
   teacher: Types.ObjectId;
   date: Date;
@@ -70,10 +73,23 @@ export interface ILesson extends Document {
 }
 
 export interface IPayment extends Document {
+  _id: Types.ObjectId;
   group: Types.ObjectId;
   amount: number;
   student: Types.ObjectId;
   createdBy: Types.ObjectId;
   createdAt: Date;
   method: "cash" | "card";
+}
+
+export interface IRecord extends Document {
+  _id: Types.ObjectId;
+  user: Types.ObjectId;
+  actionType: action;
+  entityType: string;
+  entityId: Types.ObjectId;
+  description: string;
+  metadata: Record<string, any>;
+  createdAt: Date;
+  updatedAt: Date;
 }

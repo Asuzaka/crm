@@ -3,6 +3,9 @@ import { useUserList } from "../../../entities/user";
 import { Loader } from "../../../shared/components";
 import { Error } from "../../error";
 import { PlusIcon, SearchIcon } from "lucide-react";
+import { Modal } from "../../../shared/ui";
+import { ManagerDelete as Delete } from "../../../widgets/manager-delete";
+import { id } from "zod/v4/locales";
 
 export function Managers(){
 
@@ -12,7 +15,9 @@ export function Managers(){
 
   if(error) return <Error title="Failed to fetch users"  message={error.message} />
 
-  return <div>
+  return (
+    <Modal>
+    <div>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
           Managers
@@ -162,12 +167,19 @@ export function Managers(){
                     >
                       Edit
                     </Link>
+                      <Modal.Open opens="delete-user">
+
                     <button
                       onClick={() => console.log("deleted")}
                       className="text-red-600 hover:text-red-900"
                     >
                       Remove
                     </button>
+                                          </Modal.Open>
+                       <Modal.Window name="delete-user" >
+       <Delete name={manager.name} id={id} />
+      </Modal.Window>
+
                   </td>
                 </tr>
               ))}
@@ -183,4 +195,6 @@ export function Managers(){
         )}
       </div>
    </div>
+
+  </Modal> );
 }

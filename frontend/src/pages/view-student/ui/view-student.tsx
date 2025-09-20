@@ -14,26 +14,25 @@ import { useGetStudent } from "../../../features/edit-student";
 import { Loader } from "../../../shared/components";
 import { Error } from "../../error";
 import { Modal } from "../../../shared/ui";
-import { DeleteConfirm } from "./delete-confirm";
-import { useDeleteStudent } from "../../../features/delete-student";
+import { StudentDelete as Delete } from "../../../widgets/student-delete";
 
 export function ViewStudent() {
   const { id } = useParams();
 
-  const { mutate } = useDeleteStudent([id || ""]);
   const { error, data, isPending } = useGetStudent(id!);
 
-  function handleDelete() {
-    if (id && id.length > 0) mutate();
-  }
 
   if (isPending) {
     return <Loader />;
   }
 
+  if(!id) return <Error title="No id" message="no id was provided" />
+
   if (error) {
-    return <Error message={error.message} />;
+    return <Error title="Failed to load students" message={error.message} />;
   }
+
+  if(!data) return
 
   return (
     <Modal>
@@ -229,7 +228,7 @@ export function ViewStudent() {
 
         {/* Delete Confirmation Modal */}
         <Modal.Window name="delete-student">
-          <DeleteConfirm name={data.data.name} handleDelete={handleDelete} />
+          <Delete name={data.data.name} id={id} />
         </Modal.Window>
       </div>
     </Modal>

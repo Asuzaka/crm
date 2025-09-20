@@ -14,6 +14,7 @@ import { User } from "../models/users";
 import { IUser } from "../types/schemas";
 import jwt from "jsonwebtoken";
 import { config } from "../constants/config";
+import { Record } from "../models/records";
 
 export const authenticated = catchAsync(
   async (req: AuthenticatedRequest, res: Response, _: NextFunction) => {
@@ -21,10 +22,21 @@ export const authenticated = catchAsync(
   }
 );
 
-export const logout = (_: Request, res: Response, __: NextFunction) => {
+export const logout = catchAsync( async (req: AuthenticatedRequest, res: Response, __: NextFunction) => {
   res.cookie("jwt", ".", { httpOnly: true, maxAge: 0 });
   res.status(OK).json({ status: SUCCESS });
-};
+
+  //take a record
+   await Record.create({
+      user: req.user._id,
+      actionType: "LOGOUT",
+      entityType: "User",
+      entityId: req.user._id,
+      description: `User ${req.user.name} logged out of the system.`,
+      metadata: {},
+   })
+
+});
 
 export const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -45,6 +57,16 @@ export const login = catchAsync(
     if (!(await user.confirmPassword(password, user.password))) {
       return next(new CustomError(WRONGCREDENTIALS, BAD_REQUEST));
     }
+
+    // take a record 
+    await Record.create({
+      user: user._id,
+      actionType: "LOGIN",
+      entityType: "User",
+      entityId: user._id,
+      description: `User ${user.name} logged into the system.`,
+      metadata: {},
+    })
 
     // Send the response
     createAndSendToken(user, res, OK);

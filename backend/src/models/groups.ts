@@ -10,7 +10,6 @@ const groupsSchema = new Schema<IGroup>({
     type: Schema.ObjectId,
     ref: "User",
   },
-  students: [{type: Schema.ObjectId, ref: "Student"}],
   schedule: [{day: String, time: String}],
   start: Date,
   room: String,
@@ -18,10 +17,16 @@ const groupsSchema = new Schema<IGroup>({
   histroy: [{start: Date, end: Date}],
   status: {
     type: String,
-    enum: ["active", "pasued", "archived"],
+    enum: ["active", "paused", "archived"],
   }
   
 }, {timestamps: true})
+
+groupsSchema.virtual("students", {
+  ref: "Student",
+  localField: "_id",
+  foreignField: "groups",
+});
 
 
 export const Group = model<IGroup>("Group", groupsSchema);  

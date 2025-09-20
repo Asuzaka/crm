@@ -43,6 +43,10 @@ export const protect: RequestHandler = catchAsync(
 
     // 4. Check if password was changed recently
     // @later
+    
+    // 5. After as acces is granted update login time
+    user.lastLogin = new Date()
+    await user.save({ validateBeforeSave: false });
 
     // access to protected route
     (req as AuthenticatedRequest).user = user;

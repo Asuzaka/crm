@@ -14,6 +14,7 @@ import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/ht
 import mongoose from "mongoose";
 import { ILesson } from "../types/schemas";
 import { filterout, getDateRange } from "../services/helpers";
+import { Record } from "../models/records";
 
 // get "A" groups "A-week?\A-month?"
 export const getLessons = catchAsync(
@@ -86,6 +87,16 @@ export const createLesson = catchAsync(
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: lesson });
+
+    // take a record
+    await Record.create({
+      user: req.user._id,
+      actionType: "CREATE",
+      entityType: "Lesson",
+      entityId:  lesson._id,
+      description: `Created ${lesson.date.toLocaleDateString()} lesson.`,
+      metadata: {},
+    })
   }
 );
 
@@ -118,9 +129,20 @@ export const updateLesson = catchAsync(
     }
 
     res.status(OK).json({ status: SUCCESS, data: updatedLesson });
+
+    // take a record
+    await Record.create({
+      user: req.user._id,
+      actionType: "UPDATE",
+      entityType: "Lesson",
+      entityId:  updatedLesson._id,
+      description: `Updated ${updatedLesson.date.toLocaleDateString()} lesson.`,
+      metadata: {},
+    })
   }
 );
 
+// @later  -> take record
 // deleteLesson [A-day]s
 export const deleteLesson = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

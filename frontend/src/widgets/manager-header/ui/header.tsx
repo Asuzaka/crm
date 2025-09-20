@@ -2,8 +2,8 @@ import { EditIcon, TrashIcon } from "lucide-react";
 import { Link } from "react-router";
 import type { GetUser } from "../../../entities/user";
 import { Modal } from "../../../shared/ui";
-import { DeleteConfirm } from "../../../pages/view-manager";
 import { useDeleteUser } from "../../../features/delete-manager";
+import { ManagerDelete as Delete } from "../../manager-delete";
 
 interface HeaderProps {
   manager: GetUser;
@@ -106,7 +106,7 @@ export function Header({ manager, activeTab, setActiveTab, id }: HeaderProps) {
         </div>
       </div>
       <Modal.Window name="manager-delete">
-        <DeleteConfirm name={manager.name} handleDelete={mutate} />
+        <Delete name={manager.name} id={id} />
       </Modal.Window>
     </Modal>
   );
