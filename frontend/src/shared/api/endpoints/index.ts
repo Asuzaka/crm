@@ -4,3 +4,4 @@ export { getGroup, getGroupsAsOption, createGroup, deleteGroup, updateGroup, sea
 export { getLesson, getLessons, createLesson, updateLesson, deleteLessons } from "./lesson";
 export { getPayment, getPayments, updatePayment, deletePayments, getPaymentsGroup } from "./payment";
 export { searchStudents, createStudent, deleteStudent, updateStudent, getStudentsList, getStudentsGroup, getStudent } from "./student";
+export { getRecord, getRecords} from "./record";

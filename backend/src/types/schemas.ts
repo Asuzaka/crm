@@ -77,9 +77,10 @@ export interface IPayment extends Document {
   group: Types.ObjectId;
   amount: number;
   student: Types.ObjectId;
+  receiptNumber: string;
   createdBy: Types.ObjectId;
   createdAt: Date;
-  method: "cash" | "card";
+  method: "cash" | "card" | "bank";
 }
 
 export interface IRecord extends Document {
@@ -92,4 +93,10 @@ export interface IRecord extends Document {
   metadata: Record<string, any>;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ICounter extends Document {
+  _id: Types.ObjectId;
+  name: string;
+  seq: number;
 }

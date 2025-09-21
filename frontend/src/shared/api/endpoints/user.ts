@@ -1,4 +1,5 @@
 import type { RegisterFormData } from "../../../features/add-manager";
+import type { RegisterPatchFormData } from "../../../features/edit-manager";
 import { client } from "../client";
 import {
   type GetUsersResponse,
@@ -17,7 +18,7 @@ export function getUser(id: string) {
   return client<UserGetResponse>(`/v1/users/${id}`, { method: "GET" });
 }
 
-export function updateUser(id: string, body: RegisterFormData) {
+export function updateUser(id: string, body: RegisterPatchFormData) {
   return client<CreateUserResponseDTO>(`/v1/users/${id}`, {
     method: "PATCH",
     body: JSON.stringify(body),

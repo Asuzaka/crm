@@ -15,3 +15,4 @@ export type {
   StudentGetResponse,
 } from "./students";
 export type { searchResult } from "./search";
+export type { getRecordsResponse, getRecordResponse } from "./record";

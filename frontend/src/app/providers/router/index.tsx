@@ -14,11 +14,11 @@ import { EditManager } from "../../../pages/edit-manager";
 import { ViewStudent } from "../../../pages/view-student";
 import { ViewManager } from "../../../pages/view-manager";
 import { Managers } from "../../../pages/managers";
-import { Activity } from "lucide-react";
 import { Income } from "../../../pages/income";
 import { Expenses } from "../../../pages/expenses";
 import { Groups } from "../../../pages/groups";
 import { NotFound } from "../../../pages/not-found";
+import { Activity } from "../../../pages/activity";
 
 const router = createBrowserRouter([
   {

@@ -8,6 +8,7 @@ export const ROUTES = {
   viewManager: "/managers/:id",
   students: "/students",
   activity: "/activity",
+  viewActivity: "/activity/:id",
   income: "/income",
   expenses: "/expenses",
   groups: "/groups",

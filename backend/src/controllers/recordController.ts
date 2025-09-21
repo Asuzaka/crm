@@ -27,9 +27,9 @@ export const getRecords = catchAsync(async(req: AuthenticatedRequest, res: Respo
   let query; 
 
   if(id){
-    query = Record.find({user: id})
+    query = Record.find({user: id}).populate("user", "name email");
   } else {
-    query = Record.find()
+    query = Record.find().populate("user", "name email");
   }
 
   const features = new apiFeatures(query, req.query).filter()

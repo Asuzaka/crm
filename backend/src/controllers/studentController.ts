@@ -107,6 +107,7 @@ export const createStudent = catchAsync(
       fathersNumber: req.body.fathersNumber,
       phoneNumber: req.body.phoneNumber,
       additionalNumber: req.body.additionalNumber,
+      notes: req.body.notes,
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: student });

@@ -22,6 +22,8 @@ export interface IUser {
   passwordChangedAt: Date;
 }
 
+export type UserForName = Pick<User, "name" | "_id" | "email"> 
+
 export interface GetUser extends Omit<User, "responsible"> {
   responsible: { _id: string; name: string }[];
 }

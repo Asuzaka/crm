@@ -7,15 +7,20 @@ import { useUpdateUser } from "../hooks/useUpdateUser";
 import { mapUserResponse } from "../util/normalize-object";
 import type { UserGetResponse } from "../../../shared/api/types";
 import { queryClient } from "../../../shared/api/queryClient";
+import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 
-export function UpdateForm({ data, id }: { id: string,  data:  UserGetResponse }) {
-
-
+export function UpdateForm({
+  data,
+  id,
+}: {
+  id: string;
+  data: UserGetResponse;
+}) {
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: data.data
@@ -24,13 +29,15 @@ export function UpdateForm({ data, id }: { id: string,  data:  UserGetResponse }
   });
 
   const { isPending, mutate } = useUpdateUser(id);
-  
+
   const Submit = (data: RegisterFormData) => {
-    mutate(data, {
+    const patchData = getDirtyValues(dirtyFields, data);
+
+    mutate(patchData, {
       onSuccess: () => {
-        toast.success("User Updated") 
-        queryClient.invalidateQueries({queryKey: ["user", id]})
-        queryClient.invalidateQueries({queryKey: ["users"]})
+        toast.success("User Updated");
+        queryClient.invalidateQueries({ queryKey: ["user", id] });
+        queryClient.invalidateQueries({ queryKey: ["users"] });
       },
       onError: (err) => toast.error(err.message),
     });
