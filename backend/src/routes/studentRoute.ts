@@ -25,7 +25,7 @@ router.route("/search").get(searchStudents);
 router
   .route("/:id")
   .get(getStudent)
-  .patch(requirePermission("addPayments"), updateStudent)
+  .patch(requirePermission("addStudents"), updateStudent)
 
 
 export { router };

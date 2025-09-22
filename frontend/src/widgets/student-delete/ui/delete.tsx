@@ -6,12 +6,8 @@ interface DeleteProps {
   id: string;
 }
 
-export function Delete({
-  onCloseModal,
-  name = "uknown",
-  id,
-}: DeleteProps) {
-  const {mutate} = useDeleteStudent([id])
+export function Delete({ onCloseModal, name = "uknown", id }: DeleteProps) {
+  const { mutate } = useDeleteStudent([id]);
 
   return (
     <>
@@ -29,7 +25,7 @@ export function Delete({
           Cancel
         </button>
         <button
-          onClick={()=>mutate()}
+          onClick={() => mutate()}
           className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
         >
           Delete

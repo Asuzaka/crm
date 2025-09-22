@@ -4,6 +4,8 @@ export interface LessonsResponse {
   status: string;
   data: Lesson[];
   results: number;
+  documents: number;
+  pages: number;
 }
 
 export interface LessonResponse {

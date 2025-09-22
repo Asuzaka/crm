@@ -26,6 +26,7 @@ const paymentsSchema = new Schema<IPayment>({
     type: Number,
     required: true,
   },
+  notes: { type: String, trim: true },
 }, {timestamps: true}) 
 
 paymentsSchema.pre("save", async function (next) {

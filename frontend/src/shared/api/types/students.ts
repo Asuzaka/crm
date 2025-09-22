@@ -8,6 +8,7 @@ export interface StudentsAsListResponse {
   status: string;
   data: StudentList[];
   results: number;
+  documents: number;
   pages: number;
 }
 

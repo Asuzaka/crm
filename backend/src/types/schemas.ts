@@ -81,6 +81,24 @@ export interface IPayment extends Document {
   createdBy: Types.ObjectId;
   createdAt: Date;
   method: "cash" | "card" | "bank";
+  notes?: string;
+}
+
+export interface IExpense extends Document {
+  _id: Types.ObjectId;
+  description: string;
+  amount: number;
+  currency: string;
+  category: string;
+  recipientType: "Manager/Staff" | "External Vendor";
+  manager?: Types.ObjectId; // only if Manager/Staff
+  vendorName?: string;      // only if External Vendor
+  date: Date;
+  paymentMethod: "cash" | "bank" | "card" | "Other";
+  notes?: string;
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IRecord extends Document {

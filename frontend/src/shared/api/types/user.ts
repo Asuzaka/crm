@@ -9,6 +9,8 @@ export interface GetUsersResponse {
   status: string;
   data: UsersAsList[];
   results: number;
+  documents: number;
+  pages: number;
 }
 
 export interface UserGetResponse {

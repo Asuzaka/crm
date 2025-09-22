@@ -33,7 +33,7 @@ const studentsSchema = new Schema<IStudent>(
     coins: {
       type: Number,
       default: 0,
-    }
+    },
   },
   { timestamps: true }
 );

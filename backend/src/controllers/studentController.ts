@@ -58,13 +58,16 @@ export const getStudents = catchAsync(
 
     const students: IStudent[] = await features.getQuery();
 
-
     const limit = Number(req.query.limit) || 10;
     const totalPages = Math.ceil(totalResults / limit);
 
-    res
-      .status(OK)
-      .json({ status: SUCCESS, data: students, results: students.length, pages : totalPages });
+    res.status(OK).json({
+      status: SUCCESS,
+      data: students,
+      results: students.length,
+      documents: totalResults,
+      pages: totalPages,
+    });
   }
 );
 
@@ -77,11 +80,14 @@ export const getStudent = catchAsync(
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if (!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const student: IStudent | null = await Student.findById(id).populate("groups", "id name");
+    const student: IStudent | null = await Student.findById(id).populate(
+      "groups",
+      "id name"
+    );
 
     if (student == null) {
       return next(new CustomError(NODOCUMENTFOUND("student"), NOT_FOUND));
@@ -111,16 +117,16 @@ export const createStudent = catchAsync(
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: student });
-    
+
     // take a record
     await Record.create({
       user: req.user._id,
       actionType: "CREATE",
       entityType: "Student",
-      entityId:  student._id,
+      entityId: student._id,
       description: `Created "${student.name}" student.`,
       metadata: { groups: student.groups },
-    })
+    });
   }
 );
 
@@ -129,16 +135,16 @@ export const updateStudent = catchAsync(
     const filtered: Partial<IStudent> = filterout(req.body, "coins");
     const { id } = req.params;
 
-
-    if(!id){
+    if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if(!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const updatedStudent: IStudent | null = await Student.findByIdAndUpdate(id,
+    const updatedStudent: IStudent | null = await Student.findByIdAndUpdate(
+      id,
       filtered,
       { new: true, runValidators: false }
     );
@@ -154,10 +160,10 @@ export const updateStudent = catchAsync(
       user: req.user._id,
       actionType: "UPDATE",
       entityType: "Student",
-      entityId:  updatedStudent._id,
+      entityId: updatedStudent._id,
       description: `Updated "${updatedStudent.name}" student.`,
       metadata: { groups: updatedStudent.groups },
-    })
+    });
   }
 );
 
@@ -168,7 +174,7 @@ export const deleteStudent = catchAsync(
     if (!id || id.length === 0) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
-    
+
     // find students before deletion (to log info)
     const students = await Student.find({ _id: { $in: id } });
 
@@ -187,7 +193,7 @@ export const deleteStudent = catchAsync(
       entityId: student._id,
       description: `Deleted student "${student.name}".`,
       metadata: {
-        groups: student.groups
+        groups: student.groups,
       },
     }));
 
@@ -201,21 +207,19 @@ export const searchStudents = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { query } = req.query;
 
-    if(!query){
+    if (!query) {
       return next(new CustomError(INVALIDQUERORNOQUERY, BAD_REQUEST));
     }
 
     const students = await Student.find({
-      $or: [
-        { name: { $regex: query, $options: "i" } },
-      ],
+      $or: [{ name: { $regex: query, $options: "i" } }],
     })
       .limit(10)
       .select("_id name");
 
-     res.json({ status: SUCCESS, data: students });
+    res.json({ status: SUCCESS, data: students });
   }
-)
+);
 
 // good trick  AuthenticatedRequest["user"]["permissions"] -> the type describing object not runtime object !!
 export const requirePermission = (
@@ -223,7 +227,7 @@ export const requirePermission = (
 ): RequestHandler => {
   return (req, res, next) => {
     const authReq = req as AuthenticatedRequest; // cast when needed
-    console.log(authReq.user,authReq.user.permissions[permission])
+    console.log(authReq.user, authReq.user.permissions[permission]);
     if (!authReq.user || !authReq.user.permissions[permission]) {
       return next(new CustomError(NOPERMISSION, FORBIDDEN));
     }

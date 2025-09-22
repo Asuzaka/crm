@@ -2,13 +2,20 @@ import { FilterIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useStudentsList } from "../../../entities/student";
+import { Loader, Pagination } from "../../../shared/components";
+import { Error } from "../../error";
 
 export function Students() {
   const [page, setPage] = useState(1);
-  const { data, isPending } = useStudentsList(page, 20);
-  const navigate = useNavigate()
+  const { data, isPending, error } = useStudentsList(page, 20);
+  const navigate = useNavigate();
 
-  if (isPending) return <p>Loading...</p>;
+  if (isPending) return <Loader />;
+
+  if (error)
+    return <Error title="Failed to get students" message={error.message} />;
+
+  if (!data) return;
 
   return (
     <div>
@@ -16,10 +23,13 @@ export function Students() {
         <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
           Students
         </h1>
-          <button onClick={()=>navigate("new")}  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            <PlusIcon className="h-4 w-4 mr-2" />
-            Add Student
-          </button>
+        <button
+          onClick={() => navigate("new")}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Student
+        </button>
       </div>
       {/* Filters */}
       <div className="bg-white p-4 rounded-lg shadow mb-6">
@@ -161,7 +171,10 @@ export function Students() {
                     >
                       View
                     </Link>
-                    <Link to={`/students/${student._id}/edit`}  className="text-blue-600 hover:text-blue-900">
+                    <Link
+                      to={`/students/${student._id}/edit`}
+                      className="text-blue-600 hover:text-blue-900"
+                    >
                       Edit
                     </Link>
                   </td>
@@ -177,6 +190,12 @@ export function Students() {
             </p>
           </div>
         )}
+        <Pagination
+          setPage={setPage}
+          page={page}
+          totalPages={data.pages}
+          totalItems={data.documents}
+        />
       </div>
     </div>
   );

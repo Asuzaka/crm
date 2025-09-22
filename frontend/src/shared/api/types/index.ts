@@ -16,3 +16,4 @@ export type {
 } from "./students";
 export type { searchResult } from "./search";
 export type { getRecordsResponse, getRecordResponse } from "./record";
+export type { getExpense, getExpenses } from "./expense";

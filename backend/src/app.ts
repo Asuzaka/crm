@@ -10,6 +10,7 @@ import { router as group } from "./routes/groupRoute";
 import { router as lesson } from "./routes/lessonRoute";
 import { router as payment } from "./routes/paymentRoute";
 import { router as record } from "./routes/recordRoute";
+import { router as expense } from "./routes/expenseRoute";
 import CustomError from "./services/CustomError";
 import { NOT_FOUND, TOO_MANY_REQUESTS } from "./constants/httpCodes";
 import { CANNOTREACH, TOOMANYREQUEST } from "./constants/errors";
@@ -56,6 +57,7 @@ app.use("/v1/groups", group);
 app.use("/v1/lessons", lesson);
 app.use("/v1/payments", payment);
 app.use("/v1/records", record);
+app.use("/v1/expenses", expense);
 // Global 404 handler
 app.use("*splat", (req: Request, _res: Response, next: NextFunction) => {
   next(
