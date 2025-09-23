@@ -5,23 +5,21 @@ interface QueryString {
   sort?: string;
   limit?: string;
   fields?: string;
-  [key:string]: any; // Allowing extra params
+  [key: string]: any; // Allowing extra params
 }
 
-export class apiFeatures<T extends Document>{
-  private query:Query<T[], T>;      // query Model
+export class apiFeatures<T extends Document> {
+  private query: Query<T[], T>; // query Model
   private queryString: QueryString; // query params
 
-
-  constructor(query: Query<T[], T>, queryString:QueryString) {
+  constructor(query: Query<T[], T>, queryString: QueryString) {
     this.query = query;
     this.queryString = queryString;
   }
 
-
-  filter():this {
+  filter(): this {
     const queryObj = { ...this.queryString };
-    const excludedFields = ["page", "sort", "limit", "fields"];
+    const excludedFields = ["page", "sort", "limit", "fields", "search"];
     excludedFields.forEach((element) => {
       delete queryObj[element];
     });
@@ -33,11 +31,30 @@ export class apiFeatures<T extends Document>{
       (match) => `$${match}`
     );
 
-    this.query = this.query.find(JSON.parse(queryString));
+    this.query = this.query.find({
+      ...this.query.getFilter(), // merge existing conditions
+      ...JSON.parse(queryString), // merge new filter
+    });
     return this;
   }
 
-  pagination():this {
+  search(fields: string[] = []): this {
+    if (this.queryString.search && fields.length > 0) {
+      const query = this.queryString.search;
+
+      const orConditions = fields.map((field) => ({
+        [field]: { $regex: query, $options: "i" },
+      }));
+
+      this.query = this.query.find({
+        ...this.query.getFilter(), // merge existing conditions
+        $or: orConditions,
+      });
+    }
+    return this;
+  }
+
+  pagination(): this {
     let page = Number(this.queryString.page) || 1;
     let limit = Number(this.queryString.limit) || 7;
 
@@ -48,7 +65,7 @@ export class apiFeatures<T extends Document>{
     return this;
   }
 
-  limitFields():this {
+  limitFields(): this {
     if (this.queryString.fields) {
       const fields = this.queryString.fields.split(",").join(" ");
       this.query = this.query.select(fields);
@@ -58,7 +75,7 @@ export class apiFeatures<T extends Document>{
     return this;
   }
 
-  sort():this {
+  sort(): this {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
@@ -68,7 +85,7 @@ export class apiFeatures<T extends Document>{
     return this;
   }
 
-  getQuery(): Query<T[], T>{
+  getQuery(): Query<T[], T> {
     return this.query;
   }
 }

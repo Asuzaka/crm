@@ -28,7 +28,6 @@ import { Record } from "../models/records";
 export const getStudents = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const { populate } = req.query;
 
     let query;
 
@@ -43,20 +42,21 @@ export const getStudents = catchAsync(
       query = Student.find({ groups: { $in: id } });
     }
 
-    if (populate === "true") {
-      query = query.populate("groups", "id name");
-    }
+    query = query.populate("groups", "_id name");
+
+    const featuresForCount = new apiFeatures(query, req.query)
+      .filter()
+      .search(["name", "phoneNumber"]);
 
     // Count total before pagination
-    const totalResults = await query.clone().countDocuments();
+    const totalResults = await featuresForCount
+      .getQuery()
+      .clone()
+      .countDocuments();
 
-    const features = new apiFeatures(query, req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .pagination();
+    const featuresForQuery = featuresForCount.sort().limitFields().pagination();
 
-    const students: IStudent[] = await features.getQuery();
+    const students: IStudent[] = await featuresForQuery.getQuery();
 
     const limit = Number(req.query.limit) || 10;
     const totalPages = Math.ceil(totalResults / limit);

@@ -3,8 +3,21 @@ import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
 import { IPayment } from "../types/schemas";
 import { Payment } from "../models/payments";
-import { BAD_REQUEST, CREATED, FORBIDDEN, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
-import { INVALIDID, NOIDPROVIDED, NOPERMISSION, NODOCUMENTFOUND, SUCCESS } from "../constants/errors";
+import {
+  BAD_REQUEST,
+  CREATED,
+  FORBIDDEN,
+  NO_CONTENT,
+  NOT_FOUND,
+  OK,
+} from "../constants/httpCodes";
+import {
+  INVALIDID,
+  NOIDPROVIDED,
+  NOPERMISSION,
+  NODOCUMENTFOUND,
+  SUCCESS,
+} from "../constants/errors";
 import CustomError from "../services/CustomError";
 import mongoose from "mongoose";
 import { getDateRange } from "../services/helpers";
@@ -12,7 +25,7 @@ import { apiFeatures } from "../services/apiFeatures";
 import { Record } from "../models/records";
 
 // case 1: Global payments // only admin
-// case 2: Group payments 
+// case 2: Group payments
 // case 3: student payments student id
 export const getPayments = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -22,42 +35,55 @@ export const getPayments = catchAsync(
     // type can be student/group
 
     // general view only for onwer
-    if(!type && req.user.role !=="owner"){
+    if (!type && req.user.role !== "owner") {
       return next(new CustomError(NOPERMISSION, FORBIDDEN));
     }
 
-
-    if(!id && req.user.role !=="owner"){
+    if (!id && req.user.role !== "owner") {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if(!mongoose.isValidObjectId(id) && req.user.role !== "owner"){
+    if (!mongoose.isValidObjectId(id) && req.user.role !== "owner") {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    let query; 
+    let query;
 
-
-    if(type === "student"){
-      query = Payment.find({student: id})
-    } else if (type === "group"){
+    if (type === "student") {
+      query = Payment.find({ student: id });
+    } else if (type === "group") {
       // need a date also
-      const { start, end } = getDateRange(new Date(date as string), "month")
-      query = Payment.find({group: id, createdAt : {$gte: start, $lte: end}});
-    }  else {
-      query = Payment.find()
+      const { start, end } = getDateRange(new Date(date as string), "month");
+      query = Payment.find({
+        group: id,
+        createdAt: { $gte: start, $lte: end },
+      });
+    } else {
+      query = Payment.find();
     }
 
     // use helper to work with query
-    const features = new apiFeatures(query, req.query).filter()
+    const features = new apiFeatures(query, req.query)
+      .filter()
       .sort()
       .limitFields()
       .pagination();
 
-    const payments : IPayment[] = await features.getQuery();
+    // Count total before pagination
+    const totalResults = await query.clone().countDocuments();
 
+    const payments: IPayment[] = await features.getQuery();
 
-    res.status(OK).json({ status: SUCCESS, data: payments, result: payments.length});
+    const limit = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limit);
+
+    res.status(OK).json({
+      status: SUCCESS,
+      data: payments,
+      result: payments.length,
+      documents: totalResults,
+      pages: totalPages,
+    });
   }
 );
 
@@ -67,23 +93,21 @@ export const getPayment = catchAsync(
     // id from param  || GET
     const { id } = req.params;
 
-
-    if(!id){
+    if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if(!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
+    const payment: IPayment | null = await Payment.findById(id);
 
-    const payment : IPayment | null = await Payment.findById(id);
-
-    if (payment === null){
+    if (payment === null) {
       return next(new CustomError(NODOCUMENTFOUND("payment"), NOT_FOUND));
     }
 
-    res.status(OK).json({status: SUCCESS, data: payment});
+    res.status(OK).json({ status: SUCCESS, data: payment });
   }
 );
 
@@ -104,10 +128,10 @@ export const createPayments = catchAsync(
       user: req.user._id,
       actionType: "CREATE",
       entityType: "Payment",
-      entityId:  payment._id,
+      entityId: payment._id,
       description: `Added payment of ${payment.amount} UZS by ${payment.student}.`,
       metadata: { amount: payment.amount, student: payment.student },
-    })
+    });
   }
 );
 
@@ -115,45 +139,44 @@ export const createPayments = catchAsync(
 export const updatePayments = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { id } = req.body || req.params;
-    
-     if(!id){
+
+    if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if(!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const payment : IPayment | null = await Payment.findById(id);
+    const payment: IPayment | null = await Payment.findById(id);
 
-    if (payment === null){
-      return next(new CustomError(NODOCUMENTFOUND("payment"),NOT_FOUND));
+    if (payment === null) {
+      return next(new CustomError(NODOCUMENTFOUND("payment"), NOT_FOUND));
     }
 
-    res.status(OK).json({status: SUCCESS, data : payment});
+    res.status(OK).json({ status: SUCCESS, data: payment });
 
     // take a record
     await Record.create({
       user: req.user._id,
       actionType: "CREATE",
       entityType: "Payment",
-      entityId:  payment._id,
+      entityId: payment._id,
       description: `Update payment of ${payment.amount} UZS by ${payment.student}.`,
       metadata: { amount: payment.amount, student: payment.student },
-    })
+    });
   }
 );
-
 
 // permission
 export const deletePayments = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const id : string[] | undefined = req.body.id;
+    const id: string[] | undefined = req.body.id;
 
-    if(!id || id.length === 0){
+    if (!id || id.length === 0) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
-    
+
     // find payments before deletion for logging
     const payments = await Payment.find({ _id: { $in: id } });
 

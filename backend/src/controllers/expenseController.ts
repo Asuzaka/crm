@@ -2,8 +2,21 @@ import { NextFunction, Response } from "express";
 import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
 import { IExpense } from "../types/schemas";
-import { BAD_REQUEST, CREATED, FORBIDDEN, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
-import { INVALIDID, NOIDPROVIDED, NOPERMISSION, NODOCUMENTFOUND, SUCCESS } from "../constants/errors";
+import {
+  BAD_REQUEST,
+  CREATED,
+  FORBIDDEN,
+  NO_CONTENT,
+  NOT_FOUND,
+  OK,
+} from "../constants/httpCodes";
+import {
+  INVALIDID,
+  NOIDPROVIDED,
+  NOPERMISSION,
+  NODOCUMENTFOUND,
+  SUCCESS,
+} from "../constants/errors";
 import CustomError from "../services/CustomError";
 import mongoose from "mongoose";
 import { apiFeatures } from "../services/apiFeatures";
@@ -11,40 +24,51 @@ import { Record } from "../models/records";
 import { Expense } from "../models/expense";
 
 // case 1: Global payments // only admin
-// case 2: Payments to Staff 
+// case 2: Payments to Staff
 export const getExpenses = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
     // id can be staff -> depending on query;
 
     // general view only for onwer
-    if(!id && req.user.role !=="owner"){
+    if (!id && req.user.role !== "owner") {
       return next(new CustomError(NOPERMISSION, FORBIDDEN));
     }
 
-    if(!mongoose.isValidObjectId(id) && req.user.role !== "owner"){
+    if (!mongoose.isValidObjectId(id) && req.user.role !== "owner") {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    let query; 
+    let query;
 
-
-    if(id){
-      query = Expense.find({manager: id})
-    }  else {
-      query = Expense.find()
+    if (id) {
+      query = Expense.find({ manager: id });
+    } else {
+      query = Expense.find();
     }
 
     // use helper to work with query
-    const features = new apiFeatures(query, req.query).filter()
+    const features = new apiFeatures(query, req.query)
+      .filter()
       .sort()
       .limitFields()
       .pagination();
 
-    const expenses : IExpense[] = await features.getQuery();
+    // Count total before pagination
+    const totalResults = await query.clone().countDocuments();
 
+    const expenses: IExpense[] = await features.getQuery();
 
-    res.status(OK).json({ status: SUCCESS, data: expenses, result: expenses.length});
+    const limit = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limit);
+
+    res.status(OK).json({
+      status: SUCCESS,
+      data: expenses,
+      result: expenses.length,
+      documents: totalResults,
+      pages: totalPages,
+    });
   }
 );
 
@@ -54,39 +78,37 @@ export const getExpense = catchAsync(
     // id from param  || GET
     const { id } = req.params;
 
-
-    if(!id){
+    if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if(!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
+    const expense: IExpense | null = await Expense.findById(id);
 
-    const expense : IExpense | null = await Expense.findById(id);
-
-    if (expense === null){
+    if (expense === null) {
       return next(new CustomError(NODOCUMENTFOUND("expense"), NOT_FOUND));
     }
 
-   res.status(OK).json({status: SUCCESS, data: expense});
+    res.status(OK).json({ status: SUCCESS, data: expense });
   }
 );
 
 export const createExpense = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const expense: IExpense = await Expense.create({
-       description: req.body.description,
-       amount: req.body.amount,
-       currency: req.body.currency,
-       category: req.body.category,
-       recipientType: req.body.recipientType,
-       manager: req.body.manager,
-       vendorName: req.body.vendorName,
-       paymentMethod: req.body.paymentMethod,
-       notes: req.body.notes,
-       createdBy: req.user._id,
+      description: req.body.description,
+      amount: req.body.amount,
+      currency: req.body.currency,
+      category: req.body.category,
+      recipientType: req.body.recipientType,
+      manager: req.body.manager,
+      vendorName: req.body.vendorName,
+      paymentMethod: req.body.paymentMethod,
+      notes: req.body.notes,
+      createdBy: req.user._id,
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: expense });
@@ -96,10 +118,10 @@ export const createExpense = catchAsync(
       user: req.user._id,
       actionType: "CREATE",
       entityType: "Expense",
-      entityId:  expense._id,
+      entityId: expense._id,
       description: `Added expense of ${expense.amount} UZS.`,
       metadata: { amount: expense.amount },
-    })
+    });
   }
 );
 
@@ -107,45 +129,47 @@ export const createExpense = catchAsync(
 export const updateExpense = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { id } = req.body || req.params;
-    
-     if(!id){
+
+    if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if(!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const expense : IExpense | null = await Expense.findByIdAndUpdate(id, req.body);
+    const expense: IExpense | null = await Expense.findByIdAndUpdate(
+      id,
+      req.body
+    );
 
-    if (expense === null){
-      return next(new CustomError(NODOCUMENTFOUND("expense"),NOT_FOUND));
+    if (expense === null) {
+      return next(new CustomError(NODOCUMENTFOUND("expense"), NOT_FOUND));
     }
 
-    res.status(OK).json({status: SUCCESS, data : expense});
+    res.status(OK).json({ status: SUCCESS, data: expense });
 
     // take a record
     await Record.create({
-     user: req.user._id,
+      user: req.user._id,
       actionType: "CREATE",
       entityType: "Expense",
-      entityId:  expense._id,
+      entityId: expense._id,
       description: `Added expense of ${expense.amount} UZS.`,
       metadata: { amount: expense.amount },
-    })
+    });
   }
 );
-
 
 // permission
 export const deleteExpences = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const id : string[] | undefined = req.body.id;
+    const id: string[] | undefined = req.body.id;
 
-    if(!id || id.length === 0){
+    if (!id || id.length === 0) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
-    
+
     // find payments before deletion for logging
     const expenses = await Expense.find({ _id: { $in: id } });
 

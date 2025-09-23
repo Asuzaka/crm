@@ -15,7 +15,7 @@ export const ROUTES = {
   addStudent: "/students/new",
   editStudent: "/students/:id/edit",
   viewStudent: "/students/:id",
-  notFound: "*"
+  notFound: "*",
 } as const;
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];

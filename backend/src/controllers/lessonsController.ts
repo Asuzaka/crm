@@ -10,7 +10,13 @@ import {
   NOIDPROVIDED,
   SUCCESS,
 } from "../constants/errors";
-import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
+import {
+  BAD_REQUEST,
+  CREATED,
+  NO_CONTENT,
+  NOT_FOUND,
+  OK,
+} from "../constants/httpCodes";
 import mongoose from "mongoose";
 import { ILesson } from "../types/schemas";
 import { filterout, getDateRange } from "../services/helpers";
@@ -93,10 +99,10 @@ export const createLesson = catchAsync(
       user: req.user._id,
       actionType: "CREATE",
       entityType: "Lesson",
-      entityId:  lesson._id,
+      entityId: lesson._id,
       description: `Created ${lesson.date.toLocaleDateString()} lesson.`,
       metadata: {},
-    })
+    });
   }
 );
 
@@ -120,11 +126,15 @@ export const updateLesson = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const updatedLesson : ILesson | null = await Lesson.findByIdAndUpdate(id, filtered, {
-      new: true,
-    });
+    const updatedLesson: ILesson | null = await Lesson.findByIdAndUpdate(
+      id,
+      filtered,
+      {
+        new: true,
+      }
+    );
 
-    if(updatedLesson === null){
+    if (updatedLesson === null) {
       return next(new CustomError(NODOCUMENTFOUND("lesson"), NOT_FOUND));
     }
 
@@ -135,10 +145,10 @@ export const updateLesson = catchAsync(
       user: req.user._id,
       actionType: "UPDATE",
       entityType: "Lesson",
-      entityId:  updatedLesson._id,
+      entityId: updatedLesson._id,
       description: `Updated ${updatedLesson.date.toLocaleDateString()} lesson.`,
       metadata: {},
-    })
+    });
   }
 );
 

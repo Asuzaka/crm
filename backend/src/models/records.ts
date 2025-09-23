@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
 import { IRecord } from "../types/schemas";
 
-
-const recordSchema = new Schema<IRecord>({
+const recordSchema = new Schema<IRecord>(
+  {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     actionType: {
       type: String,
@@ -24,6 +24,7 @@ const recordSchema = new Schema<IRecord>({
     description: { type: String },
     metadata: { type: Schema.Types.Mixed },
   },
-  { timestamps: true })
+  { timestamps: true }
+);
 
- export const Record = model("Record", recordSchema);
+export const Record = model("Record", recordSchema);

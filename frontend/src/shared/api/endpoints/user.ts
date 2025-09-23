@@ -7,15 +7,24 @@ import {
   type UserGetResponse,
 } from "../types/user";
 
+export function getUsers(page: number, limit: number, query: string) {
+  return client<GetUsersResponse>(
+    `/v1/users?page=${page}&limit=${limit}${query}`,
+    {
+      method: "GET",
+    }
+  );
+}
+
+export function getUser(id: string) {
+  return client<UserGetResponse>(`/v1/users/${id}`, { method: "GET" });
+}
+
 export function createUser(body: RegisterFormData) {
   return client<CreateUserResponseDTO>("/v1/users/", {
     method: "POST",
     body: JSON.stringify(body),
   });
-}
-
-export function getUser(id: string) {
-  return client<UserGetResponse>(`/v1/users/${id}`, { method: "GET" });
 }
 
 export function updateUser(id: string, body: RegisterPatchFormData) {
@@ -36,11 +45,5 @@ export function deleteUsers(id: string[]) {
   return client("/v1/users/", {
     method: "DELETE",
     body: JSON.stringify({ id }),
-  });
-}
-
-export function getUsers(page: number, limit: number) {
-  return client<GetUsersResponse>(`/v1/users?page=${page}&limit=${limit}`, {
-    method: "GET",
   });
 }

@@ -21,18 +21,17 @@ export function ViewStudent() {
 
   const { error, data, isPending } = useGetStudent(id!);
 
-
   if (isPending) {
     return <Loader />;
   }
 
-  if(!id) return <Error title="No id" message="no id was provided" />
+  if (!id) return <Error title="No id" message="no id was provided" />;
 
   if (error) {
     return <Error title="Failed to load students" message={error.message} />;
   }
 
-  if(!data) return
+  if (!data) return;
 
   return (
     <Modal>

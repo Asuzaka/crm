@@ -3,7 +3,13 @@ import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
 import { User } from "../models/users";
 import { IUser } from "../types/schemas";
-import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
+import {
+  BAD_REQUEST,
+  CREATED,
+  NO_CONTENT,
+  NOT_FOUND,
+  OK,
+} from "../constants/httpCodes";
 import {
   INVALIDID,
   NODOCUMENTFOUND,
@@ -22,15 +28,26 @@ export const getUsers = catchAsync(
 
     const features = new apiFeatures(query, req.query)
       .filter()
+      .search(["name", "email"])
       .sort()
       .limitFields()
       .pagination();
 
+    // Count total before pagination
+    const totalResults = await query.clone().countDocuments();
+
     const users: IUser[] = await features.getQuery();
 
-    res
-      .status(OK)
-      .json({ status: SUCCESS, data: users, results: users.length });
+    const limit = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limit);
+
+    res.status(OK).json({
+      status: SUCCESS,
+      data: users,
+      results: users.length,
+      documents: totalResults,
+      pages: totalPages,
+    });
   }
 );
 
@@ -73,11 +90,14 @@ export const createUser = catchAsync(
       user: req.user._id,
       actionType: "CREATE",
       entityType: "User",
-      entityId:  user._id,
+      entityId: user._id,
       description: `Created "${user.email}" manager.`,
-      metadata: { email: user.email, responsible: user.responsible, 
-        permissions: user.permissions  },
-    })
+      metadata: {
+        email: user.email,
+        responsible: user.responsible,
+        permissions: user.permissions,
+      },
+    });
   }
 );
 
@@ -91,7 +111,7 @@ export const updateMe = catchAsync(
       { new: true, runValidators: false }
     );
 
-    if(updatedUser === null){
+    if (updatedUser === null) {
       return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
     }
 
@@ -102,11 +122,14 @@ export const updateMe = catchAsync(
       user: req.user._id,
       actionType: "UPDATE",
       entityType: "User",
-      entityId:  updatedUser._id,
+      entityId: updatedUser._id,
       description: `Updated "${updatedUser.email}" manager.`,
-      metadata: { email: updatedUser.email, responsible:  updatedUser.responsible, 
-        permissions:  updatedUser.permissions  },
-    })
+      metadata: {
+        email: updatedUser.email,
+        responsible: updatedUser.responsible,
+        permissions: updatedUser.permissions,
+      },
+    });
   }
 );
 
@@ -114,16 +137,15 @@ export const updateUser = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // updating user (only owner)
     const updateUser: Partial<IUser> = req.body;
-    const { id } = req.params
+    const { id } = req.params;
 
-    if (!id){
+    if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
 
-    if (!mongoose.isValidObjectId(id)){
+    if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
-
 
     const updatedUser: IUser | null = await User.findByIdAndUpdate(
       id,
@@ -142,11 +164,14 @@ export const updateUser = catchAsync(
       user: req.user._id,
       actionType: "UPDATE",
       entityType: "User",
-      entityId:  updatedUser._id,
+      entityId: updatedUser._id,
       description: `Updated "${updatedUser.email}" manager.`,
-      metadata: { email: updatedUser.email, responsible:  updatedUser.responsible, 
-        permissions:  updatedUser.permissions  },
-    })
+      metadata: {
+        email: updatedUser.email,
+        responsible: updatedUser.responsible,
+        permissions: updatedUser.permissions,
+      },
+    });
   }
 );
 
@@ -170,7 +195,7 @@ export const deleteUser = catchAsync(
 
     // log each deletion
     const records = users.map((u) => ({
-      user: req.user._id, 
+      user: req.user._id,
       actionType: "DELETE",
       entityType: "User",
       entityId: u._id,

@@ -7,7 +7,7 @@ export function useDebounce() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setDebouncedQuery(query);
-    }, 300);
+    }, 400);
 
     return () => clearTimeout(timeout);
   }, [query]);

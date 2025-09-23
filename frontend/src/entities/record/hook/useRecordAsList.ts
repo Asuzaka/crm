@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getRecords } from "../../../shared/api/endpoints";
 
-export function useGetRecords(page:number, limit:number){
-
-  return useQuery({queryFn: ()=> getRecords(page, limit), queryKey: ["records", page, limit]})
+export function useGetRecords(page: number, limit: number, query: string) {
+  return useQuery({
+    queryFn: () => getRecords(page, limit, query),
+    queryKey: ["records", page, limit, query],
+  });
 }

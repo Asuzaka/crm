@@ -9,10 +9,10 @@ export function login(credentials: LoginFormData) {
   });
 }
 
-export function authenticated(){
-  return client<LoginResponseDTO>("/v1/auth/authenticated", { method: "GET"});
+export function authenticated() {
+  return client<LoginResponseDTO>("/v1/auth/authenticated", { method: "GET" });
 }
 
-export function logout(){
-  return client("/v1/auth/logout", {method: "GET"});
+export function logout() {
+  return client("/v1/auth/logout", { method: "GET" });
 }

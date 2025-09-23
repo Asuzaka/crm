@@ -3,7 +3,13 @@ import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
 import { IGroup } from "../types/schemas";
 import { Group } from "../models/groups";
-import { BAD_REQUEST, CREATED, NO_CONTENT, NOT_FOUND, OK } from "../constants/httpCodes";
+import {
+  BAD_REQUEST,
+  CREATED,
+  NO_CONTENT,
+  NOT_FOUND,
+  OK,
+} from "../constants/httpCodes";
 import {
   INVALIDQUERORNOQUERY,
   INVALIDID,
@@ -40,7 +46,6 @@ export const createGroup = catchAsync(
 
     res.status(CREATED).json({ status: SUCCESS, data: group });
 
-
     // take a record
     await Record.create({
       user: req.user._id,
@@ -49,7 +54,7 @@ export const createGroup = catchAsync(
       entityId: group._id,
       description: `Created ${group.name} group.`,
       metadata: {},
-    })
+    });
   }
 );
 
@@ -86,11 +91,21 @@ export const getGroups = catchAsync(
       .limitFields()
       .pagination();
 
+    // Count total before pagination
+    const totalResults = await query.clone().countDocuments();
+
     const groups: IGroup[] = await features.getQuery();
 
-    res
-      .status(OK)
-      .json({ status: SUCCESS, data: groups, results: groups.length });
+    const limit = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limit);
+
+    res.status(OK).json({
+      status: SUCCESS,
+      data: groups,
+      results: groups.length,
+      documents: totalResults,
+      pages: totalPages,
+    });
   }
 );
 
@@ -124,7 +139,7 @@ export const updateGroup = catchAsync(
       { new: true }
     );
 
-    if(updatedGroup === null){
+    if (updatedGroup === null) {
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
     }
 
@@ -132,8 +147,12 @@ export const updateGroup = catchAsync(
       const oldStudents = oldGroup.students.map(String);
       const newStudents = req.body.students.map(String);
 
-      const toAdd = newStudents.filter((id: string) => !oldStudents.includes(id));
-      const toRemove = oldStudents.filter((id: string) => !newStudents.includes(id));
+      const toAdd = newStudents.filter(
+        (id: string) => !oldStudents.includes(id)
+      );
+      const toRemove = oldStudents.filter(
+        (id: string) => !newStudents.includes(id)
+      );
 
       if (toAdd.length) {
         await Student.updateMany(
@@ -157,11 +176,10 @@ export const updateGroup = catchAsync(
       user: req.user._id,
       actionType: "UPDATE",
       entityType: "Group",
-      entityId:  updatedGroup._id,
+      entityId: updatedGroup._id,
       description: `Updated ${updatedGroup.name} group.`,
       metadata: {},
-    })
-
+    });
   }
 );
 
@@ -200,17 +218,20 @@ export const deleteGroup = catchAsync(
   }
 );
 
-export const searchGroups = catchAsync(async(req:AuthenticatedRequest, res: Response, next: NextFunction) => {
-  // search for groups 
-  const { query } = req.query;
-  if (!query){
-    return next(new CustomError(INVALIDQUERORNOQUERY, BAD_REQUEST));
-  }
+export const searchGroups = catchAsync(
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    // search for groups
+    const { query } = req.query;
+    if (!query) {
+      return next(new CustomError(INVALIDQUERORNOQUERY, BAD_REQUEST));
+    }
 
-  const groups = await Group.find({
-      name: { $regex: query, $options: "i" },})
+    const groups = await Group.find({
+      name: { $regex: query, $options: "i" },
+    })
       .limit(10)
       .select("_id name");
-      
-  res.json({ status: SUCCESS, data: groups });
-})
+
+    res.json({ status: SUCCESS, data: groups });
+  }
+);

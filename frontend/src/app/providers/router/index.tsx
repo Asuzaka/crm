@@ -19,6 +19,7 @@ import { Expenses } from "../../../pages/expenses";
 import { Groups } from "../../../pages/groups";
 import { NotFound } from "../../../pages/not-found";
 import { Activity } from "../../../pages/activity";
+import { ActivityView } from "../../../pages/view-activity";
 
 const router = createBrowserRouter([
   {
@@ -43,55 +44,52 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.addManager,
-        element: <Register />
+        element: <Register />,
       },
       {
         path: ROUTES.managers,
-        element: <Managers />
+        element: <Managers />,
       },
       {
         path: ROUTES.editManager,
-        element: <EditManager/>
+        element: <EditManager />,
       },
       {
         path: ROUTES.viewManager,
-        element: <ViewManager/> 
+        element: <ViewManager />,
       },
       {
         path: ROUTES.activity,
-        element: <Activity/>
+        element: <Activity />,
       },
+      { path: ROUTES.viewActivity, element: <ActivityView /> },
       {
         path: ROUTES.students,
-        element: <Students />
+        element: <Students />,
       },
       {
         path: ROUTES.addStudent,
-        element: <AddStudent/>
+        element: <AddStudent />,
       },
-      { path: ROUTES.editStudent,
-        element: <EditStudent/>
-      },
-      { path: ROUTES.viewStudent,
-        element: <ViewStudent/>
-      },
+      { path: ROUTES.editStudent, element: <EditStudent /> },
+      { path: ROUTES.viewStudent, element: <ViewStudent /> },
       {
         path: ROUTES.income,
-        element: <Income/>
+        element: <Income />,
       },
       {
         path: ROUTES.expenses,
-        element: <Expenses/>
+        element: <Expenses />,
       },
       {
         path: ROUTES.groups,
-        element: <Groups/>
+        element: <Groups />,
       },
       {
         path: ROUTES.notFound,
-        element: <NotFound/>
+        element: <NotFound />,
       },
-      { path: "/t", element: <Testing/>}
+      { path: "/t", element: <Testing /> },
     ],
   },
 ]);
