@@ -71,7 +71,9 @@ export const getGroup = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const group: IGroup | null = await Group.findById(id);
+    const group: IGroup | null = await Group.findById(id).populate(
+      "students teacher"
+    );
 
     if (group === null) {
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
@@ -84,17 +86,21 @@ export const getGroup = catchAsync(
 export const getGroups = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // get a list of groups
-    const query = Group.find();
-    const features = new apiFeatures(query, req.query)
+    const query = Group.find().populate("students teacher");
+
+    const featuresForCount = new apiFeatures(query, req.query)
       .filter()
-      .sort()
-      .limitFields()
-      .pagination();
+      .search(["name"]);
 
     // Count total before pagination
-    const totalResults = await query.clone().countDocuments();
+    const totalResults = await featuresForCount
+      .getQuery()
+      .clone()
+      .countDocuments();
 
-    const groups: IGroup[] = await features.getQuery();
+    const featuresForQuery = featuresForCount.sort().limitFields().pagination();
+
+    const groups: IGroup[] = await featuresForQuery.getQuery();
 
     const limit = Number(req.query.limit) || 10;
     const totalPages = Math.ceil(totalResults / limit);

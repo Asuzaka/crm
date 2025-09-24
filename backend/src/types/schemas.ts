@@ -3,7 +3,13 @@ import { Types } from "mongoose";
 export type role = "owner" | "manager";
 export type status = "active" | "archived";
 export type grade = 1 | 2 | 3 | 4 | 5;
-export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT"| "OTHER";
+export type action =
+  | "CREATE"
+  | "UPDATE"
+  | "DELETE"
+  | "LOGIN"
+  | "LOGOUT"
+  | "OTHER";
 
 export interface IPermissions {
   addStudents: boolean;
@@ -52,6 +58,7 @@ export interface IGroup extends Document {
   teacher: Types.ObjectId;
   students: Types.ObjectId[];
   schedule: { day: string; time: string }[];
+  description: string;
   start: Date;
   room: string;
   price: number;
@@ -92,7 +99,7 @@ export interface IExpense extends Document {
   category: string;
   recipientType: "Manager/Staff" | "External Vendor";
   manager?: Types.ObjectId; // only if Manager/Staff
-  vendorName?: string;      // only if External Vendor
+  vendorName?: string; // only if External Vendor
   date: Date;
   paymentMethod: "cash" | "bank" | "card" | "Other";
   notes?: string;

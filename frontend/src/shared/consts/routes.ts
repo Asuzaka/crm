@@ -12,6 +12,8 @@ export const ROUTES = {
   income: "/income",
   expenses: "/expenses",
   groups: "/groups",
+  viewGroup: "/groups/:id",
+  editGroup: "/groups/:id/edit",
   addStudent: "/students/new",
   editStudent: "/students/:id/edit",
   viewStudent: "/students/:id",

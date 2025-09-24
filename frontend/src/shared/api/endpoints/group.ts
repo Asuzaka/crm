@@ -1,15 +1,18 @@
 import { client } from "../client";
-import type { GroupOptionResponse } from "../types/group";
+import type { getGroupResponse, GroupOptionResponse } from "../types/group";
 import type { searchResult } from "../types/search";
 
-export function getGroupsAsOption() {
-  return client<GroupOptionResponse>("/v1/groups?fields=_id,name", {
-    method: "GET",
-  });
+export function getGroupsAsOption(page: number, limit: number, query: string) {
+  return client<GroupOptionResponse>(
+    `/v1/groups?page=${page}&limit=${limit}${query}`,
+    {
+      method: "GET",
+    }
+  );
 }
 
 export function getGroup(id: string) {
-  return client<unknown>(`/v1/groups/${id}`, { method: "GET" });
+  return client<getGroupResponse>(`/v1/groups/${id}`, { method: "GET" });
 }
 
 export function createGroup(body: unknown) {

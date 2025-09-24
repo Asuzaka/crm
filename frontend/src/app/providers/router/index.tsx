@@ -20,6 +20,8 @@ import { Groups } from "../../../pages/groups";
 import { NotFound } from "../../../pages/not-found";
 import { Activity } from "../../../pages/activity";
 import { ActivityView } from "../../../pages/view-activity";
+import { GroupView } from "../../../pages/view-group";
+import { GroupEdit } from "../../../pages/edit-group";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +87,8 @@ const router = createBrowserRouter([
         path: ROUTES.groups,
         element: <Groups />,
       },
+      { path: ROUTES.viewGroup, element: <GroupView /> },
+      { path: ROUTES.editGroup, element: <GroupEdit /> },
       {
         path: ROUTES.notFound,
         element: <NotFound />,

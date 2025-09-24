@@ -1,14 +1,15 @@
 export type status = "active" | "pause" | "archived";
 
 export interface IGroup {
-  name : string;
+  name: string;
   teacher: string;
-  stundets: string[];
-  schedule: {day: string; time: string;}[]
+  students: { _id: string; name: string }[];
+  schedule: { day: string; time: string }[];
   start: Date;
+  description: string;
   room: string;
   price: number;
-  history: {pause : Date, end: Date}[];
+  history: { pause: Date; end: Date }[];
   status: status;
 }
 

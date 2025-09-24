@@ -1,1 +1,1 @@
-export {} from ".ui/delete";
+export { Delete as ExpenseDelete } from "./ui/delete";
