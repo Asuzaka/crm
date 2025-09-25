@@ -2,7 +2,10 @@ import { client } from "../client";
 import type { LessonResponse, LessonsResponse } from "../types/lesson";
 
 export function getLessons(id: string) {
-  return client<LessonsResponse>(`/v1/lessons/group/${id}`, { method: "GET" });
+  return client<LessonsResponse>(
+    `/v1/lessons/group/${id}?date=2025-09-01&period=month`,
+    { method: "GET" }
+  );
 }
 
 export function getLesson(id: string) {

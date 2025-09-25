@@ -22,6 +22,7 @@ import { Activity } from "../../../pages/activity";
 import { ActivityView } from "../../../pages/view-activity";
 import { GroupView } from "../../../pages/view-group";
 import { GroupEdit } from "../../../pages/edit-group";
+import { GroupAdd } from "../../../pages/add-group";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,7 @@ const router = createBrowserRouter([
         path: ROUTES.groups,
         element: <Groups />,
       },
+      { path: ROUTES.addGroup, element: <GroupAdd /> },
       { path: ROUTES.viewGroup, element: <GroupView /> },
       { path: ROUTES.editGroup, element: <GroupEdit /> },
       {

@@ -11,7 +11,7 @@ const groupsSchema = new Schema<IGroup>(
       type: Schema.ObjectId,
       ref: "User",
     },
-    schedule: [{ day: String, time: String }],
+    schedule: { days: [String], time: String },
     start: Date,
     description: String,
     room: String,

@@ -1,12 +1,12 @@
-import { CheckIcon, XIcon, CalendarIcon } from "lucide-react";
+import { BookOpenIcon } from "lucide-react";
 import { useState } from "react";
-import { generateLessons } from "../helper/generate-table";
 import { useGetLessons } from "../../../entities/lesson";
-import { mergeLessons } from "../helper/merge-lessons";
 import { Error } from "../../../pages/error";
 import type { Group } from "../../../entities/group";
+import { mergeLessons } from "../../group-attendance/helper/merge-lessons";
+import { generateLessons } from "../../group-attendance/helper/generate-table";
 
-export function Attendance({ group }: { group: Group }) {
+export function Grade({ group }: { group: Group }) {
   const currentDate = new Date();
   //  Attendance records saved successfully!
 
@@ -14,31 +14,18 @@ export function Attendance({ group }: { group: Group }) {
 
   // func to update Changed Lessons
 
-  function presentFunc(student: string, date: string) {
+  function inputFunc(student: string, date: string, value: string) {
+    const numValue = parseInt(value);
+    if (value !== "" && (isNaN(numValue) || numValue < 0 || numValue > 5)) {
+      return;
+    }
     setTable((old) =>
       old.map((each) => {
         if (each.date != date) {
           return each;
         }
         const newStudents = each.students.map((each2) =>
-          each2.student == student
-            ? { ...each2, present: each2.present === true ? null : true }
-            : each2
-        );
-        return { ...each, students: newStudents };
-      })
-    );
-  }
-  function absentFunc(student: string, date: string) {
-    setTable((old) =>
-      old.map((each) => {
-        if (each.date != date) {
-          return each;
-        }
-        const newStudents = each.students.map((each2) =>
-          each2.student == student
-            ? { ...each2, present: each2.present === false ? null : false }
-            : each2
+          each2.student == student ? { ...each2, grade: numValue } : each2
         );
         return { ...each, students: newStudents };
       })
@@ -65,8 +52,8 @@ export function Attendance({ group }: { group: Group }) {
       <div className="px-6 py-4 border-b border-gray-200">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-medium text-gray-900 flex items-center">
-            <CalendarIcon className="h-5 w-5 mr-2 text-gray-500" />
-            Attendance for {group.name}
+            <BookOpenIcon className="h-5 w-5 mr-2 text-gray-500" />
+            Grades for {group.name}
           </h3>
           {/* <div className="mt-3 sm:mt-0 flex space-x-2">
             <select
@@ -145,37 +132,21 @@ export function Attendance({ group }: { group: Group }) {
                   {table.map((date) => {
                     const d = date.date;
                     const s = student._id;
-                    const present =
-                      date.students.find((e) => e.student === s)?.present ??
-                      null;
+                    const grade =
+                      date.students.find((e) => e.student === s)?.grade ?? null;
 
                     return (
                       <td key={`${s}-${d}`} className="px-3 py-4 text-center">
                         <div className="flex justify-center space-x-2">
-                          <button
-                            onClick={() => presentFunc(student._id, date.date)}
-                            type="button"
-                            className={`p-1 rounded-full ${
-                              present === true
-                                ? "bg-green-100 text-green-600"
-                                : "bg-gray-100 text-gray-400 hover:bg-gray-200"
-                            }`}
-                            title="Present"
-                          >
-                            <CheckIcon className="h-4 w-4" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => absentFunc(student._id, date.date)}
-                            className={`p-1 rounded-full ${
-                              present === false
-                                ? "bg-red-100 text-red-600"
-                                : "bg-gray-100 text-gray-400 hover:bg-gray-200"
-                            }`}
-                            title="Absent"
-                          >
-                            <XIcon className="h-4 w-4" />
-                          </button>
+                          <input
+                            type="text"
+                            value={grade === null ? "" : grade}
+                            onChange={(e) =>
+                              inputFunc(student._id, date.date, e.target.value)
+                            }
+                            className="w-12 text-center py-1 px-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+                            placeholder="-"
+                          />
                         </div>
                       </td>
                     );

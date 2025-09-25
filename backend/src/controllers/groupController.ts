@@ -32,6 +32,8 @@ export const createGroup = catchAsync(
       teacher: req.body.teacher,
       students: req.body.students,
       schedule: req.body.schedule,
+      status: req.body.status,
+      description: req.body.description,
       start: req.body.start,
       room: req.body.room,
       price: req.body.price,

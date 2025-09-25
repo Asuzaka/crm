@@ -21,7 +21,7 @@ interface Student {
   name: string;
 }
 
-interface LessonRecord {
+export interface LessonRecord {
   date: string; // yyyy-MM-dd
   students: {
     student: string; // studentId

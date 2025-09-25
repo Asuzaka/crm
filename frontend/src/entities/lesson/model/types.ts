@@ -4,9 +4,9 @@ export interface ILesson {
   date: Date;
   students: {
     student: string;
-    present: boolean;
-    grade?: number;
-  }[]
+    present: boolean | null;
+    grade: number | null;
+  }[];
 }
 
 export interface Lesson extends ILesson {

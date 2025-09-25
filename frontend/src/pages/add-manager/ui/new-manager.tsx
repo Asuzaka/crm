@@ -1,13 +1,12 @@
-import { RegisterForm } from '../../../features/add-manager'
+import { RegisterForm } from "../../../features/add-manager";
 
-export function Register(){
-  
+export function Register() {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+    <div className="flex items-center mb-6">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
         Create Manager Account
       </h1>
-      <RegisterForm/>
+      <RegisterForm />
     </div>
-  )
+  );
 }

@@ -97,11 +97,11 @@ export function Groups() {
                   <div className="mt-4 space-y-2">
                     <p className="text-sm text-gray-500">
                       <span className="font-medium">Instructor:</span>{" "}
-                      {group.teacher}
+                      {group.teacher?.name || "No-teacher"}
                     </p>
                     <p className="text-sm text-gray-500">
                       <span className="font-medium">Schedule:</span>{" "}
-                      {group.schedule[0]?.time || "No-time"}
+                      {group.schedule.time || "No-time"}
                     </p>
                     <p className="text-sm text-gray-500">
                       <span className="font-medium">Monthly Fee:</span> $

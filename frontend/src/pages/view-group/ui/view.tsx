@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router";
+import { Link, useParams } from "react-router";
 import {
   ArrowLeftIcon,
   EditIcon,
@@ -20,10 +20,11 @@ import { Error } from "../../error";
 import { Loader } from "../../../shared/components";
 import { GroupStudents as Students } from "../../../widgets/group-students";
 import { GroupAttendance as Attendance } from "../../../widgets/group-attendance";
+import { GroupGrade as Grade } from "../../../widgets/group-grade";
+import { GroupPayment as Payment } from "../../../widgets/group-payment";
 
 export function View() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { data, isPending, error } = useGetGroup(id!);
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -157,7 +158,7 @@ export function View() {
                       Instructor
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {data.data?.teacher || "no-teacher"}
+                      {data.data?.teacher?.name || "no-teacher"}
                     </dd>
                   </div>
                   <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -166,12 +167,12 @@ export function View() {
                       Schedule
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {data.data?.schedule.map((day) => (
-                        <>
-                          <p>{day.day}</p>
-                          <p>{day.time}</p>
-                        </>
-                      ))}
+                      <>
+                        {data.data.schedule.days.map((each) => {
+                          <p>{each}</p>;
+                        })}
+                        <p>{data.data.schedule.time}</p>
+                      </>
                     </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -208,7 +209,9 @@ export function View() {
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       {data.data.start ? (
-                        <span>{data.data.start.toLocaleTimeString()}</span>
+                        <span>
+                          {new Date(data.data.start).toLocaleDateString()}
+                        </span>
                       ) : (
                         "Not specified"
                       )}
@@ -231,9 +234,9 @@ export function View() {
 
           {activeTab === "attendance" && <Attendance group={data.data} />}
 
-          {activeTab === "grades" && <p>grades</p>}
+          {activeTab === "grades" && <Grade group={data.data} />}
 
-          {activeTab === "payments" && <p>payments</p>}
+          {activeTab === "payments" && <Payment group={data.data} />}
         </div>
 
         <Modal.Window name="delete-group">

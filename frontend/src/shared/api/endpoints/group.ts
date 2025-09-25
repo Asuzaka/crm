@@ -1,3 +1,4 @@
+import type { GroupUpdateSchema } from "../../../features/edit-group";
 import { client } from "../client";
 import type { getGroupResponse, GroupOptionResponse } from "../types/group";
 import type { searchResult } from "../types/search";
@@ -22,7 +23,7 @@ export function createGroup(body: unknown) {
   });
 }
 
-export function updateGroup(id: string, body: unknown) {
+export function updateGroup(id: string, body: GroupUpdateSchema) {
   return client<unknown>(`/v1/groups/${id}`, {
     method: "PATCH",
     body: JSON.stringify(body),

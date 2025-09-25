@@ -1,10 +1,10 @@
-export type status = "active" | "pause" | "archived";
+export type status = "active" | "paused" | "archived";
 
 export interface IGroup {
   name: string;
-  teacher: string;
+  teacher: { _id: string; name: string };
   students: { _id: string; name: string }[];
-  schedule: { day: string; time: string }[];
+  schedule: { days: string[]; time: string };
   start: Date;
   description: string;
   room: string;
