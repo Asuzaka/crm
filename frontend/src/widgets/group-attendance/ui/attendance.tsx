@@ -1,16 +1,24 @@
 import { CheckIcon, XIcon, CalendarIcon } from "lucide-react";
-import { useState } from "react";
-import { generateLessons } from "../helper/generate-table";
-import { useGetLessons } from "../../../entities/lesson";
-import { mergeLessons } from "../helper/merge-lessons";
+import { type LessonRecord } from "../../../pages/view-group/helper/generate-table";
 import { Error } from "../../../pages/error";
 import type { Group } from "../../../entities/group";
 
-export function Attendance({ group }: { group: Group }) {
-  const currentDate = new Date();
+export function Attendance({
+  onSave,
+  group,
+  table,
+  setTable,
+  error,
+  isPending,
+}: {
+  onSave: () => void;
+  group: Group;
+  table: LessonRecord[];
+  setTable: React.Dispatch<React.SetStateAction<LessonRecord[]>>;
+  error: Error | null;
+  isPending: boolean;
+}) {
   //  Attendance records saved successfully!
-
-  const { data, isPending, error } = useGetLessons(group._id);
 
   // func to update Changed Lessons
 
@@ -44,18 +52,6 @@ export function Attendance({ group }: { group: Group }) {
       })
     );
   }
-
-  const [table, setTable] = useState(
-    mergeLessons(
-      [],
-      generateLessons(
-        { days: group.schedule.days },
-        group.students,
-        currentDate.getMonth() + 1,
-        currentDate.getFullYear()
-      )
-    )
-  );
 
   if (error)
     return <Error title="Failed to get lessons" message={error.message} />;
@@ -189,6 +185,7 @@ export function Attendance({ group }: { group: Group }) {
 
       <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
         <button
+          onClick={onSave}
           type="button"
           className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
               ${table ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"} 

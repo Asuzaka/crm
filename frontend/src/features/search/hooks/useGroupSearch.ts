@@ -7,6 +7,6 @@ export function useGroupSearch(search: string) {
       const data = await searchGroups(search);
       return data;
     },
-    queryKey: ["search-group"],
+    queryKey: ["search-group", search],
   });
 }

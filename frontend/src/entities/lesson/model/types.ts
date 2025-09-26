@@ -1,7 +1,7 @@
 export interface ILesson {
   group: string;
   teacher: string;
-  date: Date;
+  date: string;
   students: {
     student: string;
     present: boolean | null;

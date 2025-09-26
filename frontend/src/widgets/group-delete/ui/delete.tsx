@@ -1,3 +1,5 @@
+import { useDeleteGroup } from "../../../features/delete-group";
+
 interface DeleteProps {
   name?: string;
   onCloseModal?: () => void;
@@ -5,6 +7,8 @@ interface DeleteProps {
 }
 
 export function Delete({ name, onCloseModal, id }: DeleteProps) {
+  const { mutate } = useDeleteGroup([id]);
+
   return (
     <>
       <h3 className="text-lg font-medium text-gray-900 mb-4">
@@ -22,7 +26,7 @@ export function Delete({ name, onCloseModal, id }: DeleteProps) {
           Cancel
         </button>
         <button
-          onClick={() => console.log(`deleted ${id}`)}
+          onClick={() => mutate()}
           className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
         >
           Delete

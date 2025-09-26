@@ -1,6 +1,6 @@
-import { Outlet } from "react-router";
 import { Header } from "../../../../widgets/header";
 import { Sidebar } from "../../../../widgets/sidebar";
+import { ProtectedRoute } from "../../../providers/router/protectedRoute";
 
 export function MainLayout() {
   return (
@@ -9,7 +9,7 @@ export function MainLayout() {
       <div className="flex-1 flex flex-col min-h-0">
         <Header />
         <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
-          <Outlet />
+          <ProtectedRoute />
         </main>
       </div>
     </div>

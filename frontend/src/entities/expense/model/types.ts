@@ -7,7 +7,7 @@ export interface IExpense {
   manager?: string; // only if Manager/Staff
   vendorName?: string; // only if External Vendor
   date: Date;
-  paymentMethod: "cash" | "bank" | "card" | "Other";
+  paymentMethod: "cash" | "bank" | "card" | "other";
   notes?: string;
   createdBy: string;
   createdAt: Date;

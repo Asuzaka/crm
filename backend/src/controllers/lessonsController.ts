@@ -19,16 +19,14 @@ import {
 } from "../constants/httpCodes";
 import mongoose from "mongoose";
 import { ILesson } from "../types/schemas";
-import { filterout, getDateRange } from "../services/helpers";
+import { filterout } from "../services/helpers";
 import { Record } from "../models/records";
 
-// get "A" groups "A-week?\A-month?"
+// get "A" groups "A-month?"
 export const getLessons = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    // id of GROUP
     const { id } = req.params;
-    const { date, period } = req.query;
-    // period can be "day" | "week" | "month"
+    const { date } = req.query; // expects "YYYY-MM-DD" or "YYYY-MM"
 
     if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
@@ -42,19 +40,18 @@ export const getLessons = catchAsync(
       return next(new CustomError(NODATEPROVIDED, BAD_REQUEST));
     }
 
-    const { start, end } = getDateRange(
-      new Date(date as string),
-      period as string
-    );
+    const month = (date as string).slice(0, 7); // "YYYY-MM"
 
     const lessons: ILesson[] = await Lesson.find({
       group: id,
-      date: { $gte: start, $lte: end },
+      date: { $regex: `^${month}` }, // matches all "YYYY-MM-DD"
     }).sort({ date: 1 });
 
-    res
-      .status(OK)
-      .json({ status: SUCCESS, data: lessons, results: lessons.length });
+    res.status(OK).json({
+      status: SUCCESS,
+      data: lessons,
+      results: lessons.length,
+    });
   }
 );
 
@@ -83,78 +80,76 @@ export const getLesson = catchAsync(
 );
 
 // createLesson A-day
-export const createLesson = catchAsync(
+export const createLessons = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const lesson: ILesson = await Lesson.create({
-      group: req.body.group, // required
-      teacher: req.body.teacher, // required
-      date: req.body.date, // required
-      students: req.body.students, // required
-    });
+    const lessonsData: ILesson[] = req.body.lessons;
 
-    res.status(CREATED).json({ status: SUCCESS, data: lesson });
+    if (!Array.isArray(lessonsData) || lessonsData.length === 0) {
+      return next(new CustomError(NODOCUMENTFOUND("lessons"), BAD_REQUEST));
+    }
 
-    // take a record
-    await Record.create({
-      user: req.user._id,
-      actionType: "CREATE",
-      entityType: "Lesson",
-      entityId: lesson._id,
-      description: `Created ${lesson.date.toLocaleDateString()} lesson.`,
-      metadata: {},
-    });
+    const lessons = await Lesson.insertMany(lessonsData);
+
+    res.status(CREATED).json({ status: SUCCESS, data: lessons });
+
+    // take records
+    await Record.insertMany(
+      lessons.map((lesson) => ({
+        user: req.user._id,
+        actionType: "CREATE",
+        entityType: "Lesson",
+        entityId: lesson._id,
+        description: `Created lesson on ${lesson.date}.`,
+        metadata: {},
+      }))
+    );
   }
 );
 
 // updateLesson A-day
-export const updateLesson = catchAsync(
+export const updateLessons = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const { id } = req.body || req.params;
+    const lessonsData: Partial<ILesson>[] = req.body.lessons;
 
-    const filtered: Partial<ILesson> = filterout(
-      req.body,
-      "group",
-      "teacher",
-      "date"
-    );
-
-    if (!id) {
-      return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
+    if (!Array.isArray(lessonsData) || lessonsData.length === 0) {
+      return next(new CustomError(NODOCUMENTFOUND("lessons"), BAD_REQUEST));
     }
 
-    if (!mongoose.isValidObjectId(id)) {
-      return next(new CustomError(INVALIDID, BAD_REQUEST));
-    }
+    const updatedLessons: ILesson[] = [];
 
-    const updatedLesson: ILesson | null = await Lesson.findByIdAndUpdate(
-      id,
-      filtered,
-      {
-        new: true,
+    for (const lesson of lessonsData) {
+      if (!lesson._id || !mongoose.isValidObjectId(lesson._id)) {
+        continue; // skip invalid
       }
-    );
 
-    if (updatedLesson === null) {
-      return next(new CustomError(NODOCUMENTFOUND("lesson"), NOT_FOUND));
+      const filtered = filterout(lesson, "group", "teacher", "date");
+
+      const updated = await Lesson.findByIdAndUpdate(lesson._id, filtered, {
+        new: true,
+      });
+
+      if (updated) {
+        updatedLessons.push(updated);
+
+        // take record
+        await Record.create({
+          user: req.user._id,
+          actionType: "UPDATE",
+          entityType: "Lesson",
+          entityId: updated._id,
+          description: `Updated lesson on ${updated.date}.`,
+          metadata: {},
+        });
+      }
     }
 
-    res.status(OK).json({ status: SUCCESS, data: updatedLesson });
-
-    // take a record
-    await Record.create({
-      user: req.user._id,
-      actionType: "UPDATE",
-      entityType: "Lesson",
-      entityId: updatedLesson._id,
-      description: `Updated ${updatedLesson.date.toLocaleDateString()} lesson.`,
-      metadata: {},
-    });
+    res.status(OK).json({ status: SUCCESS, data: updatedLessons });
   }
 );
 
 // @later  -> take record
 // deleteLesson [A-day]s
-export const deleteLesson = catchAsync(
+export const deleteLessons = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // delete lesson/lessons by array of id
     const id: string[] | undefined = req.body.id;

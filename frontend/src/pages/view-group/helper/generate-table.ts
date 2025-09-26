@@ -22,6 +22,9 @@ interface Student {
 }
 
 export interface LessonRecord {
+  _id?: string;
+  group: string;
+  teacher: string;
   date: string; // yyyy-MM-dd
   students: {
     student: string; // studentId
@@ -31,6 +34,8 @@ export interface LessonRecord {
 }
 
 export function generateLessons(
+  teacher: string,
+  group: string,
   schedule: { days: string[] },
   students: Student[],
   month: number, // 1-12
@@ -45,6 +50,8 @@ export function generateLessons(
   const lessons: LessonRecord[] = allDays
     .filter((day) => scheduleDayNumbers.includes(getDay(day)))
     .map((day) => ({
+      teacher: teacher,
+      group: group,
       date: format(day, "yyyy-MM-dd"),
       students: students.map((s) => ({
         student: s._id,

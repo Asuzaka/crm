@@ -18,8 +18,8 @@ export {
 export {
   getLesson,
   getLessons,
-  createLesson,
-  updateLesson,
+  createLessons,
+  updateLessons,
   deleteLessons,
 } from "./lesson";
 export {

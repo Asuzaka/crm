@@ -3,9 +3,10 @@ import { updateStudent } from "../../../shared/api/endpoints";
 import { queryClient } from "../../../shared/api/queryClient";
 import toast from "react-hot-toast";
 
-export function useEditStudent() {
+export function useEditStudent(id: string) {
   return useMutation({
     mutationFn: updateStudent,
+    mutationKey: ["student", id],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["students"] });
       toast.success("Student edited successfully");

@@ -1,17 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteStudent } from "../../../shared/api/endpoints";
+import { deleteGroup } from "../../../shared/api/endpoints";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
-export function useDeleteStudent(id: string[]) {
+export function useDeleteGroup(id: string[]) {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationKey: ["students"],
-    mutationFn: () => deleteStudent(id),
+    mutationFn: () => deleteGroup(id),
+    mutationKey: ["groups"],
     onSuccess: () => {
-      navigate("/students");
-      toast.success("User deleted Succesfully");
+      navigate("/groups");
+      toast.success("Group deleted Succesfully");
     },
     onError: (err) => {
       toast.error(err.message);

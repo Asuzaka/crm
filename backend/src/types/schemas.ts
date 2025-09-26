@@ -70,7 +70,7 @@ export interface ILesson extends Document {
   _id: Types.ObjectId;
   group: Types.ObjectId;
   teacher: Types.ObjectId;
-  date: Date;
+  date: string;
   students: {
     student: Types.ObjectId;
     present: boolean;

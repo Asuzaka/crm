@@ -34,8 +34,13 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: ROUTES.notFound,
+    element: <NotFound full={true} />,
+  },
+  {
     path: ROUTES.home,
     element: <MainLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -91,11 +96,11 @@ const router = createBrowserRouter([
       { path: ROUTES.addGroup, element: <GroupAdd /> },
       { path: ROUTES.viewGroup, element: <GroupView /> },
       { path: ROUTES.editGroup, element: <GroupEdit /> },
+      { path: "/t", element: <Testing /> },
       {
         path: ROUTES.notFound,
         element: <NotFound />,
       },
-      { path: "/t", element: <Testing /> },
     ],
   },
 ]);

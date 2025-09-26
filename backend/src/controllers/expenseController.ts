@@ -108,7 +108,6 @@ export const createExpense = catchAsync(
       vendorName: req.body.vendorName,
       paymentMethod: req.body.paymentMethod,
       notes: req.body.notes,
-      createdBy: req.user._id,
     });
 
     res.status(CREATED).json({ status: SUCCESS, data: expense });

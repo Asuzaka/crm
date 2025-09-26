@@ -13,15 +13,18 @@ import {
   EditIcon,
 } from "lucide-react";
 import { useExpenseAsList, type Expense } from "../../../entities/expense";
-import { Loader } from "../../../shared/components";
+import { Loader, Pagination } from "../../../shared/components";
 import { Error } from "../../error";
 import { Modal } from "../../../shared/ui";
 import { Link } from "react-router";
 import { Delete } from "../../../widgets/expense-delete/ui/delete";
+import { useDebounce } from "../../../shared/hooks";
+import { getColorOfCategory } from "../helper/get-color";
 
 export function Expenses() {
-  const { data, isPending, error } = useExpenseAsList(1, 20);
-  const [showAddExpenseForm, setShowAddExpenseForm] = useState(false);
+  const { query, setQuery, debouncedQuery } = useDebounce();
+  const [page, setPage] = useState(1);
+  const { data, isPending, error } = useExpenseAsList(page, 20, debouncedQuery);
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
   const [startDate, setStartDate] = useState("");
@@ -35,22 +38,6 @@ export function Expenses() {
   if (error)
     return <Error title="Failed to get expences" message={error.message} />;
 
-  // helper
-  function getColorOfCategory(a: string) {
-    switch (a) {
-      case "salaries":
-        return "bg-blue-100 text-blue-800";
-      case "equipment":
-        return "bg-green-100 text-green-800";
-      case "rent":
-        return "bg-yellow-100 text-yellow-800";
-      case "utilities":
-        return "bg-purple-100 text-purple-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  }
-
   return (
     <Modal>
       <div>
@@ -58,44 +45,11 @@ export function Expenses() {
           <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
             Expense Management
           </h1>
-          <button
-            onClick={() => setShowAddExpenseForm(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
+          <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
             <PlusIcon className="h-4 w-4 mr-2" />
             Add New Expense
           </button>
         </div>
-        {/* Add Expense Form Modal */}
-        {showAddExpenseForm && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h2 className="text-lg font-medium text-gray-900">
-                  Add New Expense
-                </h2>
-                <button
-                  onClick={() => console.log("open modal to add expense")}
-                  className="text-gray-400 hover:text-gray-500"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
         {/* Search and Filters */}
         <div className="bg-white p-4 rounded-lg shadow mb-6">
           <div className="flex flex-col md:flex-row gap-4 mb-4">
@@ -107,6 +61,8 @@ export function Expenses() {
                 </div>
                 <input
                   type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search expenses..."
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
@@ -359,6 +315,12 @@ export function Expenses() {
               <p className="text-gray-500">No expenses found.</p>
             </div>
           )}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            totalItems={data.documents}
+            totalPages={data.pages}
+          ></Pagination>
         </div>
       </div>
     </Modal>

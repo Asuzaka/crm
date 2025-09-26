@@ -6,14 +6,13 @@ import { ROUTES } from "../../../shared/consts/routes";
 
 export function useLogin() {
   const setUser = useAuthStore((s) => s.setUser);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       setUser(data.data);
-      navigate(ROUTES.home)
+      navigate(ROUTES.home);
     },
   });
 }
-

@@ -1,4 +1,4 @@
-import type { LessonRecord } from "./generate-table";
+import type { LessonRecord } from "../../../pages/view-group/helper/generate-table";
 
 export function mergeLessons(
   existing: LessonRecord[],

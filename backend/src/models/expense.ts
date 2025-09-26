@@ -1,7 +1,5 @@
-import  { model, Schema, Types } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 import { IExpense } from "../types/schemas";
-
-
 
 const ExpenseSchema = new Schema<IExpense>(
   {
@@ -41,11 +39,6 @@ const ExpenseSchema = new Schema<IExpense>(
     },
 
     notes: { type: String, trim: true },
-    createdBy: {
-      type: Types.ObjectId,
-      ref: "User",
-      required: true
-    },
   },
   { timestamps: true }
 );

@@ -7,6 +7,6 @@ export function useStudentSearch(search: string) {
       const data = await searchStudents(search);
       return data;
     },
-    queryKey: ["search-student"],
+    queryKey: ["search-student", search],
   });
 }

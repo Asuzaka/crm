@@ -1,10 +1,13 @@
-import { BellIcon, ChevronDownIcon, LogOutIcon, UserIcon } from "lucide-react"
-import { useState } from "react"
-import { useAuthStore } from "../../../app/providers/store/authStore"
+import { BellIcon, ChevronDownIcon, LogOutIcon, UserIcon } from "lucide-react";
+import { useState } from "react";
+import { useAuthStore } from "../../../app/providers/store/authStore";
+import { useLogout } from "../../../features/auth";
 
-export function Header(){
-  const { currentUser, logout } = useAuthStore()
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
+export function Header() {
+  const { currentUser } = useAuthStore();
+  const { mutate } = useLogout();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
   return (
     <header className="bg-white shadow-sm z-10">
       <div className="flex justify-between items-center px-4 py-3">
@@ -36,7 +39,7 @@ export function Header(){
                 </div>
                 <button
                   className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                  onClick={logout}
+                  onClick={() => mutate()}
                 >
                   <LogOutIcon className="h-4 w-4 mr-2" />
                   Logout
@@ -47,5 +50,5 @@ export function Header(){
         </div>
       </div>
     </header>
-  )
+  );
 }

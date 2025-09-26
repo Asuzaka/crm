@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import {
   ArrowLeftIcon,
@@ -22,11 +22,52 @@ import { GroupStudents as Students } from "../../../widgets/group-students";
 import { GroupAttendance as Attendance } from "../../../widgets/group-attendance";
 import { GroupGrade as Grade } from "../../../widgets/group-grade";
 import { GroupPayment as Payment } from "../../../widgets/group-payment";
+import { mergeLessons } from "../helper/merge-lessons";
+import { generateLessons, type LessonRecord } from "../helper/generate-table";
+import { useGetLessons, type Lesson } from "../../../entities/lesson";
+import { separateChanged } from "../helper/seperate-changed";
+import { formatDate } from "../helper/formatDate";
+import { useUpdateLessons } from "../../../features/edit-lesson";
+import { useCreateLessons } from "../../../features/add-lesson";
 
 export function View() {
+  const currentDate = new Date();
   const { id } = useParams();
   const { data, isPending, error } = useGetGroup(id!);
   const [activeTab, setActiveTab] = useState("overview");
+  const { mutate: mutationSave } = useUpdateLessons();
+  const { mutate: mutationCreate } = useCreateLessons();
+  const [table, setTable] = useState<LessonRecord[]>([]);
+
+  const {
+    data: lessons,
+    isPending: isLoading,
+    error: hasError,
+  } = useGetLessons(id!, formatDate(currentDate));
+
+  useEffect(() => {
+    if (data && lessons) {
+      setTable(
+        mergeLessons(
+          lessons.data,
+          generateLessons(
+            data.data.teacher._id,
+            data.data._id,
+            { days: data.data.schedule.days },
+            data.data.students,
+            currentDate.getMonth() + 1,
+            currentDate.getFullYear()
+          )
+        )
+      );
+    }
+  }, [data]);
+
+  function onSave() {
+    const { toUpdate, toCreate } = separateChanged(lessons?.data || [], table);
+    if (toCreate.length !== 0) mutationCreate(toCreate);
+    if (toUpdate.length !== 0) mutationSave(toUpdate as Lesson[]);
+  }
 
   console.log(data);
 
@@ -232,9 +273,27 @@ export function View() {
 
           {activeTab === "students" && <Students group={data.data} />}
 
-          {activeTab === "attendance" && <Attendance group={data.data} />}
+          {activeTab === "attendance" && (
+            <Attendance
+              onSave={onSave}
+              error={hasError}
+              isPending={isLoading}
+              table={table}
+              setTable={setTable}
+              group={data.data}
+            />
+          )}
 
-          {activeTab === "grades" && <Grade group={data.data} />}
+          {activeTab === "grades" && (
+            <Grade
+              onSave={onSave}
+              error={hasError}
+              isPending={isLoading}
+              table={table}
+              setTable={setTable}
+              group={data.data}
+            />
+          )}
 
           {activeTab === "payments" && <Payment group={data.data} />}
         </div>
