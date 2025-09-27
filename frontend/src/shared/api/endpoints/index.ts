@@ -6,6 +6,7 @@ export {
   getUsers,
   createUser,
   deleteUsers,
+  searchUsers,
 } from "./user";
 export {
   getGroup,
@@ -38,5 +39,11 @@ export {
   getStudentsGroup,
   getStudent,
 } from "./student";
-export { getRecord, getRecords } from "./record";
-export { getExpense, getExpenses } from "./expense";
+export { getRecord, getRecords, getRecordsOfUser } from "./record";
+export {
+  getExpense,
+  getExpenses,
+  createExpense,
+  updateExpense,
+  deleteExpenses,
+} from "./expense";

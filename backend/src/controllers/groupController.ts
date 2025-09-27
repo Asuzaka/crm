@@ -23,13 +23,13 @@ import { apiFeatures } from "../services/apiFeatures";
 import { filterout } from "../services/helpers";
 import { Record } from "../models/records";
 import { Student } from "../models/students";
+import { User } from "../models/users";
 
 export const createGroup = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // create group
     const group: IGroup = await Group.create({
       name: req.body.name,
-      teacher: req.body.teacher,
       students: req.body.students,
       schedule: req.body.schedule,
       status: req.body.status,
@@ -44,6 +44,12 @@ export const createGroup = catchAsync(
         { _id: { $in: req.body.students } },
         { $addToSet: { groups: group._id } }
       );
+    }
+
+    if (req.body.teacher) {
+      await User.findByIdAndUpdate(req.body.teacher, {
+        $push: { responsible: group._id },
+      });
     }
 
     res.status(CREATED).json({ status: SUCCESS, data: group });
@@ -73,9 +79,9 @@ export const getGroup = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const group: IGroup | null = await Group.findById(id).populate(
-      "students teacher"
-    );
+    const group: IGroup | null = await Group.findById(id)
+      .populate("students", "_id name")
+      .populate("teacher", "_id name");
 
     if (group === null) {
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
@@ -88,7 +94,9 @@ export const getGroup = catchAsync(
 export const getGroups = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // get a list of groups
-    const query = Group.find().populate("students teacher");
+    const query = Group.find()
+      .populate("students", "_id name")
+      .populate("teacher", "_id name");
 
     const featuresForCount = new apiFeatures(query, req.query)
       .filter()
@@ -119,14 +127,7 @@ export const getGroups = catchAsync(
 
 export const updateGroup = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    // updata a group by id
-    const { id } = req.params || req.body;
-
-    const filteredBody: Partial<IGroup> = filterout(
-      req.body,
-      "teacher",
-      "history"
-    );
+    const { id } = req.params;
 
     if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
@@ -137,20 +138,35 @@ export const updateGroup = catchAsync(
     }
 
     const oldGroup = await Group.findById(id).select("students");
-    if (oldGroup === null) {
+    if (!oldGroup) {
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
     }
 
-    const updatedGroup: IGroup | null = await Group.findByIdAndUpdate(
-      id,
-      filteredBody,
-      { new: true }
-    );
+    // 🔹 Filter out teacher (we don’t update it directly in group)
+    const { teacher: newTeacherId, ...filteredBody } = req.body;
 
-    if (updatedGroup === null) {
+    const updatedGroup = await Group.findByIdAndUpdate(id, filteredBody, {
+      new: true,
+    });
+    if (!updatedGroup) {
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
     }
 
+    // 🔹 Handle teacher change
+    if (newTeacherId) {
+      // remove group from old teacher
+      await User.updateMany(
+        { responsible: id },
+        { $pull: { responsible: id } }
+      );
+
+      // add group to new teacher
+      await User.findByIdAndUpdate(newTeacherId, {
+        $addToSet: { responsible: id },
+      });
+    }
+
+    // 🔹 Handle students update (same as before)
     if (req.body.students) {
       const oldStudents = oldGroup.students.map(String);
       const newStudents = req.body.students.map(String);
@@ -179,7 +195,7 @@ export const updateGroup = catchAsync(
 
     res.status(OK).json({ status: SUCCESS, data: updatedGroup });
 
-    // take a record
+    // 🔹 Record the update
     await Record.create({
       user: req.user._id,
       actionType: "UPDATE",

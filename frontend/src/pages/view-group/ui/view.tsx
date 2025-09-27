@@ -73,7 +73,8 @@ export function View() {
 
   if (isPending) return <Loader />;
 
-  if (error) return <Error title="Failed to get group" />;
+  if (error)
+    return <Error title="Failed to get group" message={error.message} />;
 
   return (
     <div>

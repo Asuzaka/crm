@@ -4,7 +4,7 @@ import { getRecord, getRecords } from "../controllers/recordController";
 
 const router = express.Router();
 
-router.use(protect)
+router.use(protect);
 
 router.route("/").get(getRecords);
 router.route("/:id").get(getRecord);

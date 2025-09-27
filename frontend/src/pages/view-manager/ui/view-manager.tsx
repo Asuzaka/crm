@@ -44,11 +44,10 @@ export function ViewManager() {
         setActiveTab={setActiveTab}
       />
 
-
-      {activeTab === "overview" && <Overview manager={data.data}/> }
+      {activeTab === "overview" && <Overview manager={data.data} />}
       {activeTab === "permissions" && <Permission manager={data.data} />}
-      {activeTab === "groups" && <Group manager={data.data} /> }
-      {activeTab === "activity" && <Activity manager={data.data} /> }
+      {activeTab === "groups" && <Group manager={data.data} />}
+      {activeTab === "activity" && <Activity manager={data.data} />}
     </div>
   );
 }

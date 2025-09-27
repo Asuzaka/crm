@@ -48,6 +48,8 @@ export function UpdateForm({
     });
   };
 
+  console.log(data.data);
+
   return (
     <form onSubmit={handleSubmit(Submit)} className="space-y-6">
       <GroupForm
@@ -55,6 +57,7 @@ export function UpdateForm({
         register={register}
         errors={errors}
         control={control}
+        aviable={data.data.teacher}
       />
       {/* --- Submit --- */}
       <div className="pt-4">

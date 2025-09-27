@@ -10,6 +10,12 @@ export function getRecords(page: number, limit: number, query: string) {
   );
 }
 
+export function getRecordsOfUser(id: string) {
+  return client<getRecordsResponse>(`/v1/records/user/${id}`, {
+    method: "GET",
+  });
+}
+
 export function getRecord(id: string) {
   return client<getRecordResponse>(`/v1/records/${id}`, { method: "GET" });
 }

@@ -20,15 +20,19 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   passwordChangedAt: Date;
+  activity: number;
 }
 
-export type UserForName = Pick<User, "name" | "_id" | "email"> 
+export type UserForName = Pick<User, "name" | "_id" | "email">;
 
 export interface GetUser extends Omit<User, "responsible"> {
   responsible: { _id: string; name: string }[];
 }
 
 export interface UsersAsList
-  extends Pick<User, "name" | "email" | "permissions" | "lastLogin" | "_id"> {
+  extends Pick<
+    User,
+    "name" | "email" | "permissions" | "lastLogin" | "_id" | "activity"
+  > {
   responsible: { _id: string; name: string }[];
 }

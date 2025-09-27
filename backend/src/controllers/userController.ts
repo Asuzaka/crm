@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { NextFunction, Response } from "express";
 import { catchAsync } from "../services/catchAsync";
 import { AuthenticatedRequest } from "../types/route";
@@ -12,6 +13,7 @@ import {
 } from "../constants/httpCodes";
 import {
   INVALIDID,
+  INVALIDQUERORNOQUERY,
   NODOCUMENTFOUND,
   NOIDPROVIDED,
   SUCCESS,
@@ -24,19 +26,23 @@ import { Record } from "../models/records";
 export const getUsers = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // filter out "owner"
-    const query = User.find({ role: "manager" });
+    const query = User.find({ role: "manager" })
+      .populate("activity")
+      .populate("responsible", "_id name");
 
-    const features = new apiFeatures(query, req.query)
+    const featuresForCount = new apiFeatures(query, req.query)
       .filter()
-      .search(["name", "email"])
-      .sort()
-      .limitFields()
-      .pagination();
+      .search(["name", "email"]);
 
     // Count total before pagination
-    const totalResults = await query.clone().countDocuments();
+    const totalResults = await featuresForCount
+      .getQuery()
+      .clone()
+      .countDocuments();
 
-    const users: IUser[] = await features.getQuery();
+    const featuresForQuery = featuresForCount.sort().limitFields().pagination();
+
+    const users: IUser[] = await featuresForQuery.getQuery();
 
     const limit = Number(req.query.limit) || 10;
     const totalPages = Math.ceil(totalResults / limit);
@@ -64,7 +70,9 @@ export const getUser = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const user: IUser | null = await User.findById(id);
+    const user: IUser | null = await User.findById(id).populate(
+      "responsible activity"
+    );
 
     if (user == null) {
       return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
@@ -105,10 +113,15 @@ export const updateMe = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // updating yourself
     const updateUser: Partial<IUser> = req.body;
+
+    if (updateUser.password) {
+      updateUser.password = await bcrypt.hash(updateUser.password, 12);
+    }
+
     const updatedUser: IUser | null = await User.findOneAndUpdate(
       { email: req.user.email },
       updateUser,
-      { new: true, runValidators: false }
+      { new: true }
     );
 
     if (updatedUser === null) {
@@ -145,6 +158,10 @@ export const updateUser = catchAsync(
 
     if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
+    }
+
+    if (updateUser.password) {
+      updateUser.password = await bcrypt.hash(updateUser.password, 12);
     }
 
     const updatedUser: IUser | null = await User.findByIdAndUpdate(
@@ -210,5 +227,23 @@ export const deleteUser = catchAsync(
     await Record.insertMany(records);
 
     res.status(NO_CONTENT).json({ status: SUCCESS });
+  }
+);
+
+export const searchUsers = catchAsync(
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    // search for groups
+    const { query } = req.query;
+    if (!query) {
+      return next(new CustomError(INVALIDQUERORNOQUERY, BAD_REQUEST));
+    }
+
+    const groups = await User.find({
+      name: { $regex: query, $options: "i" },
+    })
+      .limit(10)
+      .select("_id name");
+
+    res.json({ status: SUCCESS, data: groups });
   }
 );

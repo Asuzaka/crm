@@ -47,17 +47,21 @@ export const getExpenses = catchAsync(
       query = Expense.find();
     }
 
-    // use helper to work with query
-    const features = new apiFeatures(query, req.query)
+    query = query.populate("manager", "_id name");
+
+    const featuresForCount = new apiFeatures(query, req.query)
       .filter()
-      .sort()
-      .limitFields()
-      .pagination();
+      .search(["description", "notes"]);
 
     // Count total before pagination
-    const totalResults = await query.clone().countDocuments();
+    const totalResults = await featuresForCount
+      .getQuery()
+      .clone()
+      .countDocuments();
 
-    const expenses: IExpense[] = await features.getQuery();
+    const featuresForQuery = featuresForCount.sort().limitFields().pagination();
+
+    const expenses: IExpense[] = await featuresForQuery.getQuery();
 
     const limit = Number(req.query.limit) || 10;
     const totalPages = Math.ceil(totalResults / limit);
@@ -86,7 +90,10 @@ export const getExpense = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const expense: IExpense | null = await Expense.findById(id);
+    const expense: IExpense | null = await Expense.findById(id).populate(
+      "manager",
+      "_id name"
+    );
 
     if (expense === null) {
       return next(new CustomError(NODOCUMENTFOUND("expense"), NOT_FOUND));
@@ -127,7 +134,7 @@ export const createExpense = catchAsync(
 // permission
 export const updateExpense = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const { id } = req.body || req.params;
+    const id: undefined | string = req.params.id;
 
     if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));

@@ -7,10 +7,6 @@ const groupsSchema = new Schema<IGroup>(
       type: String,
       required: true,
     },
-    teacher: {
-      type: Schema.ObjectId,
-      ref: "User",
-    },
     schedule: { days: [String], time: String },
     start: Date,
     description: String,
@@ -29,6 +25,13 @@ groupsSchema.virtual("students", {
   ref: "Student",
   localField: "_id",
   foreignField: "groups",
+});
+
+groupsSchema.virtual("teacher", {
+  ref: "User",
+  localField: "_id",
+  foreignField: "responsible",
+  justOne: true,
 });
 
 groupsSchema.set("toJSON", { virtuals: true });

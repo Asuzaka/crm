@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { PlusIcon, SearchIcon, TrashIcon, EditIcon } from "lucide-react";
+import { PlusIcon, SearchIcon } from "lucide-react";
 import { Modal } from "../../../shared/ui";
 import { GroupDelete } from "../../../widgets/group-delete";
 import { useGroupList } from "../../../entities/group";
@@ -104,8 +104,8 @@ export function Groups() {
                       {group.schedule.time || "No-time"}
                     </p>
                     <p className="text-sm text-gray-500">
-                      <span className="font-medium">Monthly Fee:</span> $
-                      {group.price}
+                      <span className="font-medium">Monthly Fee:</span>
+                      {group.price} UZS
                     </p>
                   </div>
                   <div className="mt-4 flex items-center">
@@ -125,7 +125,6 @@ export function Groups() {
                     to={`/groups/${group._id}/edit`}
                     className="text-sm text-blue-600 hover:text-blue-800"
                   >
-                    <EditIcon className="h-4 w-4 inline mr-1" />
                     Edit
                   </Link>
                   <Modal>
@@ -134,7 +133,6 @@ export function Groups() {
                         onClick={() => console.log("deleted group")}
                         className="text-sm text-red-600 hover:text-red-800"
                       >
-                        <TrashIcon className="h-4 w-4 inline mr-1" />
                         Delete
                       </button>
                     </Modal.Open>

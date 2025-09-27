@@ -1,8 +1,12 @@
+import type { IncomeUpdateSchemaType } from "../../../features/edit-income";
 import { client } from "../client";
 import type { PaymentResponse, PaymentsResponse } from "../types/payment";
 
-export function getPayments() {
-  return client<PaymentsResponse>("/v1/payments", { method: "GET" });
+export function getPayments(page: number, limit: number, query: string) {
+  return client<PaymentsResponse>(
+    `/v1/payments?page=${page}&limit=${limit}${query}`,
+    { method: "GET" }
+  );
 }
 export function getPaymentsGroup(id: string) {
   return client<PaymentsResponse>(`/v1/payments/s/${id}`, { method: "GET" });
@@ -18,7 +22,7 @@ export function createPayment(body: unknown) {
   });
 }
 
-export function updatePayment(id: string, body: unknown) {
+export function updatePayment(id: string, body: IncomeUpdateSchemaType) {
   return client<PaymentResponse>(`/v1/payments/${id}`, {
     method: "PATCH",
     body: JSON.stringify(body),

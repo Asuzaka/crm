@@ -1,4 +1,4 @@
-import { UserIcon, DollarSignIcon, ClockIcon } from "lucide-react";
+import { DollarSignIcon, ClockIcon } from "lucide-react";
 import {
   Controller,
   type Control,
@@ -11,13 +11,15 @@ import {
 } from "../../../shared/components/multiFieldSelect";
 import type { createFormData } from "../../../features/add-group";
 import { MultiDaySelector } from "../../../shared/components/multi-days-select";
-import { searchStudents } from "../../../shared/api/endpoints";
+import { searchStudents, searchUsers } from "../../../shared/api/endpoints";
+import { SelectOneFieldDynamicSearch } from "../../../shared/components";
 
 interface FormProps {
   register: UseFormRegister<createFormData>;
   errors: FieldErrors<createFormData>;
   control: Control<createFormData>;
   aviableStudents?: Option[] | undefined;
+  aviable?: Option | null;
 }
 
 export function Form({
@@ -25,6 +27,7 @@ export function Form({
   errors,
   control,
   aviableStudents,
+  aviable,
 }: FormProps) {
   return (
     <>
@@ -49,34 +52,6 @@ export function Form({
             />
             {errors.name && (
               <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-          {/* Teacher */}
-          <div>
-            <label
-              htmlFor="teacher"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Teacher *
-            </label>
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <UserIcon className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                id="teacher"
-                {...register("teacher")}
-                className={`block w-full pl-10 pr-3 py-2 border ${
-                  errors.teacher ? "border-red-300" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="John Davis"
-              />
-            </div>
-            {errors.teacher && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.teacher?.message}
-              </p>
             )}
           </div>
           {/* Schedule */}
@@ -171,6 +146,19 @@ export function Form({
             />
           </div>
         </div>
+      </div>
+
+      {/* Teacher */}
+      <div>
+        <SelectOneFieldDynamicSearch
+          control={control}
+          name="teacher"
+          initialValue={aviable}
+          fetchOptions={searchUsers}
+        />
+        {errors.teacher && (
+          <p className="mt-1 text-sm text-red-600">{errors.teacher?.message}</p>
+        )}
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow">

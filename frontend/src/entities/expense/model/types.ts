@@ -1,10 +1,22 @@
+export type category =
+  | "Salaries"
+  | "Equipment"
+  | "Rent"
+  | "Utilities"
+  | "Marketing"
+  | "Office Supplies"
+  | "Software"
+  | "Insurance"
+  | "Taxes"
+  | "Other";
+
 export interface IExpense {
   description: string;
   amount: number;
   currency: string;
-  category: string;
+  category: category;
   recipientType: "Manager/Staff" | "External Vendor";
-  manager?: string; // only if Manager/Staff
+  manager?: { _id: string; name: string }; // only if Manager/Staff
   vendorName?: string; // only if External Vendor
   date: Date;
   paymentMethod: "cash" | "bank" | "card" | "other";

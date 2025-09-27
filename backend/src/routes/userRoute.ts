@@ -6,6 +6,7 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  searchUsers,
   updateMe,
   updateUser,
 } from "../controllers/userController";
@@ -21,6 +22,7 @@ router
   .post(acessTo("owner"), createUser)
   .delete(acessTo("owner"), deleteUser)
   .patch(updateMe);
+router.route("/search").get(searchUsers);
 router.route("/:id").get(getUser).patch(acessTo("owner"), updateUser);
 
 export { router };

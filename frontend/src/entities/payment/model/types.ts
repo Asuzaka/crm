@@ -1,12 +1,11 @@
-export interface IPayment {
+export interface Payment {
+  _id: string;
   group: string;
   amount: number;
   student: string;
+  receiptNumber: string;
   createdBy: string;
   createdAt: Date;
-  method: "cash" | "card";
-}
-
-export interface Payment extends IPayment {
-  _id: string;
+  method: "cash" | "card" | "bank";
+  notes?: string;
 }

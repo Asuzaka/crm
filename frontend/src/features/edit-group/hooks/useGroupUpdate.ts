@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateGroup } from "../../../shared/api/endpoints";
 import type { GroupUpdateSchema } from "../model/schema";
 import { queryClient } from "../../../shared/api/queryClient";
+import toast from "react-hot-toast";
 
 export function useGroupUpdate(id: string) {
   return useMutation({
@@ -9,6 +10,10 @@ export function useGroupUpdate(id: string) {
     mutationKey: ["group", id],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["groups"] });
+      toast.success("Group updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to update group");
     },
   });
 }

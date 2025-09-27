@@ -144,7 +144,7 @@ export function Managers() {
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">
                           {manager.responsible.map((group, i) => (
-                            <span key={group._id} className="inline-block">
+                            <span key={i} className="inline-block">
                               {group.name}
                               {i < manager.responsible.length - 1 ? ", " : ""}
                             </span>
@@ -156,7 +156,9 @@ export function Managers() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{0} actions</div>
+                        <div className="text-sm text-gray-900">
+                          {manager.activity} actions
+                        </div>
                         <div className="text-xs text-gray-500">
                           Last: {new Date(manager.lastLogin).toLocaleString()}
                         </div>
@@ -175,10 +177,7 @@ export function Managers() {
                           Edit
                         </Link>
                         <Modal.Open opens={`delete-manager-${manager._id}`}>
-                          <button
-                            onClick={() => console.log("deleted")}
-                            className="text-red-600 hover:text-red-900"
-                          >
+                          <button className="text-red-600 hover:text-red-900">
                             Remove
                           </button>
                         </Modal.Open>

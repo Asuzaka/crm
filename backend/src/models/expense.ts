@@ -30,11 +30,9 @@ const ExpenseSchema = new Schema<IExpense>(
       },
     },
 
-    date: { type: Date, required: true },
-
     paymentMethod: {
       type: String,
-      enum: ["Cash", "Bank Transfer", "Card", "Other"],
+      enum: ["cash", "bank", "card", "other"],
       required: true,
     },
 

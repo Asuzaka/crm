@@ -1,6 +1,7 @@
 import type { RegisterFormData } from "../../../features/add-manager";
 import type { RegisterPatchFormData } from "../../../features/edit-manager";
 import { client } from "../client";
+import type { searchResult } from "../types";
 import {
   type GetUsersResponse,
   type CreateUserResponseDTO,
@@ -46,4 +47,11 @@ export function deleteUsers(id: string[]) {
     method: "DELETE",
     body: JSON.stringify({ id }),
   });
+}
+
+export async function searchUsers(query: string) {
+  const d = await client<searchResult>(`/v1/users/search?query=${query}`, {
+    method: "GET",
+  });
+  return d.data;
 }

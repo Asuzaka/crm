@@ -100,7 +100,6 @@ export interface IExpense extends Document {
   recipientType: "Manager/Staff" | "External Vendor";
   manager?: Types.ObjectId; // only if Manager/Staff
   vendorName?: string; // only if External Vendor
-  date: Date;
   paymentMethod: "cash" | "bank" | "card" | "Other";
   notes?: string;
   createdBy: string;

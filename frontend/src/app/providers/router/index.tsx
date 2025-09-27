@@ -23,6 +23,10 @@ import { ActivityView } from "../../../pages/view-activity";
 import { GroupView } from "../../../pages/view-group";
 import { GroupEdit } from "../../../pages/edit-group";
 import { GroupAdd } from "../../../pages/add-group";
+import { ProtectedRoute } from "./protectedRoute";
+import { ExpenseUpdate } from "../../../pages/edit-expense";
+import { ExpenseView } from "../../../pages/view-expense";
+import { PaymentNew } from "../../../pages/add-income";
 
 const router = createBrowserRouter([
   {
@@ -34,13 +38,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: ROUTES.notFound,
-    element: <NotFound full={true} />,
-  },
-  {
     path: ROUTES.home,
-    element: <MainLayout />,
-    errorElement: <NotFound />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -85,10 +88,14 @@ const router = createBrowserRouter([
         path: ROUTES.income,
         element: <Income />,
       },
+      { path: ROUTES.addIncome, element: <PaymentNew /> },
+      { path: ROUTES.editIncome, element: <ExpenseUpdate /> },
       {
         path: ROUTES.expenses,
         element: <Expenses />,
       },
+      { path: ROUTES.viewExpense, element: <ExpenseView /> },
+      { path: ROUTES.editExpense, element: <ExpenseUpdate /> },
       {
         path: ROUTES.groups,
         element: <Groups />,
@@ -97,11 +104,11 @@ const router = createBrowserRouter([
       { path: ROUTES.viewGroup, element: <GroupView /> },
       { path: ROUTES.editGroup, element: <GroupEdit /> },
       { path: "/t", element: <Testing /> },
-      {
-        path: ROUTES.notFound,
-        element: <NotFound />,
-      },
     ],
+  },
+  {
+    path: ROUTES.notFound,
+    element: <NotFound full={true} />,
   },
 ]);
 

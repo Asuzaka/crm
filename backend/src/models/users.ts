@@ -57,6 +57,16 @@ const UserSchema: Schema<IUser> = new Schema(
   { timestamps: true }
 );
 
+UserSchema.virtual("activity", {
+  ref: "Record",
+  localField: "_id",
+  foreignField: "user",
+  count: true,
+});
+
+UserSchema.set("toJSON", { virtuals: true });
+UserSchema.set("toObject", { virtuals: true });
+
 // Pre-save hook for password to save as crypted
 UserSchema.pre("save", async function (next) {
   // Only run if password was modified

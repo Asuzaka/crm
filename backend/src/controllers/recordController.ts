@@ -32,7 +32,7 @@ export const getRecords = catchAsync(
     let query;
 
     if (id) {
-      query = Record.find({ user: id }).populate("user", "name email");
+      query = Record.find({ user: id });
     } else {
       query = Record.find().populate("user", "name email");
     }
@@ -89,6 +89,7 @@ export const getRecord = catchAsync(
     res.status(OK).json({ status: SUCCESS, data: record });
   }
 );
+
 // A NEED?
 // post Record craete //id
 export const createRecords = catchAsync(

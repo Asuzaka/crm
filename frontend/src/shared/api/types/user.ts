@@ -1,3 +1,4 @@
+import type { GroupOption } from "../../../entities/group";
 import type { User, GetUser, UsersAsList } from "../../../entities/user";
 
 export interface CreateUserResponseDTO {
@@ -16,4 +17,9 @@ export interface GetUsersResponse {
 export interface UserGetResponse {
   status: string;
   data: GetUser;
+}
+
+export interface UserSearchResponse {
+  status: string;
+  data: GroupOption[];
 }

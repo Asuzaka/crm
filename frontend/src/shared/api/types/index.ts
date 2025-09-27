@@ -5,6 +5,7 @@ export type {
   GetUsersResponse,
   CreateUserResponseDTO,
   UserGetResponse,
+  UserSearchResponse,
 } from "./user";
 export type { LoginResponseDTO } from "./auth";
 export type {

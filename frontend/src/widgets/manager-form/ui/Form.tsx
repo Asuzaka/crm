@@ -22,7 +22,7 @@ export function Form({
   availableGroups,
 }: FormProps) {
   return (
-    <>
+    <div className="bg-white p-6 rounded-lg shadow">
       {/* --- Basic Info --- */}
       <div className="space-y-4">
         <div>
@@ -120,6 +120,6 @@ export function Form({
         )}
       </div>
       <input type="hidden" {...register("role")} value="manager" />
-    </>
+    </div>
   );
 }
