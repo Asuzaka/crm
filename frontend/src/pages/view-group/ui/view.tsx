@@ -61,15 +61,13 @@ export function View() {
         )
       );
     }
-  }, [data]);
+  }, [data, lessons]);
 
   function onSave() {
     const { toUpdate, toCreate } = separateChanged(lessons?.data || [], table);
     if (toCreate.length !== 0) mutationCreate(toCreate);
     if (toUpdate.length !== 0) mutationSave(toUpdate as Lesson[]);
   }
-
-  console.log(data);
 
   if (isPending) return <Loader />;
 

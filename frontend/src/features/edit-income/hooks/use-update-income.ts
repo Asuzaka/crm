@@ -10,7 +10,7 @@ export function useUpdateIncome(id: string) {
     mutationKey: ["income", id],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["incomes"] });
-      toast.success("Income updated successfully");
+      toast.success("Income updated");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update income");

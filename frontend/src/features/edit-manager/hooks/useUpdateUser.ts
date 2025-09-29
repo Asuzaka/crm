@@ -10,7 +10,7 @@ export function useUpdateUser(id: string) {
     mutationKey: ["user", id],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("Manager edited successfully");
+      toast.success("Manager edited");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to edit manager");

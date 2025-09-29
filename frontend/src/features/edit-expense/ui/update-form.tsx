@@ -1,7 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
-import { queryClient } from "../../../shared/api/queryClient";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 import { maExpenseResponse } from "../util/normalize-object";
 import { useExpenseUpdate } from "..";
@@ -28,14 +26,7 @@ export function UpdateForm({ data, id }: { id: string; data: getExpense }) {
   const Submit = (data: createExpenseFormData) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
-    mutate(patchData, {
-      onSuccess: () => {
-        toast.success("Expense Updated");
-        queryClient.invalidateQueries({ queryKey: ["expense", id] });
-        queryClient.invalidateQueries({ queryKey: ["expenses"] });
-      },
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(patchData);
   };
 
   return (

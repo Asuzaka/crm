@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { Form } from "../../../widgets/manager-form";
 import { registerSchema, type RegisterFormData } from "../../add-manager";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { mapUserResponse } from "../util/normalize-object";
 import type { UserGetResponse } from "../../../shared/api/types";
-import { queryClient } from "../../../shared/api/queryClient";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 
 export function UpdateForm({
@@ -33,14 +31,7 @@ export function UpdateForm({
   const Submit = (data: RegisterFormData) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
-    mutate(patchData, {
-      onSuccess: () => {
-        toast.success("User Updated");
-        queryClient.invalidateQueries({ queryKey: ["user", id] });
-        queryClient.invalidateQueries({ queryKey: ["users"] });
-      },
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(patchData);
   };
 
   return (

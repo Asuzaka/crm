@@ -15,8 +15,6 @@ export function EditStudentForm() {
   if (!id) return <p> No id | invalid id </p>;
   if (isPending || !data?.data) return <p>Loading...</p>;
 
-  console.log(data.data)
-
   return (
     <>
       <div className="flex items-center mb-6">

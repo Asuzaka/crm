@@ -10,7 +10,7 @@ export function useGroupUpdate(id: string) {
     mutationKey: ["group", id],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["groups"] });
-      toast.success("Group updated successfully");
+      toast.success("Group updated");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update group");

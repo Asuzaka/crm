@@ -9,7 +9,7 @@ export function useEditStudent(id: string) {
     mutationKey: ["student", id],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["students"] });
-      toast.success("Student edited successfully");
+      toast.success("Student edited");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to edit student");

@@ -7,7 +7,7 @@ export function useUpdateLessons() {
     mutationFn: updateLessons,
     mutationKey: ["lessons"],
     onSuccess: () => {
-      toast.success("Lessons updated successfully");
+      toast.success("Lessons updated");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update lessons");

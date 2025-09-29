@@ -76,9 +76,9 @@ export function SelectOneFieldDynamicSearch<T extends FieldValues>({
             />
 
             {/* Results */}
-            {isLoading ? (
-              <p className="text-sm text-gray-500">Loading...</p>
-            ) : options.length > 0 ? (
+            {isLoading && <p className="text-sm text-gray-500">Loading...</p>}
+
+            {options.length > 0 && (
               <ul className="bg-gray-50 rounded-md p-2 max-h-60 overflow-y-auto divide-y divide-gray-200">
                 {options.map((opt) => (
                   <li
@@ -96,7 +96,8 @@ export function SelectOneFieldDynamicSearch<T extends FieldValues>({
                   </li>
                 ))}
               </ul>
-            ) : (
+            )}
+            {debouncedQuery.length > 0 && options.length == 0 && (
               <p className="text-sm text-gray-500">No results</p>
             )}
           </>

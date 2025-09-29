@@ -1,6 +1,7 @@
+import type { IncomeCreateSchemaType } from "../../../features/add-income";
 import type { IncomeUpdateSchemaType } from "../../../features/edit-income";
-import { client } from "../client";
 import type { PaymentResponse, PaymentsResponse } from "../types/payment";
+import { client } from "../client";
 
 export function getPayments(page: number, limit: number, query: string) {
   return client<PaymentsResponse>(
@@ -15,7 +16,7 @@ export function getPayment(id: string) {
   return client<PaymentResponse>(`/v1/payments/${id}`, { method: "GET" });
 }
 
-export function createPayment(body: unknown) {
+export function createPayment(body: IncomeCreateSchemaType) {
   return client<PaymentResponse>(`/v1/payments`, {
     method: "POST",
     body: JSON.stringify(body),

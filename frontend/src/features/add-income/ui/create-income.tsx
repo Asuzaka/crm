@@ -5,7 +5,6 @@ import {
   type IncomeCreateSchemaType,
 } from "..";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { IncomeForm } from "../../../widgets/income-form";
 
 export function CreateIncome() {
@@ -22,10 +21,7 @@ export function CreateIncome() {
   const { mutate, isPending } = useCreateIncome();
 
   const Submit = (data: IncomeCreateSchemaType) => {
-    mutate(data, {
-      onSuccess: () => toast.success("Payment Created!"),
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(data);
   };
 
   return (

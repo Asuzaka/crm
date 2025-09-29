@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, type createFormData } from "../model/schema";
@@ -19,10 +18,7 @@ export function CreateForm({ onCloseModal }: { onCloseModal?: () => void }) {
   const { mutate, isPending } = useCreateExpense();
 
   const Submit = (data: createFormData) => {
-    mutate(data, {
-      onSuccess: () => toast.success("Expense Created!"),
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(data);
   };
 
   return (

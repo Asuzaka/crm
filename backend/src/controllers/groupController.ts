@@ -132,19 +132,22 @@ export const updateGroup = catchAsync(
     if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
     }
-
     if (!mongoose.isValidObjectId(id)) {
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const oldGroup = await Group.findById(id).select("students");
+    // Get old group with students virtual populated (so removal works properly)
+    const oldGroup = await Group.findById(id)
+      .populate("students", "_id") // ensure students virtual is available
+      .select("students");
+
     if (!oldGroup) {
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
     }
 
-    // 🔹 Filter out teacher (we don’t update it directly in group)
     const { teacher: newTeacherId, ...filteredBody } = req.body;
 
+    // Update group with new data
     const updatedGroup = await Group.findByIdAndUpdate(id, filteredBody, {
       new: true,
     });
@@ -152,9 +155,9 @@ export const updateGroup = catchAsync(
       return next(new CustomError(NODOCUMENTFOUND("group"), NOT_FOUND));
     }
 
-    // 🔹 Handle teacher change
+    // Handle teacher reassignment
     if (newTeacherId) {
-      // remove group from old teacher
+      // remove group from old teacher(s)
       await User.updateMany(
         { responsible: id },
         { $pull: { responsible: id } }
@@ -166,10 +169,15 @@ export const updateGroup = catchAsync(
       });
     }
 
-    // 🔹 Handle students update (same as before)
+    // Handle students reassignment
     if (req.body.students) {
-      const oldStudents = oldGroup.students.map(String);
-      const newStudents = req.body.students.map(String);
+      // Ensure both arrays are plain string IDs
+      const oldStudents = (oldGroup.students ?? []).map((s: any) =>
+        typeof s === "string" ? s : String(s._id)
+      );
+      const newStudents = (req.body.students ?? []).map((s: any) =>
+        typeof s === "string" ? s : String(s._id)
+      );
 
       const toAdd = newStudents.filter(
         (id: string) => !oldStudents.includes(id)
@@ -195,7 +203,7 @@ export const updateGroup = catchAsync(
 
     res.status(OK).json({ status: SUCCESS, data: updatedGroup });
 
-    // 🔹 Record the update
+    // take a record
     await Record.create({
       user: req.user._id,
       actionType: "UPDATE",

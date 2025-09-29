@@ -62,17 +62,21 @@ export const getPayments = catchAsync(
       query = Payment.find();
     }
 
-    // use helper to work with query
-    const features = new apiFeatures(query, req.query)
+    query = query.populate("student", "_id name").populate("group", "_id name");
+
+    const featuresForCount = new apiFeatures(query, req.query)
       .filter()
-      .sort()
-      .limitFields()
-      .pagination();
+      .search(["receiptNumber"]);
 
     // Count total before pagination
-    const totalResults = await query.clone().countDocuments();
+    const totalResults = await featuresForCount
+      .getQuery()
+      .clone()
+      .countDocuments();
 
-    const payments: IPayment[] = await features.getQuery();
+    const featuresForQuery = featuresForCount.sort().limitFields().pagination();
+
+    const payments: IPayment[] = await featuresForQuery.getQuery();
 
     const limit = Number(req.query.limit) || 10;
     const totalPages = Math.ceil(totalResults / limit);
@@ -101,7 +105,9 @@ export const getPayment = catchAsync(
       return next(new CustomError(INVALIDID, BAD_REQUEST));
     }
 
-    const payment: IPayment | null = await Payment.findById(id);
+    const payment: IPayment | null = await Payment.findById(id)
+      .populate("student", "_id name")
+      .populate("group", "_id name");
 
     if (payment === null) {
       return next(new CustomError(NODOCUMENTFOUND("payment"), NOT_FOUND));
@@ -138,7 +144,7 @@ export const createPayments = catchAsync(
 // permission
 export const updatePayments = catchAsync(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const { id } = req.body || req.params;
+    const id: string | undefined = req.params.id;
 
     if (!id) {
       return next(new CustomError(NOIDPROVIDED, BAD_REQUEST));
@@ -159,7 +165,7 @@ export const updatePayments = catchAsync(
     // take a record
     await Record.create({
       user: req.user._id,
-      actionType: "CREATE",
+      actionType: "UPDATE",
       entityType: "Payment",
       entityId: payment._id,
       description: `Update payment of ${payment.amount} UZS by ${payment.student}.`,

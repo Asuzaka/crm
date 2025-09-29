@@ -17,7 +17,9 @@ const lessonsSchema = new Schema<ILesson>(
       type: String,
       required: true,
     },
-    students: [{ student: Schema.ObjectId, present: Boolean, grade: Number }],
+    students: [
+      { student: Schema.ObjectId, present: Boolean, grade: Number, _id: false },
+    ],
   },
   { timestamps: true }
 );

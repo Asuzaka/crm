@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { createSchema, type createFormData } from "../model/schema";
 import { useCreateGroup } from "../hooks/useCreateGroup";
 import { GroupForm } from "../../../widgets/group-form";
@@ -24,10 +23,7 @@ export function CreateForm() {
   const { mutate, isPending } = useCreateGroup();
 
   const Submit = (data: createFormData) => {
-    mutate(data, {
-      onSuccess: () => toast.success("Group Created!"),
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(data);
   };
 
   return (

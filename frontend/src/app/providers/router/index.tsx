@@ -27,6 +27,8 @@ import { ProtectedRoute } from "./protectedRoute";
 import { ExpenseUpdate } from "../../../pages/edit-expense";
 import { ExpenseView } from "../../../pages/view-expense";
 import { PaymentNew } from "../../../pages/add-income";
+import { IncomeEdit } from "../../../pages/edit-income";
+import { IncomeView } from "../../../pages/view-income";
 
 const router = createBrowserRouter([
   {
@@ -89,7 +91,8 @@ const router = createBrowserRouter([
         element: <Income />,
       },
       { path: ROUTES.addIncome, element: <PaymentNew /> },
-      { path: ROUTES.editIncome, element: <ExpenseUpdate /> },
+      { path: ROUTES.viewIncome, element: <IncomeView /> },
+      { path: ROUTES.editIncome, element: <IncomeEdit /> },
       {
         path: ROUTES.expenses,
         element: <Expenses />,

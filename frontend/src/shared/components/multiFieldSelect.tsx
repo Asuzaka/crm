@@ -24,7 +24,7 @@ export function MultiSelectField<T extends FieldValues>({
   control,
   name,
   label,
-  maxItems = 10,
+  maxItems = 20,
   initialGroup = [],
   fetchOptions,
 }: MultiSelectFieldProps<T>) {
@@ -102,9 +102,8 @@ export function MultiSelectField<T extends FieldValues>({
             />
 
             {/* Results */}
-            {isLoading ? (
-              <p className="text-sm text-gray-500">Loading...</p>
-            ) : availableOptions.length > 0 ? (
+            {isLoading && <p className="text-sm text-gray-500">Loading...</p>}
+            {availableOptions.length > 0 && (
               <ul className="bg-gray-50 rounded-md p-2 max-h-60 overflow-y-auto divide-y divide-gray-200">
                 {availableOptions.map((opt) => (
                   <li
@@ -122,7 +121,8 @@ export function MultiSelectField<T extends FieldValues>({
                   </li>
                 ))}
               </ul>
-            ) : (
+            )}
+            {debouncedQuery.length > 0 && availableOptions.length == 0 && (
               <p className="text-sm text-gray-500">No results</p>
             )}
           </div>

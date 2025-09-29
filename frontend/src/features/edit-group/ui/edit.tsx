@@ -1,13 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
-import { queryClient } from "../../../shared/api/queryClient";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
-import type { getGroupResponse } from "../../../shared/api/types/group";
 import { createSchema, type createFormData } from "../../add-group";
 import { mapGroupResponse } from "../util/normalize-object";
 import { useGroupUpdate } from "../hooks/useGroupUpdate";
 import { GroupForm } from "../../../widgets/group-form";
+import type { getGroupResponse } from "../../../shared/api/types/group";
 
 export function UpdateForm({
   data,
@@ -38,17 +36,8 @@ export function UpdateForm({
   const Submit = (data: createFormData) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
-    mutate(patchData, {
-      onSuccess: () => {
-        toast.success("Group Updated");
-        queryClient.invalidateQueries({ queryKey: ["group", id] });
-        queryClient.invalidateQueries({ queryKey: ["groups"] });
-      },
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(patchData);
   };
-
-  console.log(data.data);
 
   return (
     <form onSubmit={handleSubmit(Submit)} className="space-y-6">

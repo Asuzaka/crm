@@ -8,7 +8,7 @@ export function useCreateStudent() {
     mutationFn: createStudent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["students"] });
-      toast.success("Student created successfully ✅");
+      toast.success("Student created successfully");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create student");

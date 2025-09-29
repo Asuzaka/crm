@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { type RegisterFormData, registerSchema, useRegister } from "..";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { Form } from "../../../widgets/manager-form";
 
 export function RegisterForm() {
@@ -18,10 +17,7 @@ export function RegisterForm() {
   const { mutate, isPending } = useRegister();
 
   const Submit = (data: RegisterFormData) => {
-    mutate(data, {
-      onSuccess: () => toast.success("User Created!"),
-      onError: (err) => toast.error(err.message),
-    });
+    mutate(data);
   };
 
   return (

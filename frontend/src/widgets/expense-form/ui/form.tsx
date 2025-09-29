@@ -194,7 +194,6 @@ export function Form({
               <SelectOneFieldDynamicSearch
                 control={control}
                 name="manager"
-                label="Select Manager"
                 initialValue={aviable}
                 fetchOptions={searchUsers}
               ></SelectOneFieldDynamicSearch>

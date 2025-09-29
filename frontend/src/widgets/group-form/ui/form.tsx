@@ -98,7 +98,8 @@ export function Form({
                 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="active">Active</option>
-              <option value="archived">Inactive</option>
+              <option value="archived">Archived</option>
+              <option value="pasued">Pasued</option>
             </select>
           </div>
           {/* Monthly Fee */}
@@ -149,7 +150,13 @@ export function Form({
       </div>
 
       {/* Teacher */}
-      <div>
+      <div className="bg-white p-6 rounded-lg shadow">
+        <label
+          htmlFor="teacher"
+          className="text-lg font-medium text-gray-900 mb-5"
+        >
+          Teacher
+        </label>
         <SelectOneFieldDynamicSearch
           control={control}
           name="teacher"
