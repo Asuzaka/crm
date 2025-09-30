@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createSchema, type createFormData } from "../model/schema";
-import { useCreateGroup } from "../hooks/useCreateGroup";
 import { GroupForm } from "../../../widgets/group-form";
+import {
+  GroupCreateSchema,
+  useCreateGroup,
+  type GroupCreateSchemaType,
+} from "..";
 
 export function CreateForm() {
   const {
@@ -10,8 +13,8 @@ export function CreateForm() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<createFormData>({
-    resolver: zodResolver(createSchema),
+  } = useForm<GroupCreateSchemaType>({
+    resolver: zodResolver(GroupCreateSchema),
     defaultValues: {
       students: [],
       status: "active",
@@ -22,7 +25,7 @@ export function CreateForm() {
 
   const { mutate, isPending } = useCreateGroup();
 
-  const Submit = (data: createFormData) => {
+  const Submit = (data: GroupCreateSchemaType) => {
     mutate(data);
   };
 

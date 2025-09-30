@@ -3,7 +3,7 @@ import { updateStudent } from "../../../shared/api/endpoints";
 import { queryClient } from "../../../shared/api/queryClient";
 import toast from "react-hot-toast";
 
-export function useEditStudent(id: string) {
+export function useUpdateStudent(id: string) {
   return useMutation({
     mutationFn: updateStudent,
     mutationKey: ["student", id],

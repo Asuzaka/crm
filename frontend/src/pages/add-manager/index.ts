@@ -1,1 +1,1 @@
-export { Register } from "./ui/new-manager"
+export { Create as CreateUserPage } from "./ui/create-user";

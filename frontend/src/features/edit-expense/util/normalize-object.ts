@@ -1,7 +1,7 @@
 import type { getExpense } from "../../../shared/api/types";
-import type { createExpenseFormData } from "../../add-expense";
+import type { ExpenseCreateSchemaType } from "../../add-expense";
 
-export function maExpenseResponse(data: getExpense): createExpenseFormData {
+export function mapExpense(data: getExpense): ExpenseCreateSchemaType {
   return {
     ...data.data,
     manager: data.data.manager?._id,

@@ -3,15 +3,15 @@ import {
   type FieldErrors,
   type UseFormRegister,
 } from "react-hook-form";
-import type { RegisterFormData } from "../../../features/add-manager";
+import type { UserCreateSchemaType } from "../../../features/add-manager";
 import { MultiSelectField } from "../../../shared/components";
 import { searchGroups } from "../../../shared/api/endpoints";
 import type { Option } from "../../../shared/components/multiFieldSelect";
 
 interface FormProps {
-  register: UseFormRegister<RegisterFormData>;
-  errors: FieldErrors<RegisterFormData>;
-  control: Control<RegisterFormData>;
+  register: UseFormRegister<UserCreateSchemaType>;
+  errors: FieldErrors<UserCreateSchemaType>;
+  control: Control<UserCreateSchemaType>;
   availableGroups?: Option[] | undefined;
 }
 

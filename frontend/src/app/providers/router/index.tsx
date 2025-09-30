@@ -6,10 +6,9 @@ import { MainLayout } from "../../layout/main-layout";
 import { ROUTES } from "../../../shared/consts/routes";
 import { DashboardPage } from "../../../pages/dashboard";
 import { Students } from "../../../pages/students";
-import { Testing } from "../../../testing";
-import { AddStudent } from "../../../pages/add-student";
-import { EditStudent } from "../../../pages/edit-student/ui/editStudent";
-import { Register } from "../../../pages/add-manager";
+import { CreateStudentPage } from "../../../pages/add-student";
+import { StudentUpdatePage } from "../../../pages/edit-student/";
+import { CreateUserPage } from "../../../pages/add-manager";
 import { EditManager } from "../../../pages/edit-manager";
 import { ViewStudent } from "../../../pages/view-student";
 import { ViewManager } from "../../../pages/view-manager";
@@ -22,11 +21,11 @@ import { Activity } from "../../../pages/activity";
 import { ActivityView } from "../../../pages/view-activity";
 import { GroupView } from "../../../pages/view-group";
 import { GroupEdit } from "../../../pages/edit-group";
-import { GroupAdd } from "../../../pages/add-group";
+import { CreateGroupPage } from "../../../pages/add-group";
 import { ProtectedRoute } from "./protectedRoute";
 import { ExpenseUpdate } from "../../../pages/edit-expense";
 import { ExpenseView } from "../../../pages/view-expense";
-import { PaymentNew } from "../../../pages/add-income";
+import { CreatePaymentPage } from "../../../pages/add-income";
 import { IncomeEdit } from "../../../pages/edit-income";
 import { IncomeView } from "../../../pages/view-income";
 
@@ -57,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.addManager,
-        element: <Register />,
+        element: <CreateUserPage />,
       },
       {
         path: ROUTES.managers,
@@ -82,15 +81,15 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.addStudent,
-        element: <AddStudent />,
+        element: <CreateStudentPage />,
       },
-      { path: ROUTES.editStudent, element: <EditStudent /> },
+      { path: ROUTES.editStudent, element: <StudentUpdatePage /> },
       { path: ROUTES.viewStudent, element: <ViewStudent /> },
       {
         path: ROUTES.income,
         element: <Income />,
       },
-      { path: ROUTES.addIncome, element: <PaymentNew /> },
+      { path: ROUTES.addIncome, element: <CreatePaymentPage /> },
       { path: ROUTES.viewIncome, element: <IncomeView /> },
       { path: ROUTES.editIncome, element: <IncomeEdit /> },
       {
@@ -103,10 +102,9 @@ const router = createBrowserRouter([
         path: ROUTES.groups,
         element: <Groups />,
       },
-      { path: ROUTES.addGroup, element: <GroupAdd /> },
+      { path: ROUTES.addGroup, element: <CreateGroupPage /> },
       { path: ROUTES.viewGroup, element: <GroupView /> },
       { path: ROUTES.editGroup, element: <GroupEdit /> },
-      { path: "/t", element: <Testing /> },
     ],
   },
   {

@@ -1,6 +1,6 @@
 import type z from "zod";
-import { createSchema } from "../../add-group";
+import { GroupCreateSchema } from "../../add-group";
 
-export const updateSchema = createSchema.partial();
+export const updateSchema = GroupCreateSchema.partial();
 
-export type GroupUpdateSchema = z.infer<typeof updateSchema>;
+export type updateSchemaType = z.infer<typeof updateSchema>;

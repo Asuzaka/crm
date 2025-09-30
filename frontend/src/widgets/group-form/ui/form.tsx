@@ -9,15 +9,15 @@ import {
   MultiSelectField,
   type Option,
 } from "../../../shared/components/multiFieldSelect";
-import type { createFormData } from "../../../features/add-group";
+import type { GroupCreateSchemaType } from "../../../features/add-group";
 import { MultiDaySelector } from "../../../shared/components/multi-days-select";
 import { searchStudents, searchUsers } from "../../../shared/api/endpoints";
 import { SelectOneFieldDynamicSearch } from "../../../shared/components";
 
 interface FormProps {
-  register: UseFormRegister<createFormData>;
-  errors: FieldErrors<createFormData>;
-  control: Control<createFormData>;
+  register: UseFormRegister<GroupCreateSchemaType>;
+  errors: FieldErrors<GroupCreateSchemaType>;
+  control: Control<GroupCreateSchemaType>;
   aviableStudents?: Option[] | undefined;
   aviable?: Option | null;
 }

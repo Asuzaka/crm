@@ -1,7 +1,7 @@
 import type { UserGetResponse } from "../../../shared/api/types";
-import type { RegisterFormData } from "../../add-manager";
+import type { UserCreateSchemaType } from "../../add-manager";
 
-export function mapUserResponse(data: UserGetResponse): RegisterFormData {
+export function mapUser(data: UserGetResponse): UserCreateSchemaType {
   return {
     ...data.data,
     responsible: data.data.responsible.map((each) => each._id),

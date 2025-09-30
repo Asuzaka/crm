@@ -1,4 +1,5 @@
-import type { StudentFormData } from "../../../features/add-student";
+import type { StudentCreateSchemaType } from "../../../features/add-student";
+import type { StudentUpdateSchemaType } from "../../../features/edit-student";
 import { client } from "../client";
 import type { searchResult } from "../types/search";
 import type {
@@ -26,14 +27,14 @@ export function getStudent(id: string) {
   return client<StudentGetResponse>(`/v1/students/${id}`, { method: "GET" });
 }
 
-export function createStudent(studentDetails: StudentFormData) {
+export function createStudent(studentDetails: StudentCreateSchemaType) {
   return client<CreateStudentResponseDTO>("/v1/students", {
     method: "POST",
     body: JSON.stringify(studentDetails),
   });
 }
 
-export function updateStudent(body: StudentFormData) {
+export function updateStudent(body: StudentUpdateSchemaType) {
   return client<CreateStudentResponseDTO>(`/v1/students/${body._id}`, {
     method: "PATCH",
     body: JSON.stringify(body),

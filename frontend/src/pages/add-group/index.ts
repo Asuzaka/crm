@@ -1,1 +1,1 @@
-export { Create as GroupAdd } from "./ui/create";
+export { Create as CreateGroupPage } from "./ui/create-group";

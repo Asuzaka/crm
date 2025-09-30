@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createSchema, type createFormData } from "../model/schema";
+import { ExpenseCreateSchema, type ExpenseCreateSchemaType } from "..";
 import { useCreateExpense } from "../hooks/use-create-expense";
 import { ExpenseForm } from "../../../widgets/expense-form";
 
@@ -10,14 +10,14 @@ export function CreateForm({ onCloseModal }: { onCloseModal?: () => void }) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<createFormData>({
-    resolver: zodResolver(createSchema),
+  } = useForm<ExpenseCreateSchemaType>({
+    resolver: zodResolver(ExpenseCreateSchema),
     defaultValues: {},
   });
 
   const { mutate, isPending } = useCreateExpense();
 
-  const Submit = (data: createFormData) => {
+  const Submit = (data: ExpenseCreateSchemaType) => {
     mutate(data);
   };
 

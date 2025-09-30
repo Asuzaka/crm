@@ -1,1 +1,1 @@
-export { useDeleteUser } from "./hooks/useDeleteUser";
+export { useDeleteUser } from "./hooks/use-delete-user";

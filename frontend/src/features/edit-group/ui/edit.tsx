@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
-import { createSchema, type createFormData } from "../../add-group";
-import { mapGroupResponse } from "../util/normalize-object";
-import { useGroupUpdate } from "../hooks/useGroupUpdate";
+import { GroupCreateSchema, type GroupCreateSchemaType } from "../../add-group";
+import { useGroupUpdate } from "../hooks/use-group-update";
 import { GroupForm } from "../../../widgets/group-form";
 import type { getGroupResponse } from "../../../shared/api/types/group";
+import { mapGroup, type GroupUpdateSchemaType } from "..";
 
 export function UpdateForm({
   data,
@@ -19,10 +19,10 @@ export function UpdateForm({
     handleSubmit,
     control,
     formState: { errors, dirtyFields },
-  } = useForm<createFormData>({
-    resolver: zodResolver(createSchema),
+  } = useForm<GroupCreateSchemaType>({
+    resolver: zodResolver(GroupCreateSchema),
     defaultValues: data.data
-      ? mapGroupResponse(data)
+      ? mapGroup(data)
       : {
           students: [],
           status: "active",
@@ -33,7 +33,7 @@ export function UpdateForm({
 
   const { isPending, mutate } = useGroupUpdate(id);
 
-  const Submit = (data: createFormData) => {
+  const Submit = (data: GroupUpdateSchemaType) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
     mutate(patchData);

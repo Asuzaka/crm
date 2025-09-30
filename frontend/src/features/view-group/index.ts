@@ -1,1 +1,1 @@
-export { useGetGroup } from "./hook/useGetGroup";
+export { useGetGroup } from "./hooks/use-get-group";

@@ -1,67 +1,24 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { PhoneIcon, UserIcon } from "lucide-react";
+import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import {
-  studentSchema,
-  type StudentFormData,
-} from "../../features/add-student";
-import { MultiSelectField, type Option } from "./multiFieldSelect";
-import { searchGroups } from "../api/endpoints";
+  MultiSelectField,
+  type Option,
+} from "../../../shared/components/multiFieldSelect";
+import type { StudentCreateSchemaType } from "../../../features/add-student";
+import { PhoneIcon, UserIcon } from "lucide-react";
+import { searchGroups } from "../../../shared/api/endpoints";
 
-interface StudentFormPros {
-  initialValues?: StudentFormData;
-  onCancel: () => void;
-  isEditing?: boolean;
-  mutationHook: () => {
-    mutate: (data: StudentFormData) => void;
-    isPending: boolean;
-  };
-  initialGroup?: Option[];
+interface FormProps {
+  register: UseFormRegister<StudentCreateSchemaType>;
+  errors: FieldErrors<StudentCreateSchemaType>;
+  control: Control<StudentCreateSchemaType>;
+  groups?: Option[];
 }
 
-export function StudentForm({
-  initialValues,
-  onCancel,
-  isEditing = false,
-  mutationHook,
-  initialGroup = [],
-}: StudentFormPros) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<StudentFormData>({
-    resolver: zodResolver(studentSchema),
-    defaultValues: initialValues ?? {
-      name: "",
-      phoneNumber: "",
-      adress: "",
-      mothersName: "",
-      fathersName: "",
-      groups: [],
-      notes: "",
-    },
-  });
-
-  const { isPending, mutate } = mutationHook();
-
-  const onSubmit = (formData: StudentFormData) => {
-    if (isEditing && initialValues?._id) {
-      mutate(formData);
-    } else {
-      mutate(formData);
-    }
-  };
-
+export function Form({ register, errors, control, groups }: FormProps) {
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <>
       {/* General Info */}
       <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
-          {isEditing ? "Edit Student" : "Add New Student"}
-        </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name */}
           <div>
@@ -181,13 +138,13 @@ export function StudentForm({
       </div>
 
       {/* Groups Field */}
-      <MultiSelectField<StudentFormData>
+      <MultiSelectField
         control={control}
         name="groups"
         label="Groups"
         maxItems={5}
         fetchOptions={searchGroups}
-        initialGroup={initialGroup}
+        initialGroup={groups}
       />
       {/* Notes */}
       <div className="bg-white p-6 rounded-lg shadow">
@@ -201,24 +158,6 @@ export function StudentForm({
           placeholder="Add any additional information..."
         />
       </div>
-
-      {/* Actions */}
-      <div className="flex justify-end space-x-3">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="px-4 py-2 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
-        >
-          {isEditing ? "Update Student" : "Add Student"}
-        </button>
-      </div>
-    </form>
+    </>
   );
 }

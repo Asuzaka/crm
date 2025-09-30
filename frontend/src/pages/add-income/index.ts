@@ -1,1 +1,1 @@
-export { PaymentNew } from "./ui/new-payment";
+export { Create as CreatePaymentPage } from "./ui/create-payment";

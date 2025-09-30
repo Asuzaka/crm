@@ -1,7 +1,7 @@
 import type { getGroupResponse } from "../../../shared/api/types/group";
-import type { createFormData } from "../../add-group";
+import type { GroupCreateSchemaType } from "../../add-group";
 
-export function mapGroupResponse(data: getGroupResponse): createFormData {
+export function mapGroup(data: getGroupResponse): GroupCreateSchemaType {
   return {
     ...data.data,
     start: new Date(data.data.start),

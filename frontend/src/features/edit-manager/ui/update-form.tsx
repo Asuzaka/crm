@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "../../../widgets/manager-form";
-import { registerSchema, type RegisterFormData } from "../../add-manager";
-import { useUpdateUser } from "../hooks/useUpdateUser";
-import { mapUserResponse } from "../util/normalize-object";
+import { UserCreateSchema, type UserCreateSchemaType } from "../../add-manager";
+import { mapUser, type UserUpdateSchemaType, useUpdateUser } from "..";
 import type { UserGetResponse } from "../../../shared/api/types";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 
@@ -19,16 +18,16 @@ export function UpdateForm({
     handleSubmit,
     control,
     formState: { errors, dirtyFields },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<UserCreateSchemaType>({
+    resolver: zodResolver(UserCreateSchema),
     defaultValues: data.data
-      ? mapUserResponse(data)
+      ? mapUser(data)
       : { responsible: [], role: "manager" },
   });
 
   const { isPending, mutate } = useUpdateUser(id);
 
-  const Submit = (data: RegisterFormData) => {
+  const Submit = (data: UserUpdateSchemaType) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
     mutate(patchData);

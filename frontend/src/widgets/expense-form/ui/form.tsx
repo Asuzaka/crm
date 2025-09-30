@@ -4,7 +4,6 @@ import {
   type FieldErrors,
   type UseFormRegister,
 } from "react-hook-form";
-
 import {
   CreditCardIcon,
   DollarSignIcon,
@@ -12,16 +11,16 @@ import {
   TagIcon,
   UserIcon,
 } from "lucide-react";
-import type { createExpenseFormData } from "../../../features/add-expense";
+import type { ExpenseCreateSchemaType } from "../../../features/add-expense";
 import { categories } from "../helper/catergory";
 import { SelectOneFieldDynamicSearch } from "../../../shared/components";
 import { searchUsers } from "../../../shared/api/endpoints";
 import type { Option } from "../../../shared/components/select-one-field-dynamic-search";
 
 interface FormProps {
-  register: UseFormRegister<createExpenseFormData>;
-  errors: FieldErrors<createExpenseFormData>;
-  control: Control<createExpenseFormData>;
+  register: UseFormRegister<ExpenseCreateSchemaType>;
+  errors: FieldErrors<ExpenseCreateSchemaType>;
+  control: Control<ExpenseCreateSchemaType>;
   model?: boolean;
   aviable?: Option | null;
 }

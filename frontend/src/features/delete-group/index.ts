@@ -1,1 +1,1 @@
-export { useDeleteGroup } from "./hooks/useDeleteGroup";
+export { useDeleteGroup } from "./hooks/use-delete-group";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const studentSchema = z.object({
+export const createSchema = z.object({
   _id: z.string().optional(),
   name: z.string().min(2, "Name is required"),
   groups: z.array(z.string()),
@@ -15,4 +15,4 @@ export const studentSchema = z.object({
   notes: z.string().optional(),
 });
 
-export type StudentFormData = z.infer<typeof studentSchema>;
+export type createSchemaType = z.infer<typeof createSchema>;

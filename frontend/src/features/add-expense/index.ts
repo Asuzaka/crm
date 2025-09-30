@@ -1,4 +1,4 @@
-export type { createFormData as createExpenseFormData } from "./model/schema";
-export { createSchema as createExpenseSchema } from "./model/schema";
+export type { createSchemaType as ExpenseCreateSchemaType } from "./model/schema";
+export { createSchema as ExpenseCreateSchema } from "./model/schema";
+export { CreateForm as ExpenseCreateForm } from "./ui/create-expense";
 export { useCreateExpense } from "./hooks/use-create-expense";
-export { CreateForm as ExpenseCreateForm } from "./ui/create-form";

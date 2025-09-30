@@ -1,1 +1,1 @@
-export { useGetRecord } from "./hooks/useGetRecord";
+export { useGetRecord } from "./hooks/use-get-record";

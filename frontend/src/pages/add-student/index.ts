@@ -1,1 +1,1 @@
-export { AddStudent } from "./ui/addStudent"
+export { Create as CreateStudentPage } from "./ui/create-student";

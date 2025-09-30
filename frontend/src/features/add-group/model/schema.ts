@@ -14,10 +14,10 @@ export const createSchema = z.object({
   room: z.string().min(2, "Room is required"),
   status: statusEnum,
   description: z.string().min(2, "description is required"),
-  price: z.number(),
+  price: z.number().min(0, "Price is required"),
   start: z.date(),
   students: z.array(z.string()),
   schedule: schedule,
 });
 
-export type createFormData = z.infer<typeof createSchema>;
+export type createSchemaType = z.infer<typeof createSchema>;

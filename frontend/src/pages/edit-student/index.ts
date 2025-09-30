@@ -1,1 +1,1 @@
-export { EditStudent } from "./ui/editStudent";
+export { Update as StudentUpdatePage } from "./ui/update";

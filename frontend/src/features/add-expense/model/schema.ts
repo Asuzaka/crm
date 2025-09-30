@@ -29,4 +29,4 @@ export const createSchema = z.object({
   notes: z.string().optional(),
 });
 
-export type createFormData = z.infer<typeof createSchema>;
+export type createSchemaType = z.infer<typeof createSchema>;
