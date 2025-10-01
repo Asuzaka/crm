@@ -1,8 +1,8 @@
-import type { PaymentResponse } from "../../../shared/api/types";
+import type { getPaymentType } from "../../../shared/api/types/payment";
 import type { IncomeCreateSchemaType } from "../../add-income";
 
 export function mapPaymentResponse(
-  data: PaymentResponse
+  data: getPaymentType
 ): IncomeCreateSchemaType {
   return {
     ...data.data,

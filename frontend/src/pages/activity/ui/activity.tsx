@@ -7,13 +7,14 @@ import {
   SearchIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { useGetRecords } from "../../../entities/record/hook/useRecordAsList";
+import { useGetRecords } from "../../../entities/record/hooks/use-get-records";
 import { useNavigate } from "react-router";
-import { Loader, Pagination } from "../../../shared/components";
 import { Error } from "../../error";
 import { getReadyQuery } from "../helper/get-ready-query";
 import { useDebounce } from "../../../shared/hooks";
 import { returnColorOfAction } from "../helper/return-color";
+import { Loader } from "../../../shared/components/loader";
+import { Pagination } from "../../../shared/components/pagination";
 
 export function Activity() {
   const [showAdvancedFilters, setShowAdvancedFilters] =

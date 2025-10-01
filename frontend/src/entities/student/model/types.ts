@@ -1,10 +1,8 @@
-import type { Group } from "../../group";
-
 export type status = "active" | "archived";
 
 export interface IStudent {
   name: string;
-  groups: string[];
+  groups: { _id: string; name: string }[];
   phoneNumber: string;
   additionalNumber: string;
   fathersName: string;
@@ -20,34 +18,4 @@ export interface IStudent {
 
 export interface Student extends IStudent {
   _id: string;
-}
-
-export type GroupForStudentList = Pick<Group, "_id" | "name">;
-
-export interface StudentList
-  extends Pick<
-    Student,
-    "_id" | "name" | "phoneNumber" | "additionalNumber" | "status"
-  > {
-  groups: GroupForStudentList[];
-}
-
-export interface CreateStudent
-  extends Omit<
-    IStudent,
-    | "coins"
-    | "status"
-    | "additionalNumber"
-    | "notes"
-    | "mothersNumber"
-    | "fathersNumber"
-  > {
-  additionalNumber?: string;
-  notes?: string;
-  mothersNumber?: string;
-  fathersNumber?: string;
-}
-
-export interface StudentGet extends Omit<Student, "groups"> {
-  groups: GroupForStudentList[];
 }

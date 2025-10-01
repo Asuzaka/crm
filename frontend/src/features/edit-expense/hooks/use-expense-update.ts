@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import { updateExpense } from "../../../shared/api/endpoints";
-import { queryClient } from "../../../shared/api/queryClient";
 import type { ExpenseUpdateSchemaType } from "..";
+import { useMutation } from "@tanstack/react-query";
+import { updateExpense } from "../../../shared/api/endpoints/expense";
+import { queryClient } from "../../../shared/api/queryClient";
 import toast from "react-hot-toast";
 
 export function useExpenseUpdate(id: string) {

@@ -3,16 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "../../../widgets/manager-form";
 import { UserCreateSchema, type UserCreateSchemaType } from "../../add-manager";
 import { mapUser, type UserUpdateSchemaType, useUpdateUser } from "..";
-import type { UserGetResponse } from "../../../shared/api/types";
+import type { getUserType } from "../../../shared/api/types/user";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 
-export function UpdateForm({
-  data,
-  id,
-}: {
-  id: string;
-  data: UserGetResponse;
-}) {
+export function UpdateForm({ data, id }: { id: string; data: getUserType }) {
   const {
     register,
     handleSubmit,

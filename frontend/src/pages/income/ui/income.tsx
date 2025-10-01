@@ -3,12 +3,13 @@ import { Link } from "react-router";
 import { PlusIcon, SearchIcon, FilterIcon, CalendarIcon } from "lucide-react";
 import { useDebounce } from "../../../shared/hooks";
 import { useGetIncomes } from "../../../entities/income";
-import { Loader, Pagination } from "../../../shared/components";
 import { Error } from "../../error";
 import { returnColorOfMethod } from "../helper/return-color-of-method";
 import { Modal } from "../../../shared/ui";
 import { IncomeDelete } from "../../../widgets/income-delete";
 import { getReadyQuery } from "..";
+import { Loader } from "../../../shared/components/loader";
+import { Pagination } from "../../../shared/components/pagination";
 
 export function Income() {
   const [page, setPage] = useState(1);
@@ -165,7 +166,7 @@ export function Income() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {income.group.name}
+                        {income.group?.name || "deleted group"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
                         ${income.amount}

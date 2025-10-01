@@ -1,6 +1,6 @@
-import type { Option } from "../../components/multiFieldSelect";
+import type { SearchType } from "../../components/multi-field";
 
-export interface searchResult {
+export interface searchResponseType {
   status: string;
-  data: Option[];
+  data: SearchType[];
 }

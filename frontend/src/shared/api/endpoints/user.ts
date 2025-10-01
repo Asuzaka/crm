@@ -1,42 +1,35 @@
-import type { RegisterFormData } from "../../../features/add-manager";
-import type { RegisterPatchFormData } from "../../../features/edit-manager";
+import type { UserCreateSchemaType } from "../../../features/add-manager";
+import type { UserUpdateSchemaType } from "../../../features/edit-manager";
+import type { searchResponseType } from "../types/search";
+import type { getUsersType, getUserType } from "../types/user";
 import { client } from "../client";
-import type { searchResult } from "../types";
-import {
-  type GetUsersResponse,
-  type CreateUserResponseDTO,
-  type UserGetResponse,
-} from "../types/user";
 
 export function getUsers(page: number, limit: number, query: string) {
-  return client<GetUsersResponse>(
-    `/v1/users?page=${page}&limit=${limit}${query}`,
-    {
-      method: "GET",
-    }
-  );
+  return client<getUsersType>(`/v1/users?page=${page}&limit=${limit}${query}`, {
+    method: "GET",
+  });
 }
 
 export function getUser(id: string) {
-  return client<UserGetResponse>(`/v1/users/${id}`, { method: "GET" });
+  return client<getUserType>(`/v1/users/${id}`, { method: "GET" });
 }
 
-export function createUser(body: RegisterFormData) {
-  return client<CreateUserResponseDTO>("/v1/users/", {
+export function createUser(body: UserCreateSchemaType) {
+  return client<getUserType>("/v1/users/", {
     method: "POST",
     body: JSON.stringify(body),
   });
 }
 
-export function updateUser(id: string, body: RegisterPatchFormData) {
-  return client<CreateUserResponseDTO>(`/v1/users/${id}`, {
+export function updateUser(id: string, body: UserUpdateSchemaType) {
+  return client<getUserType>(`/v1/users/${id}`, {
     method: "PATCH",
     body: JSON.stringify(body),
   });
 }
 
 export function updateMe(body: unknown) {
-  return client<CreateUserResponseDTO>("/v1/users/", {
+  return client<getUserType>("/v1/users/", {
     method: "PATCH",
     body: JSON.stringify(body),
   });
@@ -50,8 +43,11 @@ export function deleteUsers(id: string[]) {
 }
 
 export async function searchUsers(query: string) {
-  const d = await client<searchResult>(`/v1/users/search?query=${query}`, {
-    method: "GET",
-  });
+  const d = await client<searchResponseType>(
+    `/v1/users/search?query=${query}`,
+    {
+      method: "GET",
+    }
+  );
   return d.data;
 }

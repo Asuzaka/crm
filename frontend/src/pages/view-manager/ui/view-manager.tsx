@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useParams, Link } from "react-router";
 import { ManagerHeaderComponent as Header } from "../../../widgets/manager-header";
 import { useGetUser } from "../../../features/edit-manager";
-import { Loader } from "../../../shared/components";
 import { Error } from "../../error";
 import { ManagerOverviewComponent as Overview } from "../../../widgets/manager-overview";
 import { ManagerPermissionComponent as Permission } from "../../../widgets/manager-permissions";
 import { ManagerGroupComponent as Group } from "../../../widgets/manager-groups";
 import { ManagerActivityComponent as Activity } from "../../../widgets/manager-activity";
+import { Loader } from "../../../shared/components/loader";
 
 export function ViewManager() {
   const [activeTab, setActiveTab] = useState<string>("overview");

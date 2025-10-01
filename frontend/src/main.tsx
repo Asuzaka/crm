@@ -8,7 +8,7 @@ import { queryClient } from "./shared/api/queryClient.ts";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App/>
+      <App />
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 );

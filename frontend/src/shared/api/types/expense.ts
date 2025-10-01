@@ -1,6 +1,6 @@
 import type { Expense } from "../../../entities/expense";
 
-export interface getExpenses {
+export interface getExpensesType {
   data: Expense[];
   status: string;
   results: number;
@@ -8,7 +8,7 @@ export interface getExpenses {
   pages: number;
 }
 
-export interface getExpense {
+export interface getExpenseType {
   data: Expense;
   status: string;
 }

@@ -1,16 +1,16 @@
-import { useForm } from "react-hook-form";
+import type { getPaymentType } from "../../../shared/api/types/payment";
 import {
   IncomeCreateSchema,
   type IncomeCreateSchemaType,
 } from "../../add-income";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { PaymentResponse } from "../../../shared/api/types";
+import { useForm } from "react-hook-form";
 import { useUpdateIncome } from "../hooks/use-update-income";
 import { mapPaymentResponse } from "..";
 import { IncomeForm } from "../../../widgets/income-form";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 
-export function Update({ id, data }: { id: string; data: PaymentResponse }) {
+export function Update({ id, data }: { id: string; data: getPaymentType }) {
   const {
     register,
     handleSubmit,

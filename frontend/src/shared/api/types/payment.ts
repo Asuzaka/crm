@@ -1,6 +1,6 @@
 import type { Payment } from "../../../entities/income";
 
-export interface PaymentsResponse {
+export interface getPaymentsType {
   status: string;
   data: Payment[];
   results: number;
@@ -8,7 +8,7 @@ export interface PaymentsResponse {
   pages: number;
 }
 
-export interface PaymentResponse {
+export interface getPaymentType {
   status: string;
   data: Payment;
 }

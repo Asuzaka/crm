@@ -1,41 +1,36 @@
 import type { StudentCreateSchemaType } from "../../../features/add-student";
 import type { StudentUpdateSchemaType } from "../../../features/edit-student";
 import { client } from "../client";
-import type { searchResult } from "../types/search";
-import type {
-  CreateStudentResponseDTO,
-  StudentGetResponse,
-  StudentsAsListResponse,
-  StudentsForGroup,
-} from "../types/students";
+import type { searchResponseType } from "../types/search";
+import type { getStudentsType, getStudentType } from "../types/students";
 
-export function getStudentsList(page: number, limit: number, query: string) {
-  return client<StudentsAsListResponse>(
+export function getStudents(page: number, limit: number, query: string) {
+  return client<getStudentsType>(
     `/v1/students?page=${page}&limit=${limit}${query}`,
     { method: "GET" }
   );
 }
 
 export function getStudentsGroup(id: string, page: number, limit: number) {
-  return client<StudentsForGroup>(
+  return client<getStudentsType>(
     `/v1/students/group/${id}?page=${page}&limit=${limit}`,
     { method: "GET" }
   );
 }
 
 export function getStudent(id: string) {
-  return client<StudentGetResponse>(`/v1/students/${id}`, { method: "GET" });
+  return client<getStudentType>(`/v1/students/${id}`, { method: "GET" });
 }
 
 export function createStudent(studentDetails: StudentCreateSchemaType) {
-  return client<CreateStudentResponseDTO>("/v1/students", {
+  return client<getStudentType>("/v1/students", {
     method: "POST",
     body: JSON.stringify(studentDetails),
   });
 }
 
 export function updateStudent(body: StudentUpdateSchemaType) {
-  return client<CreateStudentResponseDTO>(`/v1/students/${body._id}`, {
+  return client<getStudentType>(`/v1/students/${body._id}`, {
     method: "PATCH",
     body: JSON.stringify(body),
   });
@@ -49,8 +44,11 @@ export function deleteStudent(id: string[]) {
 }
 
 export async function searchStudents(query: string) {
-  const d = await client<searchResult>(`/v1/students/search?query=${query}`, {
-    method: "GET",
-  });
+  const d = await client<searchResponseType>(
+    `/v1/students/search?query=${query}`,
+    {
+      method: "GET",
+    }
+  );
   return d.data;
 }

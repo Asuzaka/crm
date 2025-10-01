@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import { useGetExpense } from "../../../features/view-expense";
 import { Error } from "../../error";
-import { Loader } from "../../../shared/components";
 import { getColorOfCategory } from "../../expenses/helper/get-color";
+import { Loader } from "../../../shared/components/loader";
 
 export function View() {
   const { id } = useParams();

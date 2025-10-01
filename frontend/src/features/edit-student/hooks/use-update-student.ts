@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateStudent } from "../../../shared/api/endpoints";
+import { updateStudent } from "../../../shared/api/endpoints/student";
 import { queryClient } from "../../../shared/api/queryClient";
 import toast from "react-hot-toast";
 

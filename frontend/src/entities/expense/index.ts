@@ -1,2 +1,2 @@
 export type { IExpense, Expense, category } from "./model/types";
-export { useExpenseAsList } from "./hook/useExpenseAsList";
+export { useGetExpenses } from "./hooks/use-get-expenses";

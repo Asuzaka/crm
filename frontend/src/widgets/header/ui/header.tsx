@@ -10,8 +10,10 @@ export function Header() {
 
   return (
     <header className="bg-white shadow-sm z-10">
-      <div className="flex justify-between items-center px-4 py-3">
-        <div className="text-xl font-semibold text-gray-800">CRM</div>
+      <div className="flex justify-between items-center px-4 py-3 sm:px-4 sm:py-3">
+        <div className="text-xl font-semibold text-gray-800 ml-15 md:ml-0">
+          CRM
+        </div>
         <div className="flex items-center space-x-4">
           <button className="p-1 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
             <BellIcon className="h-6 w-6" />

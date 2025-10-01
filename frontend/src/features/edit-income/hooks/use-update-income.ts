@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
 import type { IncomeUpdateSchemaType } from "..";
-import { updatePayment } from "../../../shared/api/endpoints";
+import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../../../shared/api/queryClient";
+import { updatePayment } from "../../../shared/api/endpoints/payment";
 import toast from "react-hot-toast";
 
 export function useUpdateIncome(id: string) {

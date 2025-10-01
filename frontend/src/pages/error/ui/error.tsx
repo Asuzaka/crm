@@ -1,8 +1,7 @@
 import { AlertTriangleIcon, ArrowLeftIcon, HomeIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
-
-interface ErrorProps{
+interface ErrorProps {
   title?: string;
   message?: string;
   errorCode?: string | number;
@@ -12,15 +11,13 @@ export function Error({
   title = "Something went wrong",
   message = "We encountered an error while processing your request.",
   errorCode = "",
-}:ErrorProps){
-
-  const navigate = useNavigate()
+}: ErrorProps) {
+  const navigate = useNavigate();
   const goBack = () => {
-    navigate(-1)
-  }
-  
+    navigate(-1);
+  };
 
-   return (
+  return (
     <div className="h-full bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-md p-8 max-w-lg w-full text-center">
         <div className="flex justify-center mb-6">
@@ -53,5 +50,5 @@ export function Error({
         </div>
       </div>
     </div>
-  )
+  );
 }

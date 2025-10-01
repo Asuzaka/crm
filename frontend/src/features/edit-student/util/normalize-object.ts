@@ -1,7 +1,7 @@
-import type { StudentGetResponse } from "../../../shared/api/types";
+import type { getStudentType } from "../../../shared/api/types/students";
 import type { StudentCreateSchemaType } from "../../add-student";
 
-export function mapStudent(data: StudentGetResponse): StudentCreateSchemaType {
+export function mapStudent(data: getStudentType): StudentCreateSchemaType {
   return {
     ...data.data,
     birthDate: data.data.birthDate

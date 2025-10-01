@@ -1,11 +1,11 @@
 import type { Lesson } from "../../../entities/lesson/model/types";
 
-export interface LessonsResponse {
+export interface getLessonsType {
   status: string;
   data: Lesson[];
 }
 
-export interface LessonResponse {
+export interface getLessonType {
   status: string;
   data: Lesson;
 }

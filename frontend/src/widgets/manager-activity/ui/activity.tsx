@@ -1,10 +1,10 @@
+import type { User } from "../../../entities/user";
 import { useGetUserRecords } from "../../../entities/record";
-import type { GetUser } from "../../../entities/user";
 import { returnColorOfAction } from "../../../pages/activity/helper/return-color";
 import { Error } from "../../../pages/error";
-import { Loader } from "../../../shared/components";
+import { Loader } from "../../../shared/components/loader";
 
-export function Activity({ manager }: { manager: GetUser }) {
+export function Activity({ manager }: { manager: User }) {
   const { data, isPending, error } = useGetUserRecords(manager._id);
 
   if (isPending) return <Loader />;

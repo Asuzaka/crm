@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteGroup } from "../../../shared/api/endpoints";
+import { deleteGroup } from "../../../shared/api/endpoints/group";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 

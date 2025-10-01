@@ -3,17 +3,18 @@ import { Link } from "react-router";
 import { PlusIcon, SearchIcon } from "lucide-react";
 import { Modal } from "../../../shared/ui";
 import { GroupDelete } from "../../../widgets/group-delete";
-import { useGroupList } from "../../../entities/group";
 import { Error } from "../../error";
-import { Loader, Pagination } from "../../../shared/components";
 import { getReadyQuery } from "../helper/get-ready-query";
 import { useDebounce } from "../../../shared/hooks";
+import { useGetGroups } from "../../../entities/group";
+import { Loader } from "../../../shared/components/loader";
+import { Pagination } from "../../../shared/components/pagination";
 
 export function Groups() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState<string>("all");
   const { query, setQuery, debouncedQuery } = useDebounce();
-  const { data, isPending, error } = useGroupList(
+  const { data, isPending, error } = useGetGroups(
     page,
     12,
     getReadyQuery(debouncedQuery, status)

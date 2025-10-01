@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateGroup } from "../../../shared/api/endpoints";
+import { updateGroup } from "../../../shared/api/endpoints/group";
 import type { GroupUpdateSchemaType } from "..";
 import { queryClient } from "../../../shared/api/queryClient";
 import toast from "react-hot-toast";

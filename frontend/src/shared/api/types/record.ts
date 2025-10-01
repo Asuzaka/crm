@@ -1,6 +1,6 @@
 import type { ActivityRecord } from "../../../entities/record";
 
-export interface getRecordsResponse {
+export interface getRecordsType {
   status: string;
   data: ActivityRecord[];
   results: number;
@@ -8,7 +8,7 @@ export interface getRecordsResponse {
   pages: number;
 }
 
-export interface getRecordResponse {
+export interface getRecordType {
   statis: string;
   data: ActivityRecord;
 }

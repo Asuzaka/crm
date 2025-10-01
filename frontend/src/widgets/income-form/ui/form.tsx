@@ -1,19 +1,18 @@
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import {
-  SelectOneFieldDynamicSearch,
-  type Option,
-} from "../../../shared/components/select-one-field-dynamic-search";
+import type { SearchType } from "../../../shared/components/multi-field";
 import type { IncomeCreateSchemaType } from "../../../features/add-income";
-import { searchGroups, searchStudents } from "../../../shared/api/endpoints";
+import { SelectOneFieldDynamicSearch } from "../../../shared/components/select-search-field";
 import { DollarSignIcon, FileTextIcon } from "lucide-react";
+import { searchStudents } from "../../../shared/api/endpoints/student";
+import { searchGroups } from "../../../shared/api/endpoints/group";
 
 interface FormProps {
   register: UseFormRegister<IncomeCreateSchemaType>;
   errors: FieldErrors<IncomeCreateSchemaType>;
   control: Control<IncomeCreateSchemaType>;
   disabled?: boolean;
-  student?: Option | null;
-  group?: Option | null;
+  student?: SearchType | null;
+  group?: SearchType | null;
 }
 
 export function Form({
@@ -36,6 +35,7 @@ export function Form({
             Student *
           </label>
           <SelectOneFieldDynamicSearch
+            disabled={disabled}
             name="student"
             initialValue={student}
             control={control}
@@ -56,6 +56,7 @@ export function Form({
             Group *
           </label>
           <SelectOneFieldDynamicSearch
+            disabled={disabled}
             name="group"
             initialValue={group}
             control={control}

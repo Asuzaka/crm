@@ -4,15 +4,17 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 import type { UserCreateSchemaType } from "../../../features/add-manager";
-import { MultiSelectField } from "../../../shared/components";
-import { searchGroups } from "../../../shared/api/endpoints";
-import type { Option } from "../../../shared/components/multiFieldSelect";
+import {
+  MultiFieldSelect,
+  type SearchType,
+} from "../../../shared/components/multi-field";
+import { searchGroups } from "../../../shared/api/endpoints/group";
 
 interface FormProps {
   register: UseFormRegister<UserCreateSchemaType>;
   errors: FieldErrors<UserCreateSchemaType>;
   control: Control<UserCreateSchemaType>;
-  availableGroups?: Option[] | undefined;
+  availableGroups?: SearchType[] | undefined;
 }
 
 export function Form({
@@ -105,8 +107,8 @@ export function Form({
         <p className="text-sm text-gray-500 mb-3">
           Select the groups this manager will be responsible for:
         </p>
-        <MultiSelectField
-          initialGroup={availableGroups}
+        <MultiFieldSelect
+          initialValues={availableGroups}
           control={control}
           name="responsible"
           label="Responsible"

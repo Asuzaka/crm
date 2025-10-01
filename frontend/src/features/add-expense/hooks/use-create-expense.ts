@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { createExpense } from "../../../shared/api/endpoints";
 import toast from "react-hot-toast";
+import { createExpense } from "../../../shared/api/endpoints/expense";
 
 export function useCreateExpense() {
   return useMutation({

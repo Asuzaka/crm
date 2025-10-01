@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../../app/providers/store/authStore";
-import { login } from "../../../shared/api/endpoints";
 import { useNavigate } from "react-router";
 import { ROUTES } from "../../../shared/consts/routes";
+import { login } from "../../../shared/api/endpoints/auth";
 
 export function useLogin() {
   const setUser = useAuthStore((s) => s.setUser);

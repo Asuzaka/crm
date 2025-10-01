@@ -11,6 +11,7 @@ import { router as lesson } from "./routes/lessonRoute";
 import { router as payment } from "./routes/paymentRoute";
 import { router as record } from "./routes/recordRoute";
 import { router as expense } from "./routes/expenseRoute";
+import { router as stats } from "./routes/statsRoute";
 import CustomError from "./services/CustomError";
 import { NOT_FOUND, TOO_MANY_REQUESTS } from "./constants/httpCodes";
 import { CANNOTREACH, TOOMANYREQUEST } from "./constants/errors";
@@ -58,11 +59,11 @@ app.use("/v1/lessons", lesson);
 app.use("/v1/payments", payment);
 app.use("/v1/records", record);
 app.use("/v1/expenses", expense);
+app.use("/v1/stats", stats);
+
 // Global 404 handler
 app.use("*splat", (req: Request, _res: Response, next: NextFunction) => {
-  next(
-    new CustomError(CANNOTREACH(req.originalUrl), NOT_FOUND)
-  );
+  next(new CustomError(CANNOTREACH(req.originalUrl), NOT_FOUND));
 });
 
 // ErrorCatcher

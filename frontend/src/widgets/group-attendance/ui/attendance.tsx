@@ -18,10 +18,6 @@ export function Attendance({
   error: Error | null;
   isPending: boolean;
 }) {
-  //  Attendance records saved successfully!
-
-  // func to update Changed Lessons
-
   function presentFunc(student: string, date: string) {
     setTable((old) =>
       old.map((each) => {

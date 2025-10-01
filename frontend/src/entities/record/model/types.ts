@@ -1,6 +1,12 @@
 import type { UserForName } from "../../user";
 
-export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT" | "OTHER";
+export type action =
+  | "CREATE"
+  | "UPDATE"
+  | "DELETE"
+  | "LOGIN"
+  | "LOGOUT"
+  | "OTHER";
 
 export interface ActivityRecord {
   _id: string;

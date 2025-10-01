@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteUsers } from "../../../shared/api/endpoints";
-import toast from "react-hot-toast";
+import { deleteUsers } from "../../../shared/api/endpoints/user";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 export function useDeleteUser(id: string[]) {
   const navigate = useNavigate();

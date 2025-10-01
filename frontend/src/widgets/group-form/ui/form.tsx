@@ -5,21 +5,21 @@ import {
   type FieldErrors,
   type UseFormRegister,
 } from "react-hook-form";
-import {
-  MultiSelectField,
-  type Option,
-} from "../../../shared/components/multiFieldSelect";
+import {} from "../../../shared/components/multi-field/ui/select";
 import type { GroupCreateSchemaType } from "../../../features/add-group";
-import { MultiDaySelector } from "../../../shared/components/multi-days-select";
-import { searchStudents, searchUsers } from "../../../shared/api/endpoints";
-import { SelectOneFieldDynamicSearch } from "../../../shared/components";
+import type { SearchType } from "../../../shared/components/multi-field";
+import { SelectOneFieldDynamicSearch } from "../../../shared/components/select-search-field";
+import { searchUsers } from "../../../shared/api/endpoints/user";
+import { MultiDaySelector } from "../../../shared/components/multi-days";
+import { searchStudents } from "../../../shared/api/endpoints/student";
+import { MultiFieldSelect } from "../../../shared/components/multi-field/index";
 
 interface FormProps {
   register: UseFormRegister<GroupCreateSchemaType>;
   errors: FieldErrors<GroupCreateSchemaType>;
   control: Control<GroupCreateSchemaType>;
-  aviableStudents?: Option[] | undefined;
-  aviable?: Option | null;
+  aviableStudents?: SearchType[] | undefined;
+  aviable?: SearchType | null;
 }
 
 export function Form({
@@ -199,11 +199,11 @@ export function Form({
       {/* Students Section - Only visible when editing */}
       <div className="bg-white p-6 rounded-lg shadow">
         {/* Current Students */}
-        <MultiSelectField
+        <MultiFieldSelect
           control={control}
           name="students"
           label="Students"
-          initialGroup={aviableStudents}
+          initialValues={aviableStudents}
           fetchOptions={searchStudents}
         />
       </div>

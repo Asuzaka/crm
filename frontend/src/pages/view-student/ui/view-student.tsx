@@ -11,10 +11,10 @@ import {
   ClipboardIcon,
 } from "lucide-react";
 import { useGetStudent } from "../../../features/edit-student";
-import { Loader } from "../../../shared/components";
 import { Error } from "../../error";
 import { Modal } from "../../../shared/ui";
 import { StudentDelete as Delete } from "../../../widgets/student-delete";
+import { Loader } from "../../../shared/components/loader";
 
 export function ViewStudent() {
   const { id } = useParams();

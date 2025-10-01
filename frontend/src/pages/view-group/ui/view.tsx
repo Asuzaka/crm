@@ -17,7 +17,6 @@ import { Delete } from "../../../widgets/group-delete/ui/delete";
 import { Modal } from "../../../shared/ui";
 import { useGetGroup } from "../../../features/view-group";
 import { Error } from "../../error";
-import { Loader } from "../../../shared/components";
 import { GroupStudents as Students } from "../../../widgets/group-students";
 import { GroupAttendance as Attendance } from "../../../widgets/group-attendance";
 import { GroupGrade as Grade } from "../../../widgets/group-grade";
@@ -29,6 +28,7 @@ import { separateChanged } from "../helper/seperate-changed";
 import { formatDate } from "../helper/formatDate";
 import { useUpdateLessons } from "../../../features/edit-lesson";
 import { useCreateLessons } from "../../../features/add-lesson";
+import { Loader } from "../../../shared/components/loader";
 
 export function View() {
   const currentDate = new Date();

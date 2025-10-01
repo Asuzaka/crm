@@ -2,14 +2,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 import { mapExpense, useExpenseUpdate, type ExpenseUpdateSchemaType } from "..";
-import type { getExpense } from "../../../shared/api/types";
+import type { getExpenseType } from "../../../shared/api/types/expense";
 import {
   ExpenseCreateSchema,
   type ExpenseCreateSchemaType,
 } from "../../add-expense";
 import { ExpenseForm } from "../../../widgets/expense-form";
 
-export function UpdateForm({ data, id }: { id: string; data: getExpense }) {
+export function UpdateForm({ data, id }: { id: string; data: getExpenseType }) {
   const {
     register,
     handleSubmit,

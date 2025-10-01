@@ -1,35 +1,14 @@
-import type { Student, StudentList } from "../../../entities/student";
-import type {
-  GroupForStudentList,
-  StudentGet,
-} from "../../../entities/student/model/types";
+import type { Student } from "../../../entities/student";
 
-export interface StudentsAsListResponse {
+export interface getStudentsType {
   status: string;
-  data: StudentList[];
+  data: Student[];
   results: number;
   documents: number;
   pages: number;
 }
 
-export interface CreateStudentResponseDTO {
+export interface getStudentType {
   status: string;
   data: Student;
-}
-
-export interface StudentSearchResponse {
-  stautus: string;
-  data: GroupForStudentList[];
-}
-
-export interface StudentsForGroup {
-  status: string;
-  data: Student[];
-  results: number;
-  pages: number;
-}
-
-export interface StudentGetResponse {
-  status: string;
-  data: StudentGet;
 }

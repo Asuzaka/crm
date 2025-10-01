@@ -13,16 +13,16 @@ import {
 } from "lucide-react";
 import type { ExpenseCreateSchemaType } from "../../../features/add-expense";
 import { categories } from "../helper/catergory";
-import { SelectOneFieldDynamicSearch } from "../../../shared/components";
-import { searchUsers } from "../../../shared/api/endpoints";
-import type { Option } from "../../../shared/components/select-one-field-dynamic-search";
+import type { SearchType } from "../../../shared/components/multi-field";
+import { SelectOneFieldDynamicSearch } from "../../../shared/components/select-search-field";
+import { searchUsers } from "../../../shared/api/endpoints/user";
 
 interface FormProps {
   register: UseFormRegister<ExpenseCreateSchemaType>;
   errors: FieldErrors<ExpenseCreateSchemaType>;
   control: Control<ExpenseCreateSchemaType>;
   model?: boolean;
-  aviable?: Option | null;
+  aviable?: SearchType | null;
 }
 
 export function Form({

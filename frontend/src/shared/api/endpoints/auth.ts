@@ -1,18 +1,18 @@
-import type { LoginFormData } from "../../../features/auth";
+import type { LoginType } from "../types/auth";
+import type { LoginSchemaType } from "../../../features/auth";
 import { client } from "../client";
-import type { LoginResponseDTO } from "../types/auth";
 
-export function login(credentials: LoginFormData) {
-  return client<LoginResponseDTO>("/v1/auth/login", {
+export function login(credentials: LoginSchemaType) {
+  return client<LoginType>("/v1/auth/login", {
     method: "POST",
     body: JSON.stringify(credentials),
   });
 }
 
 export function authenticated() {
-  return client<LoginResponseDTO>("/v1/auth/authenticated", { method: "GET" });
+  return client<LoginType>("/v1/auth/authenticated", { method: "GET" });
 }
 
 export function logout() {
-  return client("/v1/auth/logout", { method: "GET" });
+  return client<unknown>("/v1/auth/logout", { method: "GET" });
 }

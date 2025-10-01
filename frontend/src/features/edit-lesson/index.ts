@@ -1,1 +1,1 @@
-export { useUpdateLessons } from "./hooks/useUpdateLessons";
+export { useUpdateLessons } from "./hooks/use-update-lessons";

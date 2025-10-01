@@ -4,16 +4,10 @@ import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 import { GroupCreateSchema, type GroupCreateSchemaType } from "../../add-group";
 import { useGroupUpdate } from "../hooks/use-group-update";
 import { GroupForm } from "../../../widgets/group-form";
-import type { getGroupResponse } from "../../../shared/api/types/group";
+import type { getGroupType } from "../../../shared/api/types/group";
 import { mapGroup, type GroupUpdateSchemaType } from "..";
 
-export function UpdateForm({
-  data,
-  id,
-}: {
-  id: string;
-  data: getGroupResponse;
-}) {
+export function UpdateForm({ data, id }: { id: string; data: getGroupType }) {
   const {
     register,
     handleSubmit,

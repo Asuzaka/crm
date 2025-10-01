@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from "react-router";
-import { ArrowLeftIcon, Loader } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import { Error } from "../../error";
 import { IncomeUpdate, useGetIncome } from "../../../features/edit-income";
+import { Loader } from "../../../shared/components/loader";
 
 export function Edit() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export function Edit() {
       <div className="flex items-center mb-6">
         <button
           onClick={() => navigate(-1)}
-          className="mr-4 text-blue-600 hover:text-blue-800"
+          className="mr-4 text-blue-600 hover:text-blue-800 cursor-pointer"
         >
           <ArrowLeftIcon className="h-5 w-5" />
         </button>

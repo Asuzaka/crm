@@ -1,6 +1,5 @@
 import { Link } from "react-router";
-import { useUserList } from "../../../entities/user";
-import { Loader, Pagination } from "../../../shared/components";
+import { useGetUsers } from "../../../entities/user";
 import { Error } from "../../error";
 import { PlusIcon, SearchIcon } from "lucide-react";
 import { Modal } from "../../../shared/ui";
@@ -8,11 +7,13 @@ import { ManagerDelete as Delete } from "../../../widgets/manager-delete";
 import { useState } from "react";
 import { useDebounce } from "../../../shared/hooks";
 import { getReadyQuery } from "../helper/get-query-ready";
+import { Loader } from "../../../shared/components/loader";
+import { Pagination } from "../../../shared/components/pagination";
 
 export function Managers() {
   const [page, setPage] = useState(1);
   const { query, setQuery, debouncedQuery } = useDebounce();
-  const { data, isPending, error } = useUserList(
+  const { data, isPending, error } = useGetUsers(
     page,
     20,
     getReadyQuery(debouncedQuery)

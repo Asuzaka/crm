@@ -1,26 +1,26 @@
-import { client } from "../client";
 import type { ILesson, Lesson } from "../../../entities/lesson";
-import type { LessonResponse, LessonsResponse } from "../types/lesson";
+import type { getLessonsType, getLessonType } from "../types/lesson";
+import { client } from "../client";
 
 export function getLessons(id: string, date: string) {
-  return client<LessonsResponse>(`/v1/lessons/group/${id}?date=${date}`, {
+  return client<getLessonsType>(`/v1/lessons/group/${id}?date=${date}`, {
     method: "GET",
   });
 }
 
 export function getLesson(id: string) {
-  return client<LessonResponse>(`/v1/lessons/${id}`, { method: "GET" });
+  return client<getLessonType>(`/v1/lessons/${id}`, { method: "GET" });
 }
 
 export function createLessons(body: ILesson[]) {
-  return client<LessonResponse>("/v1/lessons", {
+  return client<getLessonType>("/v1/lessons", {
     method: "POST",
     body: JSON.stringify({ lessons: body }),
   });
 }
 
 export function updateLessons(body: Lesson[]) {
-  return client<LessonResponse>("/v1/lessons/", {
+  return client<getLessonType>("/v1/lessons/", {
     method: "PATCH",
     body: JSON.stringify({ lessons: body }),
   });

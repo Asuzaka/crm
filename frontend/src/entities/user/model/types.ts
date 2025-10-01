@@ -14,7 +14,7 @@ export interface IUser {
   email: string;
   name: string;
   role: role;
-  responsible: string[];
+  responsible: { _id: string; name: string }[];
   permissions: Permissions;
   lastLogin: Date;
   createdAt: Date;
@@ -24,15 +24,3 @@ export interface IUser {
 }
 
 export type UserForName = Pick<User, "name" | "_id" | "email">;
-
-export interface GetUser extends Omit<User, "responsible"> {
-  responsible: { _id: string; name: string }[];
-}
-
-export interface UsersAsList
-  extends Pick<
-    User,
-    "name" | "email" | "permissions" | "lastLogin" | "_id" | "activity"
-  > {
-  responsible: { _id: string; name: string }[];
-}

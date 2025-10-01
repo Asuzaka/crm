@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 import { useGetIncome } from "../../../features/edit-income";
 import { Error } from "../../error";
-import { Loader } from "../../../shared/components";
 import { Modal } from "../../../shared/ui";
 import { IncomeDelete } from "../../../widgets/income-delete";
+import { Loader } from "../../../shared/components/loader";
 
 export function View() {
   const { id } = useParams();
@@ -126,10 +126,10 @@ export function View() {
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   <Link
-                    to={`/groups/${data.data.group._id}`}
+                    to={`/groups/${data.data.group?._id}`}
                     className="text-blue-600 hover:text-blue-800"
                   >
-                    {data.data.group.name}
+                    {data.data.group?.name || "Deleted Group"}
                   </Link>
                 </dd>
               </div>

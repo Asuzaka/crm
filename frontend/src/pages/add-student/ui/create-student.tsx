@@ -1,5 +1,5 @@
 import { StudentCreateForm } from "../../../features/add-student";
-import { CreatePageCover } from "../../../shared/components";
+import { CreatePageCover } from "../../../shared/components/create-page";
 
 export function Create() {
   return (

@@ -1,6 +1,6 @@
 export interface Payment {
   _id: string;
-  group: { _id: string; name: string };
+  group: { _id: string; name: string } | null;
   amount: number;
   student: { _id: string; name: string };
   receiptNumber: string;

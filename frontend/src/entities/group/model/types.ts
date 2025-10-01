@@ -16,5 +16,3 @@ export interface IGroup {
 export interface Group extends IGroup {
   _id: string;
 }
-
-export type GroupOption = Pick<Group, "_id" | "name">;

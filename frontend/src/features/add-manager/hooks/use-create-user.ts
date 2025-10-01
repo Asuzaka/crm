@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { createUser } from "../../../shared/api/endpoints";
+import { createUser } from "../../../shared/api/endpoints/user";
 import toast from "react-hot-toast";
 
 export function useCreateUser() {

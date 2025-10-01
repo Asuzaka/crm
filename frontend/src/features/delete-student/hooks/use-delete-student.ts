@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteStudent } from "../../../shared/api/endpoints";
-import toast from "react-hot-toast";
+import { deleteStudent } from "../../../shared/api/endpoints/student";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 export function useDeleteStudent(id: string[]) {
   const navigate = useNavigate();

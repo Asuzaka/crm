@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import { UserUpdateForm, useGetUser } from "../../../features/edit-manager";
-import { Loader } from "../../../shared/components";
+import { Loader } from "../../../shared/components/loader";
 import { Error } from "../../error";
 
 export function EditManager() {
@@ -25,10 +25,11 @@ export function EditManager() {
       <div className="flex items-center mb-6">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center justify-center cursor-pointer"
+          className="mr-4 text-blue-600 hover:text-blue-800 cursor-pointer"
         >
           <ArrowLeftIcon className="h-5 w-5" />
         </button>
+        <h1 className="text-2xl font-semibold text-gray-800">Edit Manager</h1>
       </div>
       <UserUpdateForm id={id} data={data} />
     </>

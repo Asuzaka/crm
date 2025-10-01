@@ -10,8 +10,7 @@ import {
   TagIcon,
   UserIcon,
 } from "lucide-react";
-import { useExpenseAsList, type Expense } from "../../../entities/expense";
-import { Loader, Pagination } from "../../../shared/components";
+import { useGetExpenses, type Expense } from "../../../entities/expense";
 import { Error } from "../../error";
 import { Modal } from "../../../shared/ui";
 import { Link } from "react-router";
@@ -20,11 +19,13 @@ import { useDebounce } from "../../../shared/hooks";
 import { getColorOfCategory } from "../helper/get-color";
 import { ExpenseCreateForm } from "../../../features/add-expense";
 import { getReadyQuery } from "../helper/get-query-ready";
+import { Loader } from "../../../shared/components/loader";
+import { Pagination } from "../../../shared/components/pagination";
 
 export function Expenses() {
   const { query, setQuery, debouncedQuery } = useDebounce();
   const [page, setPage] = useState(1);
-  const { data, isPending, error } = useExpenseAsList(
+  const { data, isPending, error } = useGetExpenses(
     page,
     20,
     getReadyQuery(debouncedQuery)
@@ -331,7 +332,7 @@ export function Expenses() {
               setPage={setPage}
               totalItems={data.documents}
               totalPages={data.pages}
-            ></Pagination>
+            />
           </div>
         )}
       </div>

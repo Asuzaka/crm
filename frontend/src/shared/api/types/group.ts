@@ -1,6 +1,6 @@
-import type { Group, GroupOption } from "../../../entities/group";
+import type { Group } from "../../../entities/group";
 
-export interface GroupOptionResponse {
+export interface getGroupsType {
   status: string;
   data: Group[];
   results: number;
@@ -8,12 +8,7 @@ export interface GroupOptionResponse {
   pages: number;
 }
 
-export interface getGroupResponse {
+export interface getGroupType {
   status: string;
   data: Group;
-}
-
-export interface GroupsSearchResponse {
-  status: string;
-  data: GroupOption[];
 }

@@ -1,21 +1,15 @@
+import type { getStudentType } from "../../../shared/api/types/students";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 import { mapStudent, useUpdateStudent, type StudentUpdateSchemaType } from "..";
-import type { StudentGetResponse } from "../../../shared/api/types";
 import {
   StudentCreateSchema,
   type StudentCreateSchemaType,
 } from "../../add-student";
 import { StudentForm } from "../../../widgets/student-form";
 
-export function UpdateForm({
-  data,
-  id,
-}: {
-  id: string;
-  data: StudentGetResponse;
-}) {
+export function UpdateForm({ data, id }: { id: string; data: getStudentType }) {
   const {
     register,
     handleSubmit,

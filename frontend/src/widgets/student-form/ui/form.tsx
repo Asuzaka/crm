@@ -1,17 +1,17 @@
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import {
-  MultiSelectField,
-  type Option,
-} from "../../../shared/components/multiFieldSelect";
 import type { StudentCreateSchemaType } from "../../../features/add-student";
+import {
+  MultiFieldSelect,
+  type SearchType,
+} from "../../../shared/components/multi-field";
 import { PhoneIcon, UserIcon } from "lucide-react";
-import { searchGroups } from "../../../shared/api/endpoints";
+import { searchGroups } from "../../../shared/api/endpoints/group";
 
 interface FormProps {
   register: UseFormRegister<StudentCreateSchemaType>;
   errors: FieldErrors<StudentCreateSchemaType>;
   control: Control<StudentCreateSchemaType>;
-  groups?: Option[];
+  groups?: SearchType[];
 }
 
 export function Form({ register, errors, control, groups }: FormProps) {
@@ -138,13 +138,13 @@ export function Form({ register, errors, control, groups }: FormProps) {
       </div>
 
       {/* Groups Field */}
-      <MultiSelectField
+      <MultiFieldSelect
         control={control}
         name="groups"
         label="Groups"
         maxItems={5}
         fetchOptions={searchGroups}
-        initialGroup={groups}
+        initialValues={groups}
       />
       {/* Notes */}
       <div className="bg-white p-6 rounded-lg shadow">
