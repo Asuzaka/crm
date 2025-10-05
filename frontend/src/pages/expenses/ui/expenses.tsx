@@ -25,11 +25,7 @@ import { Pagination } from "../../../shared/components/pagination";
 export function Expenses() {
   const { query, setQuery, debouncedQuery } = useDebounce();
   const [page, setPage] = useState(1);
-  const { data, isPending, error } = useGetExpenses(
-    page,
-    20,
-    getReadyQuery(debouncedQuery)
-  );
+  const { data, isPending, error } = useGetExpenses(page, 20, getReadyQuery(debouncedQuery));
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
   const [startDate, setStartDate] = useState("");
@@ -38,18 +34,22 @@ export function Expenses() {
   const [sortDirection, setSortDirection] = useState("desc");
   const [showFilters, setShowFilters] = useState(false);
 
-  console.log(data);
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
 
-  if (error)
-    return <Error title="Failed to get expences" message={error.message} />;
+  if (error) return <Error title="Failed to get expences" message={error.message} />;
 
   return (
     <Modal>
       <div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
-            Expense Management
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Expense Management</h1>
           <Modal.Open opens="new-expense">
             <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
               <PlusIcon className="h-4 w-4 mr-2" />
@@ -77,7 +77,10 @@ export function Expenses() {
             </div>
             {/* Date Filter */}
             <div className="md:w-64">
-              <select className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+              <select
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              >
                 <option value="all">All Dates</option>
                 <option value="thisMonth">This Month</option>
                 <option value="lastMonth">Last Month</option>
@@ -104,10 +107,7 @@ export function Expenses() {
           {dateFilter === "custom" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label
-                  htmlFor="start-date"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label htmlFor="start-date" className="block text-sm font-medium text-gray-700 mb-1">
                   Start Date
                 </label>
                 <input
@@ -119,10 +119,7 @@ export function Expenses() {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="end-date"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label htmlFor="end-date" className="block text-sm font-medium text-gray-700 mb-1">
                   End Date
                 </label>
                 <input
@@ -140,10 +137,7 @@ export function Expenses() {
             <div className="mt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label
-                    htmlFor="category-filter"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
+                  <label htmlFor="category-filter" className="block text-sm font-medium text-gray-700 mb-1">
                     Category
                   </label>
                   <select
@@ -153,7 +147,7 @@ export function Expenses() {
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   >
                     <option value="all">All Categories</option>
-                    {[].map((category) => (
+                    {[].map((category: { id: string; name: string }) => (
                       <option key={category.id} value={category.id}>
                         {category.name}
                       </option>
@@ -177,7 +171,7 @@ export function Expenses() {
                     <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                      onClick={() => console.log("sort date")}
+                      onClick={() => handleSort("date")}
                     >
                       <div className="flex items-center">
                         <CalendarIcon className="h-4 w-4 mr-1" />
@@ -270,9 +264,7 @@ export function Expenses() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(expense.createdAt).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">
-                        {expense.description}
-                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{expense.description}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getColorOfCategory(
@@ -288,30 +280,18 @@ export function Expenses() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">
                         -${expense.amount.toLocaleString()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {expense.paymentMethod}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
-                        {expense.notes}
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{expense.paymentMethod}</td>
+                      <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{expense.notes}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link
-                          to={`/expenses/${expense._id}`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/expenses/${expense._id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                           View
                         </Link>
 
-                        <Link
-                          to={`/expenses/${expense._id}/edit`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/expenses/${expense._id}/edit`} className="text-blue-600 hover:text-blue-900 mr-4">
                           Edit
                         </Link>
                         <Modal.Open opens={`delete-expense-${expense._id}`}>
-                          <button className="text-red-600 hover:text-red-900">
-                            Delete
-                          </button>
+                          <button className="text-red-600 hover:text-red-900">Delete</button>
                         </Modal.Open>
                         <Modal.Window name={`delete-expense-${expense._id}`}>
                           <Delete id={expense._id} />
@@ -327,12 +307,7 @@ export function Expenses() {
                 <p className="text-gray-500">No expenses found.</p>
               </div>
             )}
-            <Pagination
-              page={page}
-              setPage={setPage}
-              totalItems={data.documents}
-              totalPages={data.pages}
-            />
+            <Pagination page={page} setPage={setPage} totalItems={data.documents} totalPages={data.pages} />
           </div>
         )}
       </div>

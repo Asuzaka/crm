@@ -1,11 +1,4 @@
-import {
-  CalendarIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ClockIcon,
-  FilterIcon,
-  SearchIcon,
-} from "lucide-react";
+import { CalendarIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon, FilterIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useGetRecords } from "../../../entities/record/hooks/use-get-records";
 import { useNavigate } from "react-router";
@@ -17,30 +10,20 @@ import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
 
 export function Activity() {
-  const [showAdvancedFilters, setShowAdvancedFilters] =
-    useState<boolean>(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
   const { query, setQuery, debouncedQuery } = useDebounce();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
-  const { data, isPending, error } = useGetRecords(
-    page,
-    20,
-    getReadyQuery(debouncedQuery)
-  );
+  const { data, isPending, error } = useGetRecords(page, 20, getReadyQuery(debouncedQuery));
 
-  if (error)
-    return <Error title="Failed to fetch activity" message={error.message} />;
+  if (error) return <Error title="Failed to fetch activity" message={error.message} />;
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Activity History
-        </h1>
-        <p className="text-gray-600">
-          Track all actions performed by managers across the system.
-        </p>
+        <h1 className="text-2xl font-semibold text-gray-800">Activity History</h1>
+        <p className="text-gray-600">Track all actions performed by managers across the system.</p>
       </div>
 
       {/* Search and Basic Filters */}
@@ -97,13 +80,10 @@ export function Activity() {
         </div>
 
         {/* Custom Date Range */}
-        {"aeva" === "custom" && (
+        {/* {true && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label
-                htmlFor="start-date"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="start-date" className="block text-sm font-medium text-gray-700 mb-1">
                 Start Date
               </label>
               <input
@@ -113,10 +93,7 @@ export function Activity() {
               />
             </div>
             <div>
-              <label
-                htmlFor="end-date"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="end-date" className="block text-sm font-medium text-gray-700 mb-1">
                 End Date
               </label>
               <input
@@ -126,17 +103,14 @@ export function Activity() {
               />
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Advanced Filters */}
         {showAdvancedFilters && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Manager Filter */}
             <div>
-              <label
-                htmlFor="manager-filter"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="manager-filter" className="block text-sm font-medium text-gray-700 mb-1">
                 Manager
               </label>
               <select
@@ -144,7 +118,7 @@ export function Activity() {
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
                 <option value="all">All Managers</option>
-                {[].map((manager) => (
+                {[].map((manager: { id: string; name: string }) => (
                   <option key={manager.id} value={manager.id}>
                     {manager.name}
                   </option>
@@ -154,10 +128,7 @@ export function Activity() {
 
             {/* Action Type Filter */}
             <div>
-              <label
-                htmlFor="action-filter"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="action-filter" className="block text-sm font-medium text-gray-700 mb-1">
                 Action Type
               </label>
               <select
@@ -175,10 +146,7 @@ export function Activity() {
 
             {/* Entity Type Filter */}
             <div>
-              <label
-                htmlFor="entity-filter"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="entity-filter" className="block text-sm font-medium text-gray-700 mb-1">
                 Entity Type
               </label>
               <select
@@ -284,12 +252,8 @@ export function Activity() {
                           </span>
                         </div>
                         <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">
-                            {activity.user.name}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {activity.user.email}
-                          </div>
+                          <div className="text-sm font-medium text-gray-900">{activity.user.name}</div>
+                          <div className="text-xs text-gray-500">{activity.user.email}</div>
                         </div>
                       </div>
                     </td>
@@ -299,9 +263,7 @@ export function Activity() {
                           activity.actionType
                         )}`}
                       >
-                        {activity.entityType +
-                          " " +
-                          activity.actionType.toLowerCase()}
+                        {activity.entityType + " " + activity.actionType.toLowerCase()}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 max-w-md">
@@ -324,9 +286,7 @@ export function Activity() {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
                 <ClockIcon className="h-8 w-8 text-gray-400" />
               </div>
-              <p className="text-gray-500 mb-2">
-                No activity records found matching your filters.
-              </p>
+              <p className="text-gray-500 mb-2">No activity records found matching your filters.</p>
               <button
                 onClick={() => {
                   console.log("filters reset");
@@ -337,12 +297,7 @@ export function Activity() {
               </button>
             </div>
           )}
-          <Pagination
-            setPage={setPage}
-            page={page}
-            totalPages={data.pages}
-            totalItems={data.documents}
-          />
+          <Pagination setPage={setPage} page={page} totalPages={data.pages} totalItems={data.documents} />
         </div>
       )}
     </div>

@@ -1,20 +1,17 @@
+import type { User } from "../../../entities/user";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { Link } from "react-router";
-import type { GetUser } from "../../../entities/user";
 import { Modal } from "../../../shared/ui";
-import { useDeleteUser } from "../../../features/delete-manager";
 import { ManagerDelete as Delete } from "../../manager-delete";
 
 interface HeaderProps {
-  manager: GetUser;
+  manager: User;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   activeTab: string;
   id: string;
 }
 
 export function Header({ manager, activeTab, setActiveTab, id }: HeaderProps) {
-  const { mutate } = useDeleteUser([id]);
-
   return (
     <Modal>
       <div className="bg-white shadow rounded-lg mb-6">
@@ -29,9 +26,7 @@ export function Header({ manager, activeTab, setActiveTab, id }: HeaderProps) {
               </span>
             </div>
             <div className="ml-5">
-              <h2 className="text-xl font-bold text-gray-900">
-                {manager.name}
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900">{manager.name}</h2>
               <div className="mt-1 flex items-center text-sm text-gray-500">
                 <span className="truncate">{manager.email}</span>
               </div>

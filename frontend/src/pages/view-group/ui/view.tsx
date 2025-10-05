@@ -39,11 +39,7 @@ export function View() {
   const { mutate: mutationCreate } = useCreateLessons();
   const [table, setTable] = useState<LessonRecord[]>([]);
 
-  const {
-    data: lessons,
-    isPending: isLoading,
-    error: hasError,
-  } = useGetLessons(id!, formatDate(currentDate));
+  const { data: lessons, isPending: isLoading, error: hasError } = useGetLessons(id!, formatDate(currentDate));
 
   useEffect(() => {
     if (data && lessons) {
@@ -71,23 +67,17 @@ export function View() {
 
   if (isPending) return <Loader />;
 
-  if (error)
-    return <Error title="Failed to get group" message={error.message} />;
+  if (error) return <Error title="Failed to get group" message={error.message} />;
 
   return (
     <div>
       <Modal>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <Link
-              to="/groups"
-              className="mr-4 text-blue-600 hover:text-blue-800"
-            >
+            <Link to="/groups" className="mr-4 text-blue-600 hover:text-blue-800">
               <ArrowLeftIcon className="h-5 w-5" />
             </Link>
-            <h1 className="text-2xl font-semibold text-gray-800">
-              Group Details
-            </h1>
+            <h1 className="text-2xl font-semibold text-gray-800">Group Details</h1>
           </div>
           <div className="flex space-x-3">
             <Link
@@ -109,18 +99,12 @@ export function View() {
         <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
           <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
             <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                {data.data.name}
-              </h3>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Group ID: {data.data._id}
-              </p>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">{data.data.name}</h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">Group ID: {data.data._id}</p>
             </div>
             <span
               className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                data.data.status === "active"
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
+                data.data.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
               }`}
             >
               {data.data.status}
@@ -229,9 +213,7 @@ export function View() {
                       <DollarSignIcon className="h-5 w-5 mr-2 text-gray-400" />
                       Monthly Fee
                     </dt>
-                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {data.data.price} UZS
-                    </dd>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{data.data.price} UZS</dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt className="text-sm font-medium text-gray-500 flex items-center">
@@ -249,21 +231,15 @@ export function View() {
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       {data.data.start ? (
-                        <span>
-                          {new Date(data.data.start).toLocaleDateString()}
-                        </span>
+                        <span>{new Date(data.data.start).toLocaleDateString()}</span>
                       ) : (
                         "Not specified"
                       )}
                     </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt className="text-sm font-medium text-gray-500">
-                      Description
-                    </dt>
-                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {data.data.description}
-                    </dd>
+                    <dt className="text-sm font-medium text-gray-500">Description</dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{data.data.description}</dd>
                   </div>
                 </dl>
               </div>
