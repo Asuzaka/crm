@@ -41,9 +41,13 @@ function getBool(key: string, backup: boolean, crit: boolean): boolean {
 
 interface Config {
   BACKEND_API: string;
+  USE_UNUSED_BOOL: boolean;
+  USE_UNUSED_NUMBER: number;
   // other elements...
 }
 
 export const config: Config = {
   BACKEND_API: getString("BACKEND_API", "http://localhost:8080", false),
+  USE_UNUSED_BOOL: getBool("BOOL", true, false),
+  USE_UNUSED_NUMBER: getNumber("NUMBER", 0, false),
 };
