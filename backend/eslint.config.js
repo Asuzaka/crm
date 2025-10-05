@@ -25,7 +25,7 @@ export default [
       ...tseslint.configs.recommended.rules,
       semi: ["error", "always"],
       quotes: ["error", "double"],
-      "no-unused-vars": "warn",
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {

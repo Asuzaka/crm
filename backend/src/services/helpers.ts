@@ -1,4 +1,4 @@
-export function filterout<T extends Object>(a: T, ...b: string[]): Partial<T> {
+export function filterout<T extends object>(a: T, ...b: string[]): Partial<T> {
   for (const [key] of Object.entries(a)) {
     if (b.includes(key)) {
       delete (a as any)[key];
@@ -7,10 +7,7 @@ export function filterout<T extends Object>(a: T, ...b: string[]): Partial<T> {
   return a;
 }
 
-export function getDateRange(
-  date: Date,
-  period: string
-): { start: Date; end: Date } {
+export function getDateRange(date: Date, period: string): { start: Date; end: Date } {
   let start = new Date(date);
   let end = new Date(date);
 

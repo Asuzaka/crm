@@ -19,7 +19,7 @@ function getValue(adress: string, defaultValue: string): string {
   return v ?? defaultValue;
 }
 
-function getBool(adress: string, defaultValue: boolean): boolean {
+function _getBool(adress: string, defaultValue: boolean): boolean {
   const v: string | undefined = gv(adress);
 
   if (!v) return defaultValue;

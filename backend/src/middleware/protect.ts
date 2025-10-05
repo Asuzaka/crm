@@ -30,11 +30,8 @@ export const protect: RequestHandler = catchAsync(
     }
 
     // 2. Token verification
-    const decoded = (await promisify(jwt.verify as any)(
-      token,
-      config.JWT_SECRET
-    )) as DecodedToken;
-    
+    const decoded = (await promisify(jwt.verify as any)(token, config.JWT_SECRET)) as DecodedToken;
+
     // 3. Check if user still exitst
     const user = await User.findById(decoded.id);
     if (!user) {
@@ -43,15 +40,15 @@ export const protect: RequestHandler = catchAsync(
 
     // 4. Check if password was changed recently
     // @later
-    
+
     // 5. After as acces is granted update login time
-    user.lastLogin = new Date()
+    user.lastLogin = new Date();
     await user.save({ validateBeforeSave: false });
 
     // access to protected route
     (req as AuthenticatedRequest).user = user;
     next();
-  }
+  },
 );
 
 export const bodyExitst = (req: Request, _: Response, next: NextFunction) => {
