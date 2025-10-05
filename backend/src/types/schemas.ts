@@ -3,13 +3,7 @@ import { Types } from "mongoose";
 export type role = "owner" | "manager";
 export type status = "active" | "archived";
 export type grade = 1 | 2 | 3 | 4 | 5;
-export type action =
-  | "CREATE"
-  | "UPDATE"
-  | "DELETE"
-  | "LOGIN"
-  | "LOGOUT"
-  | "OTHER";
+export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT" | "OTHER";
 
 export interface IPermissions {
   addStudents: boolean;
@@ -29,10 +23,7 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   passwordChangedAt: Date;
-  confirmPassword(
-    candidatePassword: string,
-    userPassword: string
-  ): Promise<boolean>;
+  confirmPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
 }
 
 export interface IStudent extends Document {

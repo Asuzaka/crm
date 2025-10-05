@@ -10,9 +10,9 @@ export const NOCREDENTIALS = "Email and password are required";
 export const EMPTYBODY = "Requet body cannot be empty";
 export const NOIDPROVIDED = "No id was provided";
 export const INVALIDID = "Invalid id";
-export const CANNOTREACH = (url:string)=> `Can't reach ${url} on this server`;
-export const NODOCUMENTFOUND = (docName:string)=> `No ${docName} was found`;
-export const NODATEPROVIDED = "No date is provided"
+export const CANNOTREACH = (url: string) => `Can't reach ${url} on this server`;
+export const NODOCUMENTFOUND = (docName: string) => `No ${docName} was found`;
+export const NODATEPROVIDED = "No date is provided";
 export const INVALIDQUERORNOQUERY = "Missing or invalid query param";
 export const SUCCESS = "success";
 export const FAIL = "fail";
