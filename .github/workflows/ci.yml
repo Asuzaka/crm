@@ -1,4 +1,4 @@
-name: CRM CI & Release Prep
+name: "CRM CI & Release Prep"
 
 on:
   push:
