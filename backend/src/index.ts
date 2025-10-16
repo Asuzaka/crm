@@ -4,7 +4,7 @@ import { config } from "./constants/config";
 import { initOwner } from "./startup/initOwner";
 
 async function StartServer() {
-  connectDatabase();
+  await connectDatabase();
   await initOwner();
 
   app.listen(config.PORT, () => {
