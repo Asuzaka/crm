@@ -25,10 +25,10 @@ export default [
       ...tseslint.configs.recommended.rules,
       semi: ["error", "always"],
       quotes: ["error", "double"],
-      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
+          args: "all",
           argsIgnorePattern: "^_", // arguments with _
           varsIgnorePattern: "^_", // variables with _
         },
