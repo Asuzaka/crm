@@ -11,11 +11,10 @@ export default [
     files: ["**/*.{ts,tsx,js,jsx}"],
     languageOptions: {
       ecmaVersion: "latest",
-      sourceType: "module",
+      sourceType: "script",
       parser: tsparser,
       globals: {
         ...globals.node,
-        ...globals.browser,
       },
     },
     plugins: {
@@ -25,6 +24,7 @@ export default [
       ...tseslint.configs.recommended.rules,
       semi: ["error", "always"],
       quotes: ["error", "double"],
+      "no-redeclare": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {

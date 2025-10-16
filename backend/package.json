@@ -7,7 +7,6 @@
     "Calculation",
     "CRM"
   ],
-  "type": "module",
   "license": "ISC",
   "author": "Asuzaka",
   "main": "index.js",
