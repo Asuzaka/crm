@@ -10,6 +10,8 @@ export type Config = {
   JWT_SECRET: string;
   JWT_EXPIRES_IN: ms.StringValue;
   JWT_COOKIE_EXPIRE: number;
+  OWNER_MAIL: string;
+  OWNER_PASSWORD: string;
 };
 
 const gv = (adress: string) => process.env[adress];
@@ -50,4 +52,6 @@ export const config: Config = {
   JWT_SECRET: getValue("JWT_SECRET", "NO_JWT"),
   JWT_EXPIRES_IN: getValue("JWT_EXPIRES_IN", "90d") as ms.StringValue,
   JWT_COOKIE_EXPIRE: getNumber("JWT_COOKIE_EXPIRE", 90),
+  OWNER_MAIL: getValue("OWNER_MAIL", "owner@crm.co"),
+  OWNER_PASSWORD: getValue("OWNER_PASSWORD", "owner1234"),
 };
