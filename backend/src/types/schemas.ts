@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types, Document } from "mongoose";
 
 export type role = "owner" | "manager";
 export type status = "active" | "archived";
