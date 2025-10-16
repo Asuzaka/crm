@@ -12,6 +12,19 @@ All notable changes to this project will be documented in this file. See [standa
 * **frontend:** resolve TypeScript build errors in config and widgets ([98d876e](https://github.com/Asuzaka/crm/commit/98d876e8e6c1e83772206ae6bf810c2c8132aa5c))
 * **lint:** resolve ESLint errors across components ([eef16b3](https://github.com/Asuzaka/crm/commit/eef16b3f7dae89f3a7850fa520d55d74fa5389a8))
 * **lint:** resolve ESLint errors in frontend ([f25b94d](https://github.com/Asuzaka/crm/commit/f25b94d9be75209608a426875f7529ba25eda1d0))
+* **schemas.ts:** add import of Document from mongoose to resolve type error ([d6f8a46](https://github.com/Asuzaka/crm/commit/d6f8a46ade060fa52a363e110850a19be4ccad4e))
+* **tsconfig:** resolve import path errors by adjusting moduleResolution ([d2a2bad](https://github.com/Asuzaka/crm/commit/d2a2bad391323c812f976d06cff280e6769ed721))
+
+### 1.0.1 (2025-10-16)
+
+
+### Bug Fixes
+
+* **config:** add missed lint and test commands ([f34b8e3](https://github.com/Asuzaka/crm/commit/f34b8e34cce4c97ffcdfba7f1e6b232f861e6d72))
+* **config:** switch backend to CommonJS module system for ts-node-dev compatibility ([a107c46](https://github.com/Asuzaka/crm/commit/a107c468a715c94f2a75e098d05821d79b1181a6))
+* **frontend:** resolve TypeScript build errors in config and widgets ([98d876e](https://github.com/Asuzaka/crm/commit/98d876e8e6c1e83772206ae6bf810c2c8132aa5c))
+* **lint:** resolve ESLint errors across components ([eef16b3](https://github.com/Asuzaka/crm/commit/eef16b3f7dae89f3a7850fa520d55d74fa5389a8))
+* **lint:** resolve ESLint errors in frontend ([f25b94d](https://github.com/Asuzaka/crm/commit/f25b94d9be75209608a426875f7529ba25eda1d0))
 
 ### 1.0.1 (2025-10-15)
 
