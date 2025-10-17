@@ -1,9 +1,6 @@
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import type { StudentCreateSchemaType } from "../../../features/add-student";
-import {
-  MultiFieldSelect,
-  type SearchType,
-} from "../../../shared/components/multi-field";
+import { MultiFieldSelect, type SearchType } from "../../../shared/components/multi-field";
 import { PhoneIcon, UserIcon } from "lucide-react";
 import { searchGroups } from "../../../shared/api/endpoints/group";
 
@@ -22,9 +19,7 @@ export function Form({ register, errors, control, groups }: FormProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Full Name *
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Full Name *</label>
             <div className="mt-1 relative rounded-md shadow-sm">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <UserIcon className="h-5 w-5 text-gray-400" />
@@ -38,16 +33,12 @@ export function Form({ register, errors, control, groups }: FormProps) {
                 placeholder="John Smith"
               />
             </div>
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
           </div>
 
           {/* Phone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Phone *
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Phone *</label>
             <div className="mt-1 relative rounded-md shadow-sm">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <PhoneIcon className="h-5 w-5 text-gray-400" />
@@ -61,18 +52,12 @@ export function Form({ register, errors, control, groups }: FormProps) {
                 placeholder="(555) 123-4567"
               />
             </div>
-            {errors.phoneNumber && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.phoneNumber.message}
-              </p>
-            )}
+            {errors.phoneNumber && <p className="mt-1 text-sm text-red-600">{errors.phoneNumber.message}</p>}
           </div>
 
           {/* Date of Birth */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Date of Birth
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
             <input
               type="date"
               {...register("birthDate")}
@@ -82,9 +67,7 @@ export function Form({ register, errors, control, groups }: FormProps) {
 
           {/* Address */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Address
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Address</label>
             <textarea
               {...register("adress")}
               rows={2}
@@ -95,9 +78,7 @@ export function Form({ register, errors, control, groups }: FormProps) {
 
           {/* Parent Info */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Mother’s Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Mother’s Name</label>
             <input
               type="text"
               {...register("mothersName")}
@@ -105,9 +86,7 @@ export function Form({ register, errors, control, groups }: FormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Mother’s Contact
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Mother’s Contact</label>
             <input
               type="tel"
               {...register("mothersNumber")}
@@ -115,9 +94,7 @@ export function Form({ register, errors, control, groups }: FormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Father’s Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Father’s Name</label>
             <input
               type="text"
               {...register("fathersName")}
@@ -125,9 +102,7 @@ export function Form({ register, errors, control, groups }: FormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Father’s Contact
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Father’s Contact</label>
             <input
               type="tel"
               {...register("fathersNumber")}
@@ -138,19 +113,21 @@ export function Form({ register, errors, control, groups }: FormProps) {
       </div>
 
       {/* Groups Field */}
-      <MultiFieldSelect
-        control={control}
-        name="groups"
-        label="Groups"
-        maxItems={5}
-        fetchOptions={searchGroups}
-        initialValues={groups}
-      />
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Groups</h2>
+        <MultiFieldSelect
+          control={control}
+          name="groups"
+          label="Groups"
+          maxItems={5}
+          fetchOptions={searchGroups}
+          initialValues={groups}
+        />
+      </div>
+
       {/* Notes */}
       <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
-          Additional Notes
-        </h2>
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Additional Notes</h2>
         <textarea
           {...register("notes")}
           rows={3}

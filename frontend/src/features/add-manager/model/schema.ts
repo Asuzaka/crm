@@ -13,7 +13,7 @@ export const createSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, "Password at least 8 characters"),
   name: z.string().min(2, "Name is required"),
-  role: roleEnum,
+  role: roleEnum.optional(),
   responsible: z.array(z.string()),
   permissions: permissionsSchema,
 });

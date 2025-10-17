@@ -1,11 +1,8 @@
+import { GroupCreateSchema, useCreateGroup, type GroupCreateSchemaType } from "..";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GroupForm } from "../../../widgets/group-form";
-import {
-  GroupCreateSchema,
-  useCreateGroup,
-  type GroupCreateSchemaType,
-} from "..";
+import { Button } from "../../../shared/components/button";
 
 export function CreateForm() {
   const {
@@ -34,13 +31,9 @@ export function CreateForm() {
       <GroupForm register={register} errors={errors} control={control} />
       {/* --- Submit --- */}
       <div className="pt-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full py-2 px-4 rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
-        >
-          {isPending ? "Creating  Group..." : "Create Group"}
-        </button>
+        <Button type="submit" full loading={isPending} loadingText="Creating  Group...">
+          Create Group
+        </Button>
       </div>
     </form>
   );

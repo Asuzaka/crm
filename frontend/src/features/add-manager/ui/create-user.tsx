@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { type UserCreateSchemaType, UserCreateSchema, useCreateUser } from "..";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "../../../widgets/manager-form";
+import { Button } from "../../../shared/components/button";
 
 export function CreateForm() {
   const {
@@ -25,13 +26,9 @@ export function CreateForm() {
       <Form register={register} errors={errors} control={control} />
       {/* --- Submit --- */}
       <div className="pt-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full py-2 px-4 rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
-        >
-          {isPending ? "Creating User Account..." : "Create User Account"}
-        </button>
+        <Button type="submit" loading={isPending} loadingText="Creating User Account...">
+          Create User Account
+        </Button>
       </div>
     </form>
   );

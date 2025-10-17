@@ -21,6 +21,7 @@ import { ExpenseCreateForm } from "../../../features/add-expense";
 import { getReadyQuery } from "../helper/get-query-ready";
 import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
+import { Button } from "../../../shared/components/button";
 
 export function Expenses() {
   const { query, setQuery, debouncedQuery } = useDebounce();
@@ -51,10 +52,7 @@ export function Expenses() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Expense Management</h1>
           <Modal.Open opens="new-expense">
-            <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              <PlusIcon className="h-4 w-4 mr-2" />
-              Add New Expense
-            </button>
+            <Button icon={<PlusIcon className="h-4 w-4 mr-2" />}>Add New Expense</Button>
           </Modal.Open>
         </div>
         {/* Search and Filters */}
@@ -89,18 +87,18 @@ export function Expenses() {
             </div>
             {/* Toggle Filters */}
             <div>
-              <button
+              <Button
+                variant="outline"
+                icon={<FilterIcon className="h-4 w-4 mr-2" />}
                 onClick={() => setShowFilters(!showFilters)}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                <FilterIcon className="h-4 w-4 mr-2" />
                 {showFilters ? "Hide Filters" : "Show Filters"}
                 {showFilters ? (
                   <ChevronUpIcon className="h-4 w-4 ml-1" />
                 ) : (
                   <ChevronDownIcon className="h-4 w-4 ml-1" />
                 )}
-              </button>
+              </Button>
             </div>
           </div>
           {/* Custom Date Range */}
@@ -291,7 +289,9 @@ export function Expenses() {
                           Edit
                         </Link>
                         <Modal.Open opens={`delete-expense-${expense._id}`}>
-                          <button className="text-red-600 hover:text-red-900">Delete</button>
+                          <Button variant="destructive" size="sm">
+                            Delete
+                          </Button>
                         </Modal.Open>
                         <Modal.Window name={`delete-expense-${expense._id}`}>
                           <Delete id={expense._id} />

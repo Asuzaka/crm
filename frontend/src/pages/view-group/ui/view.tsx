@@ -29,6 +29,8 @@ import { formatDate } from "../helper/formatDate";
 import { useUpdateLessons } from "../../../features/edit-lesson";
 import { useCreateLessons } from "../../../features/add-lesson";
 import { Loader } from "../../../shared/components/loader";
+import { Button } from "../../../shared/components/button";
+import { TabButton } from "../../../shared/components/button/ui/tab";
 
 export function View() {
   const currentDate = new Date();
@@ -88,10 +90,9 @@ export function View() {
               Edit
             </Link>
             <Modal.Open opens="delete-group">
-              <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                <TrashIcon className="h-4 w-4 mr-2" />
+              <Button variant="destructive" icon={<TrashIcon className="h-4 w-4 mr-2" />}>
                 Delete
-              </button>
+              </Button>
             </Modal.Open>
           </div>
         </div>
@@ -113,59 +114,37 @@ export function View() {
           {/* Tabs */}
           <div className="border-t border-gray-200">
             <nav className="flex overflow-x-auto">
-              <button
-                onClick={() => setActiveTab("overview")}
-                className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                  activeTab === "overview"
-                    ? "border-b-2 border-blue-500 text-blue-600"
-                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
+              <TabButton active={activeTab === "overview"} onClick={() => setActiveTab("overview")}>
                 Overview
-              </button>
-              <button
-                onClick={() => setActiveTab("students")}
-                className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                  activeTab === "students"
-                    ? "border-b-2 border-blue-500 text-blue-600"
-                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
+              </TabButton>
+
+              <TabButton active={activeTab === "students"} onClick={() => setActiveTab("students")}>
                 Students
-              </button>
-              <button
+              </TabButton>
+
+              <TabButton
+                active={activeTab === "attendance"}
                 onClick={() => setActiveTab("attendance")}
-                className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                  activeTab === "attendance"
-                    ? "border-b-2 border-blue-500 text-blue-600"
-                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
+                icon={<CheckSquareIcon className="h-4 w-4" />}
               >
-                <CheckSquareIcon className="h-4 w-4 inline mr-1" />
                 Attendance
-              </button>
-              <button
+              </TabButton>
+
+              <TabButton
+                active={activeTab === "grades"}
                 onClick={() => setActiveTab("grades")}
-                className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                  activeTab === "grades"
-                    ? "border-b-2 border-blue-500 text-blue-600"
-                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
+                icon={<BookOpenIcon className="h-4 w-4" />}
               >
-                <BookOpenIcon className="h-4 w-4 inline mr-1" />
                 Grades
-              </button>
-              <button
+              </TabButton>
+
+              <TabButton
+                active={activeTab === "payments"}
                 onClick={() => setActiveTab("payments")}
-                className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                  activeTab === "payments"
-                    ? "border-b-2 border-blue-500 text-blue-600"
-                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
+                icon={<DollarSignIcon className="h-4 w-4" />}
               >
-                <DollarSignIcon className="h-4 w-4 inline mr-1" />
                 Payments
-              </button>
+              </TabButton>
             </nav>
           </div>
         </div>

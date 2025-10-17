@@ -14,6 +14,7 @@ import { Error } from "../../error";
 import { Modal } from "../../../shared/ui";
 import { IncomeDelete } from "../../../widgets/income-delete";
 import { Loader } from "../../../shared/components/loader";
+import { Button } from "../../../shared/components/button";
 
 export function View() {
   const { id } = useParams();
@@ -24,23 +25,17 @@ export function View() {
 
   if (!id) return <Error title="No id" message="no id was provided" />;
 
-  if (error)
-    return <Error title="Failed to get income" message={error.message} />;
+  if (error) return <Error title="Failed to get income" message={error.message} />;
 
   return (
     <Modal>
       <div>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <Link
-              to="/income"
-              className="mr-4 text-blue-600 hover:text-blue-800"
-            >
+            <Link to="/income" className="mr-4 text-blue-600 hover:text-blue-800">
               <ArrowLeftIcon className="h-5 w-5" />
             </Link>
-            <h1 className="text-2xl font-semibold text-gray-800">
-              Payment Details
-            </h1>
+            <h1 className="text-2xl font-semibold text-gray-800">Payment Details</h1>
           </div>
 
           <div className="flex space-x-3">
@@ -52,26 +47,21 @@ export function View() {
               Edit
             </Link>
             <Modal.Open opens="delete-payment">
-              <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                <TrashIcon className="h-4 w-4 mr-2" />
+              <Button variant="destructive" icon={<TrashIcon className="h-4 w-4 mr-2" />}>
                 Delete
-              </button>
+              </Button>
             </Modal.Open>
           </div>
         </div>
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
             <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Receipt #{data.data.receiptNumber}
-              </h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Receipt #{data.data.receiptNumber}</h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
                 Created on {new Date(data.data.createdAt).toLocaleString()}
               </p>
             </div>
-            <span className="px-3 py-1 text-lg font-semibold text-green-700">
-              ${data.data.amount}
-            </span>
+            <span className="px-3 py-1 text-lg font-semibold text-green-700">${data.data.amount}</span>
           </div>
           <div className="border-t border-gray-200">
             <dl>
@@ -81,10 +71,7 @@ export function View() {
                   Student
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <Link
-                    to={`/students/${data.data.student._id}`}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
+                  <Link to={`/students/${data.data.student._id}`} className="text-blue-600 hover:text-blue-800">
                     {data.data.student.name}
                   </Link>
                 </dd>
@@ -94,9 +81,7 @@ export function View() {
                   <DollarSignIcon className="h-5 w-5 mr-2 text-gray-400" />
                   Amount
                 </dt>
-                <dd className="mt-1 text-sm font-medium text-green-600 sm:mt-0 sm:col-span-2">
-                  ${data.data.amount}
-                </dd>
+                <dd className="mt-1 text-sm font-medium text-green-600 sm:mt-0 sm:col-span-2">${data.data.amount}</dd>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500 flex items-center">
@@ -125,10 +110,7 @@ export function View() {
                   Group
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <Link
-                    to={`/groups/${data.data.group?._id}`}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
+                  <Link to={`/groups/${data.data.group?._id}`} className="text-blue-600 hover:text-blue-800">
                     {data.data.group?.name || "Deleted Group"}
                   </Link>
                 </dd>
@@ -138,9 +120,7 @@ export function View() {
                   <UserIcon className="h-5 w-5 mr-2 text-gray-400" />
                   Processed By
                 </dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {data.data.createdBy}
-                </dd>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{data.data.createdBy}</dd>
               </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500 flex items-center">
@@ -156,13 +136,9 @@ export function View() {
         </div>
         {/* Print Receipt Button */}
         <div className="mt-6 flex justify-end">
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            <ReceiptIcon className="h-4 w-4 mr-2" />
+          <Button variant="outline" icon={<ReceiptIcon className="h-4 w-4 mr-2" />} onClick={() => window.print()}>
             Print Receipt
-          </button>
+          </Button>
         </div>
       </div>
 

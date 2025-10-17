@@ -3,6 +3,8 @@ import { EditIcon, TrashIcon } from "lucide-react";
 import { Link } from "react-router";
 import { Modal } from "../../../shared/ui";
 import { ManagerDelete as Delete } from "../../manager-delete";
+import { Button } from "../../../shared/components/button";
+import { TabButton } from "../../../shared/components/button/ui/tab";
 
 interface HeaderProps {
   manager: User;
@@ -44,59 +46,30 @@ export function Header({ manager, activeTab, setActiveTab, id }: HeaderProps) {
               Edit
             </Link>
             <Modal.Open opens="manager-delete">
-              <button
-                onClick={() => console.log("delete -> modal")}
-                className="inline-flex items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                <TrashIcon className="h-4 w-4 mr-2" />
-                Remove
-              </button>
+              <Button variant="destructive" icon={<TrashIcon className="h-4 w-4 mr-2" />}>
+                Delete
+              </Button>
             </Modal.Open>
           </div>
         </div>
         {/* Tabs */}
         <div className="border-t border-gray-200">
           <nav className="flex overflow-x-auto">
-            <button
-              onClick={() => setActiveTab("overview")}
-              className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                activeTab === "overview"
-                  ? "border-b-2 border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
+            <TabButton active={activeTab === "overview"} onClick={() => setActiveTab("overview")}>
               Overview
-            </button>
-            <button
-              onClick={() => setActiveTab("permissions")}
-              className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                activeTab === "permissions"
-                  ? "border-b-2 border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
+            </TabButton>
+
+            <TabButton active={activeTab === "permissions"} onClick={() => setActiveTab("permissions")}>
               Permissions
-            </button>
-            <button
-              onClick={() => setActiveTab("groups")}
-              className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                activeTab === "groups"
-                  ? "border-b-2 border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
+            </TabButton>
+
+            <TabButton active={activeTab === "groups"} onClick={() => setActiveTab("groups")}>
               Groups
-            </button>
-            <button
-              onClick={() => setActiveTab("activity")}
-              className={`px-6 py-3 text-sm font-medium whitespace-nowrap ${
-                activeTab === "activity"
-                  ? "border-b-2 border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
+            </TabButton>
+
+            <TabButton active={activeTab === "activity"} onClick={() => setActiveTab("activity")}>
               Activity History
-            </button>
+            </TabButton>
           </nav>
         </div>
       </div>

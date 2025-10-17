@@ -2,13 +2,7 @@ import type { PaginationProps } from "..";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRef } from "react";
 
-export function Pagination({
-  totalPages,
-  totalItems,
-  limit = 20,
-  page,
-  setPage,
-}: PaginationProps) {
+export function Pagination({ totalPages, totalItems, limit = 20, page, setPage }: PaginationProps) {
   const input = useRef<HTMLInputElement | null>(null);
 
   function handleCustom() {
@@ -29,8 +23,7 @@ export function Pagination({
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-t border-gray-200 px-4 py-2">
       {/* Results info */}
       <p className="text-sm text-gray-700 mb-2 sm:mb-0">
-        Showing <span className="font-medium">{start}</span> to{" "}
-        <span className="font-medium">{end}</span> of{" "}
+        Showing <span className="font-medium">{start}</span> to <span className="font-medium">{end}</span> of{" "}
         <span className="font-medium">{totalItems}</span> results
       </p>
 
@@ -48,9 +41,7 @@ export function Pagination({
         </button>
 
         {/* Current page */}
-        <span className="px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm font-semibold">
-          {page}
-        </span>
+        <span className="px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm font-semibold">{page}</span>
 
         {/* Next button */}
         <button

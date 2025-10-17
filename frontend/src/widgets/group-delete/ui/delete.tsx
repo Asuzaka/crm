@@ -1,4 +1,5 @@
 import { useDeleteGroup } from "../../../features/delete-group";
+import { Button } from "../../../shared/components/button";
 
 interface DeleteProps {
   name?: string;
@@ -11,26 +12,18 @@ export function Delete({ name, onCloseModal, id }: DeleteProps) {
 
   return (
     <>
-      <h3 className="text-lg font-medium text-gray-900 mb-4">
-        Confirm Deletion
-      </h3>
+      <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
       <p className="mb-4 text-gray-500">
-        Are you sure you want to delete the group "{name}"? This action cannot
-        be undone and will remove all students from this group.
+        Are you sure you want to delete the group "{name}"? This action cannot be undone and will remove all students
+        from this group.
       </p>
       <div className="flex justify-end space-x-3">
-        <button
-          onClick={onCloseModal}
-          className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-        >
+        <Button onClick={onCloseModal} variant="outline">
           Cancel
-        </button>
-        <button
-          onClick={() => mutate()}
-          className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
-        >
+        </Button>
+        <Button onClick={() => mutate()} variant="destructive" size="sm">
           Delete
-        </button>
+        </Button>
       </div>
     </>
   );

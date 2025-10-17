@@ -3,11 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 import { mapStudent, useUpdateStudent, type StudentUpdateSchemaType } from "..";
-import {
-  StudentCreateSchema,
-  type StudentCreateSchemaType,
-} from "../../add-student";
+import { StudentCreateSchema, type StudentCreateSchemaType } from "../../add-student";
 import { StudentForm } from "../../../widgets/student-form";
+import { Button } from "../../../shared/components/button";
 
 export function UpdateForm({ data, id }: { id: string; data: getStudentType }) {
   const {
@@ -30,21 +28,12 @@ export function UpdateForm({ data, id }: { id: string; data: getStudentType }) {
 
   return (
     <form onSubmit={handleSubmit(Submit)} className="space-y-6">
-      <StudentForm
-        register={register}
-        errors={errors}
-        control={control}
-        groups={data.data.groups}
-      />
+      <StudentForm register={register} errors={errors} control={control} groups={data.data.groups} />
       {/* --- Submit --- */}
       <div className="pt-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full py-2 px-4 rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
-        >
-          {isPending ? "Updating Student..." : "Updating Manager"}
-        </button>
+        <Button full type="submit" loading={isPending} loadingText="Updating Student...">
+          Updating Manager
+        </Button>
       </div>
     </form>
   );

@@ -1,10 +1,5 @@
 import { DollarSignIcon, ClockIcon } from "lucide-react";
-import {
-  Controller,
-  type Control,
-  type FieldErrors,
-  type UseFormRegister,
-} from "react-hook-form";
+import { Controller, type Control, type FieldErrors, type UseFormRegister } from "react-hook-form";
 import {} from "../../../shared/components/multi-field/ui/select";
 import type { GroupCreateSchemaType } from "../../../features/add-group";
 import type { SearchType } from "../../../shared/components/multi-field";
@@ -22,23 +17,14 @@ interface FormProps {
   aviable?: SearchType | null;
 }
 
-export function Form({
-  register,
-  errors,
-  control,
-  aviableStudents,
-  aviable,
-}: FormProps) {
+export function Form({ register, errors, control, aviableStudents, aviable }: FormProps) {
   return (
     <>
       <div className="bg-white p-6 rounded-lg shadow">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Group Name */}
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Group Name *
             </label>
             <input
@@ -50,16 +36,11 @@ export function Form({
               } rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
               placeholder="English Advanced"
             />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
           </div>
           {/* Schedule */}
           <div>
-            <label
-              htmlFor="schedule"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="schedule" className="block text-sm font-medium text-gray-700">
               Schedule Time *
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -77,18 +58,11 @@ export function Form({
               />
             </div>
 
-            {errors.schedule?.time && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.schedule.time.message}
-              </p>
-            )}
+            {errors.schedule?.time && <p className="mt-1 text-sm text-red-600">{errors.schedule.time.message}</p>}
           </div>
           {/* Status */}
           <div>
-            <label
-              htmlFor="status"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="status" className="block text-sm font-medium text-gray-700">
               Status
             </label>
             <select
@@ -104,10 +78,7 @@ export function Form({
           </div>
           {/* Monthly Fee */}
           <div>
-            <label
-              htmlFor="monthlyFee"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="monthlyFee" className="block text-sm font-medium text-gray-700">
               Monthly Fee *
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -124,18 +95,11 @@ export function Form({
                 placeholder="120"
               />
             </div>
-            {errors.price && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.price.message}
-              </p>
-            )}
+            {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>}
           </div>
           {/* Room */}
           <div>
-            <label
-              htmlFor="room"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="room" className="block text-sm font-medium text-gray-700">
               Room
             </label>
             <input
@@ -151,10 +115,7 @@ export function Form({
 
       {/* Teacher */}
       <div className="bg-white p-6 rounded-lg shadow">
-        <label
-          htmlFor="teacher"
-          className="text-lg font-medium text-gray-900 mb-5"
-        >
+        <label htmlFor="teacher" className="text-lg font-medium text-gray-900 mb-5">
           Teacher
         </label>
         <SelectOneFieldDynamicSearch
@@ -163,25 +124,18 @@ export function Form({
           initialValue={aviable}
           fetchOptions={searchUsers}
         />
-        {errors.teacher && (
-          <p className="mt-1 text-sm text-red-600">{errors.teacher?.message}</p>
-        )}
+        {errors.teacher && <p className="mt-1 text-sm text-red-600">{errors.teacher?.message}</p>}
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow">
-        <label
-          htmlFor="schedule"
-          className="text-lg font-medium text-gray-900 mb-6"
-        >
+        <label htmlFor="schedule" className="text-lg font-medium text-gray-900 mb-6">
           Schedule Days
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
           <Controller
             name="schedule.days"
             control={control}
-            render={({ field }) => (
-              <MultiDaySelector value={field.value} onChange={field.onChange} />
-            )}
+            render={({ field }) => <MultiDaySelector value={field.value} onChange={field.onChange} />}
           />
         </div>
       </div>
@@ -198,7 +152,7 @@ export function Form({
       </div>
       {/* Students Section - Only visible when editing */}
       <div className="bg-white p-6 rounded-lg shadow">
-        {/* Current Students */}
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Students</h2>
         <MultiFieldSelect
           control={control}
           name="students"

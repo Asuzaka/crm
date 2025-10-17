@@ -10,28 +10,22 @@ import { IncomeDelete } from "../../../widgets/income-delete";
 import { getReadyQuery } from "..";
 import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
+import { Button } from "../../../shared/components/button";
 
 export function Income() {
   const [page, setPage] = useState(1);
   const { query, setQuery, debouncedQuery } = useDebounce();
-  const { data, isPending, error } = useGetIncomes(
-    page,
-    20,
-    getReadyQuery(debouncedQuery)
-  );
+  const { data, isPending, error } = useGetIncomes(page, 20, getReadyQuery(debouncedQuery));
   const [dateFilter, setDateFilter] = useState("All");
   const [groupFilter, setGroupFilter] = useState("All");
 
-  if (error)
-    return <Error title="Failed to get payments" message={error.message} />;
+  if (error) return <Error title="Failed to get payments" message={error.message} />;
 
   return (
     <Modal>
       <div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
-            Income
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Income</h1>
           <Link
             to="/incomes/new"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -159,9 +153,7 @@ export function Income() {
                             </span>
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              {income.student.name}
-                            </div>
+                            <div className="text-sm font-medium text-gray-900">{income.student.name}</div>
                           </div>
                         </div>
                       </td>
@@ -180,34 +172,23 @@ export function Income() {
                           {income.method}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {income.receiptNumber}
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.receiptNumber}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link
-                          to={`/incomes/${income._id}`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/incomes/${income._id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                           View
                         </Link>
 
                         <>
-                          <Link
-                            to={`/incomes/${income._id}/edit`}
-                            className="text-blue-600 hover:text-blue-900 mr-4"
-                          >
+                          <Link to={`/incomes/${income._id}/edit`} className="text-blue-600 hover:text-blue-900 mr-4">
                             Edit
                           </Link>
                           <Modal.Open opens={`delete-${income._id}`}>
-                            <button className="text-red-600 hover:text-red-900">
+                            <Button variant="destructive" size="sm">
                               Delete
-                            </button>
+                            </Button>
                           </Modal.Open>
                           <Modal.Window name={`delete-${income._id}`}>
-                            <IncomeDelete
-                              name={income.student.name}
-                              id={income._id}
-                            />
+                            <IncomeDelete name={income.student.name} id={income._id} />
                           </Modal.Window>
                         </>
                       </td>
@@ -218,17 +199,10 @@ export function Income() {
             </div>
             {data.data.length === 0 && (
               <div className="text-center py-10">
-                <p className="text-gray-500">
-                  No payment records found matching your filters.
-                </p>
+                <p className="text-gray-500">No payment records found matching your filters.</p>
               </div>
             )}
-            <Pagination
-              page={page}
-              setPage={setPage}
-              totalItems={data.documents}
-              totalPages={data.pages}
-            />
+            <Pagination page={page} setPage={setPage} totalItems={data.documents} totalPages={data.pages} />
           </div>
         )}
       </div>

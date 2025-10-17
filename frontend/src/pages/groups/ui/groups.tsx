@@ -9,26 +9,20 @@ import { useDebounce } from "../../../shared/hooks";
 import { useGetGroups } from "../../../entities/group";
 import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
+import { Button } from "../../../shared/components/button";
 
 export function Groups() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState<string>("all");
   const { query, setQuery, debouncedQuery } = useDebounce();
-  const { data, isPending, error } = useGetGroups(
-    page,
-    12,
-    getReadyQuery(debouncedQuery, status)
-  );
+  const { data, isPending, error } = useGetGroups(page, 12, getReadyQuery(debouncedQuery, status));
 
-  if (error)
-    return <Error title="Failed to get groups" message={error.message} />;
+  if (error) return <Error title="Failed to get groups" message={error.message} />;
 
   return (
     <div>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
-          Groups
-        </h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Groups</h1>
         <Link
           to="/groups/new"
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -73,36 +67,25 @@ export function Groups() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data.data.map((group) => (
-              <div
-                key={group._id}
-                className="bg-white rounded-lg shadow overflow-hidden"
-              >
+              <div key={group._id} className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-5">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {group.name}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{group.name}</h3>
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
-                        group.status === "active"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                        group.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                       }`}
                     >
                       {group.status}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600 line-clamp-2">
-                    {group.description}
-                  </p>
+                  <p className="mt-2 text-sm text-gray-600 line-clamp-2">{group.description}</p>
                   <div className="mt-4 space-y-2">
                     <p className="text-sm text-gray-500">
-                      <span className="font-medium">Instructor:</span>{" "}
-                      {group.teacher?.name || "No-teacher"}
+                      <span className="font-medium">Instructor:</span> {group.teacher?.name || "No-teacher"}
                     </p>
                     <p className="text-sm text-gray-500">
-                      <span className="font-medium">Schedule:</span>{" "}
-                      {group.schedule.time || "No-time"}
+                      <span className="font-medium">Schedule:</span> {group.schedule.time || "No-time"}
                     </p>
                     <p className="text-sm text-gray-500">
                       <span className="font-medium">Monthly Fee:</span>
@@ -115,27 +98,18 @@ export function Groups() {
                     </div>
                   </div>
                 </div>
-                <div className="border-t border-gray-200 bg-gray-50 px-5 py-3 flex justify-end space-x-3">
-                  <Link
-                    to={`/groups/${group._id}`}
-                    className="text-sm text-blue-600 hover:text-blue-800"
-                  >
+                <div className="border-t border-gray-200 bg-gray-50 px-5 py-3 flex justify-end space-x-3 items-center">
+                  <Link to={`/groups/${group._id}`} className="text-sm text-blue-600 hover:text-blue-800">
                     View Details
                   </Link>
-                  <Link
-                    to={`/groups/${group._id}/edit`}
-                    className="text-sm text-blue-600 hover:text-blue-800"
-                  >
+                  <Link to={`/groups/${group._id}/edit`} className="text-sm text-blue-600 hover:text-blue-800">
                     Edit
                   </Link>
                   <Modal>
                     <Modal.Open opens={`delete-${group._id}`}>
-                      <button
-                        onClick={() => console.log("deleted group")}
-                        className="text-sm text-red-600 hover:text-red-800"
-                      >
+                      <Button variant="destructive" size="sm">
                         Delete
-                      </button>
+                      </Button>
                     </Modal.Open>
                     <Modal.Window name={`delete-${group._id}`}>
                       <GroupDelete name={group.name} id={group._id} />
@@ -148,17 +122,10 @@ export function Groups() {
 
           {["wk"].length === 0 && (
             <div className="bg-white rounded-lg shadow p-6 text-center">
-              <p className="text-gray-500">
-                No groups found matching your filters.
-              </p>
+              <p className="text-gray-500">No groups found matching your filters.</p>
             </div>
           )}
-          <Pagination
-            setPage={setPage}
-            page={page}
-            totalPages={data.pages}
-            totalItems={data.documents}
-          />
+          <Pagination setPage={setPage} page={page} totalPages={data.pages} totalItems={data.documents} />
         </>
       )}
     </div>

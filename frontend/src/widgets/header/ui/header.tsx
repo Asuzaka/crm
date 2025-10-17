@@ -11,11 +11,12 @@ export function Header() {
   return (
     <header className="bg-white shadow-sm z-10">
       <div className="flex justify-between items-center px-4 py-3 sm:px-4 sm:py-3">
-        <div className="text-xl font-semibold text-gray-800 ml-15 md:ml-0">
-          CRM
-        </div>
+        <div className="text-xl font-semibold text-gray-800 ml-15 md:ml-0">CRM</div>
         <div className="flex items-center space-x-4">
-          <button className="p-1 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+          <button
+            className="p-1 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none"
+            aria-label="Notifications"
+          >
             <BellIcon className="h-6 w-6" />
           </button>
           <div className="relative">
@@ -26,17 +27,13 @@ export function Header() {
               <div className="bg-blue-500 rounded-full p-1">
                 <UserIcon className="h-5 w-5 text-white" />
               </div>
-              <span className="text-sm font-medium text-gray-700 hidden md:block">
-                {currentUser?.name}
-              </span>
+              <span className="text-sm font-medium text-gray-700 hidden md:block">{currentUser?.name}</span>
               <ChevronDownIcon className="h-4 w-4 text-gray-500" />
             </button>
             {userMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-gray-200">
                 <div className="px-4 py-2 border-b border-gray-200">
-                  <p className="text-sm font-medium text-gray-900">
-                    {currentUser?.name}
-                  </p>
+                  <p className="text-sm font-medium text-gray-900">{currentUser?.name}</p>
                   <p className="text-xs text-gray-500">{currentUser?.email}</p>
                 </div>
                 <button

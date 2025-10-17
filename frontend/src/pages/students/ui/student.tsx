@@ -9,36 +9,26 @@ import { getReadyQuery } from "../helper/get-ready-query";
 import { useGetStudents } from "../../../entities/student";
 import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
+import { Button } from "../../../shared/components/button";
 
 export function Students() {
   const [status, setStatus] = useState<string>("all");
   const [page, setPage] = useState(1);
   const { query, setQuery, debouncedQuery } = useDebounce();
 
-  const { data, isPending, error } = useGetStudents(
-    page,
-    20,
-    getReadyQuery(debouncedQuery, status)
-  );
+  const { data, isPending, error } = useGetStudents(page, 20, getReadyQuery(debouncedQuery, status));
   const navigate = useNavigate();
 
-  if (error)
-    return <Error title="Failed to get students" message={error.message} />;
+  if (error) return <Error title="Failed to get students" message={error.message} />;
 
   return (
     <Modal>
       <div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
-            Students
-          </h1>
-          <button
-            onClick={() => navigate("new")}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            <PlusIcon className="h-4 w-4 mr-2" />
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Students</h1>
+          <Button icon={<PlusIcon className="h-4 w-4 mr-2" />} onClick={() => navigate("new")}>
             Add Student
-          </button>
+          </Button>
         </div>
         {/* Filters */}
         <div className="bg-white p-4 rounded-lg shadow mb-6">
@@ -126,22 +116,14 @@ export function Students() {
                             </div>
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              {student.name}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {student._id}
-                            </div>
+                            <div className="text-sm font-medium text-gray-900">{student.name}</div>
+                            <div className="text-sm text-gray-500">{student._id}</div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                          {student.phoneNumber}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {student.additionalNumber}
-                        </div>
+                        <div className="text-sm text-gray-900">{student.phoneNumber}</div>
+                        <div className="text-sm text-gray-500">{student.additionalNumber}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
@@ -160,34 +142,23 @@ export function Students() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            student.status === "active"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
+                            student.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                           }`}
                         >
                           {student.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link
-                          to={`/students/${student._id}`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/students/${student._id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                           View
                         </Link>
-                        <Link
-                          to={`/students/${student._id}/edit`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/students/${student._id}/edit`} className="text-blue-600 hover:text-blue-900 mr-4">
                           Edit
                         </Link>
                         <Modal.Open opens={`delete-user-${student._id}`}>
-                          <button
-                            onClick={() => console.log("deleted")}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            Remove
-                          </button>
+                          <Button variant="destructive" size="sm">
+                            Delete
+                          </Button>
                         </Modal.Open>
                         <Modal.Window name={`delete-user-${student._id}`}>
                           <Delete name={student.name} id={student._id} />
@@ -200,17 +171,10 @@ export function Students() {
             </div>
             {data?.data.length === 0 && (
               <div className="text-center py-10">
-                <p className="text-gray-500">
-                  No students found matching your filters.
-                </p>
+                <p className="text-gray-500">No students found matching your filters.</p>
               </div>
             )}
-            <Pagination
-              setPage={setPage}
-              page={page}
-              totalPages={data.pages}
-              totalItems={data.documents}
-            />
+            <Pagination setPage={setPage} page={page} totalPages={data.pages} totalItems={data.documents} />
           </div>
         )}
       </div>

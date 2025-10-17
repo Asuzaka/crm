@@ -2,6 +2,7 @@ import { CheckIcon, XIcon, CalendarIcon } from "lucide-react";
 import { type LessonRecord } from "../../../pages/view-group/helper/generate-table";
 import { Error } from "../../../pages/error";
 import type { Group } from "../../../entities/group";
+import { Button } from "../../../shared/components/button";
 
 export function Attendance({
   onSave,
@@ -25,9 +26,7 @@ export function Attendance({
           return each;
         }
         const newStudents = each.students.map((each2) =>
-          each2.student == student
-            ? { ...each2, present: each2.present === true ? null : true }
-            : each2
+          each2.student == student ? { ...each2, present: each2.present === true ? null : true } : each2
         );
         return { ...each, students: newStudents };
       })
@@ -40,17 +39,14 @@ export function Attendance({
           return each;
         }
         const newStudents = each.students.map((each2) =>
-          each2.student == student
-            ? { ...each2, present: each2.present === false ? null : false }
-            : each2
+          each2.student == student ? { ...each2, present: each2.present === false ? null : false } : each2
         );
         return { ...each, students: newStudents };
       })
     );
   }
 
-  if (error)
-    return <Error title="Failed to get lessons" message={error.message} />;
+  if (error) return <Error title="Failed to get lessons" message={error.message} />;
 
   return (
     <div className="bg-white shadow rounded-lg">
@@ -89,9 +85,7 @@ export function Attendance({
       <div className="overflow-x-auto">
         {table.length === 0 ? (
           <div className="text-center py-10">
-            <p className="text-gray-500">
-              No scheduled classes for this month.
-            </p>
+            <p className="text-gray-500">No scheduled classes for this month.</p>
           </div>
         ) : (
           <table className="min-w-full divide-y divide-gray-200">
@@ -128,18 +122,14 @@ export function Attendance({
                         </span>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {student.name}
-                        </div>
+                        <div className="text-sm font-medium text-gray-900">{student.name}</div>
                       </div>
                     </div>
                   </td>
                   {table.map((date) => {
                     const d = date.date;
                     const s = student._id;
-                    const present =
-                      date.students.find((e) => e.student === s)?.present ??
-                      null;
+                    const present = date.students.find((e) => e.student === s)?.present ?? null;
 
                     return (
                       <td key={`${s}-${d}`} className="px-3 py-4 text-center">
@@ -180,15 +170,9 @@ export function Attendance({
       </div>
 
       <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
-        <button
-          onClick={onSave}
-          type="button"
-          className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-              ${table ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"} 
-              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
-        >
-          {isPending ? "Saving..." : "Save Attendance"}
-        </button>
+        <Button onClick={onSave} loading={isPending} loadingText="Saving...">
+          Save Attendance
+        </Button>
       </div>
     </div>
   );

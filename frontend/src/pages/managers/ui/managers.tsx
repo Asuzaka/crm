@@ -9,26 +9,20 @@ import { useDebounce } from "../../../shared/hooks";
 import { getReadyQuery } from "../helper/get-query-ready";
 import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
+import { Button } from "../../../shared/components/button";
 
 export function Managers() {
   const [page, setPage] = useState(1);
   const { query, setQuery, debouncedQuery } = useDebounce();
-  const { data, isPending, error } = useGetUsers(
-    page,
-    20,
-    getReadyQuery(debouncedQuery)
-  );
+  const { data, isPending, error } = useGetUsers(page, 20, getReadyQuery(debouncedQuery));
 
-  if (error)
-    return <Error title="Failed to fetch users" message={error.message} />;
+  if (error) return <Error title="Failed to fetch users" message={error.message} />;
 
   return (
     <Modal>
       <div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">
-            Managers
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Managers</h1>
           <Link
             to="/register"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -109,12 +103,8 @@ export function Managers() {
                             </span>
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              {manager.name}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {manager.email}
-                            </div>
+                            <div className="text-sm font-medium text-gray-900">{manager.name}</div>
+                            <div className="text-sm text-gray-500">{manager.email}</div>
                           </div>
                         </div>
                       </td>
@@ -157,30 +147,22 @@ export function Managers() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                          {manager.activity} actions
-                        </div>
+                        <div className="text-sm text-gray-900">{manager.activity} actions</div>
                         <div className="text-xs text-gray-500">
                           Last: {new Date(manager.lastLogin).toLocaleString()}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link
-                          to={`/managers/${manager._id}`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/managers/${manager._id}`} className="text-blue-600 hover:text-blue-900 mr-4">
                           View
                         </Link>
-                        <Link
-                          to={`/managers/${manager._id}/edit`}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
+                        <Link to={`/managers/${manager._id}/edit`} className="text-blue-600 hover:text-blue-900 mr-4">
                           Edit
                         </Link>
                         <Modal.Open opens={`delete-manager-${manager._id}`}>
-                          <button className="text-red-600 hover:text-red-900">
+                          <Button variant="destructive" size="sm">
                             Remove
-                          </button>
+                          </Button>
                         </Modal.Open>
                         <Modal.Window name={`delete-manager-${manager._id}`}>
                           <Delete name={manager.name} id={manager._id} />
@@ -193,17 +175,10 @@ export function Managers() {
             </div>
             {data.data.length === 0 && (
               <div className="text-center py-6">
-                <p className="text-gray-500">
-                  No managers found matching your search.
-                </p>
+                <p className="text-gray-500">No managers found matching your search.</p>
               </div>
             )}
-            <Pagination
-              setPage={setPage}
-              page={page}
-              totalPages={data.pages}
-              totalItems={data.documents}
-            />
+            <Pagination setPage={setPage} page={page} totalPages={data.pages} totalItems={data.documents} />
           </div>
         )}
       </div>

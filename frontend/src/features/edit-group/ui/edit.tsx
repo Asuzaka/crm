@@ -6,6 +6,7 @@ import { useGroupUpdate } from "../hooks/use-group-update";
 import { GroupForm } from "../../../widgets/group-form";
 import type { getGroupType } from "../../../shared/api/types/group";
 import { mapGroup, type GroupUpdateSchemaType } from "..";
+import { Button } from "../../../shared/components/button";
 
 export function UpdateForm({ data, id }: { id: string; data: getGroupType }) {
   const {
@@ -44,13 +45,9 @@ export function UpdateForm({ data, id }: { id: string; data: getGroupType }) {
       />
       {/* --- Submit --- */}
       <div className="pt-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full py-2 px-4 rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
-        >
-          {isPending ? "Updating Group..." : "Updating Group"}
-        </button>
+        <Button full type="submit" loading={isPending} loadingText="Updating Group...">
+          Update Group
+        </Button>
       </div>
     </form>
   );

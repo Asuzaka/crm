@@ -1,4 +1,4 @@
-import { CalendarIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon, FilterIcon, SearchIcon } from "lucide-react";
+import { CalendarIcon, ChevronDownIcon, ChevronUpIcon, FilterIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useGetRecords } from "../../../entities/record/hooks/use-get-records";
 import { useNavigate } from "react-router";
@@ -8,6 +8,8 @@ import { useDebounce } from "../../../shared/hooks";
 import { returnColorOfAction } from "../helper/return-color";
 import { Loader } from "../../../shared/components/loader";
 import { Pagination } from "../../../shared/components/pagination";
+import { NoResultAndReset } from "../../../shared/components/no-result";
+import { Button } from "../../../shared/components/button";
 
 export function Activity() {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
@@ -64,10 +66,7 @@ export function Activity() {
 
           {/* Toggle Advanced Filters Button */}
           <div>
-            <button
-              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
+            <Button variant="outline" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>
               <FilterIcon className="h-4 w-4 mr-2" />
               {showAdvancedFilters ? "Hide Filters" : "Advanced Filters"}
               {showAdvancedFilters ? (
@@ -75,7 +74,7 @@ export function Activity() {
               ) : (
                 <ChevronDownIcon className="h-4 w-4 ml-1" />
               )}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -280,22 +279,12 @@ export function Activity() {
             </table>
           </div>
 
-          {/* Empty State */}
           {data?.data.length === 0 && (
-            <div className="text-center py-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                <ClockIcon className="h-8 w-8 text-gray-400" />
-              </div>
-              <p className="text-gray-500 mb-2">No activity records found matching your filters.</p>
-              <button
-                onClick={() => {
-                  console.log("filters reset");
-                }}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                Clear all filters
-              </button>
-            </div>
+            <NoResultAndReset
+              onClick={() => {
+                console.log("reset filter");
+              }}
+            />
           )}
           <Pagination setPage={setPage} page={page} totalPages={data.pages} totalItems={data.documents} />
         </div>

@@ -45,11 +45,7 @@ export function SelectOneFieldDynamicSearch<T extends FieldValues>({
             {selected ? (
               <div className="mb-4 flex items-center justify-between bg-gray-50 p-2 rounded-md">
                 <span>{selected.name}</span>
-                <button
-                  type="button"
-                  onClick={clearSelection}
-                  className="text-red-600 hover:text-red-900 text-sm"
-                >
+                <button type="button" onClick={clearSelection} className="text-red-600 hover:text-red-900 text-sm">
                   Remove
                 </button>
               </div>
@@ -69,17 +65,12 @@ export function SelectOneFieldDynamicSearch<T extends FieldValues>({
                 />
 
                 {/* Results */}
-                {isLoading && (
-                  <p className="text-sm text-gray-500">Loading...</p>
-                )}
+                {isLoading && <p className="text-sm text-gray-500">Loading...</p>}
 
                 {options.length > 0 && (
                   <ul className="bg-gray-50 rounded-md p-2 max-h-60 overflow-y-auto divide-y divide-gray-200">
                     {options.map((opt) => (
-                      <li
-                        key={opt._id}
-                        className="flex items-center justify-between py-2"
-                      >
+                      <li key={opt._id} className="flex items-center justify-between py-2">
                         <span>{opt.name}</span>
                         <button
                           type="button"
