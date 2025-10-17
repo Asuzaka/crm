@@ -1,116 +1,86 @@
+// Static imports for global pieces
 import { RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router";
-import { Login } from "../../../pages/login/ui/loginPage";
 import { AuthLayout } from "../../layout/auth-layout/ui/authLayout";
 import { MainLayout } from "../../layout/main-layout";
 import { ROUTES } from "../../../shared/consts/routes";
-import { DashboardPage } from "../../../pages/dashboard";
-import { Students } from "../../../pages/students";
-import { CreateStudentPage } from "../../../pages/add-student";
-import { StudentUpdatePage } from "../../../pages/edit-student/";
-import { CreateUserPage } from "../../../pages/add-manager";
-import { EditManager } from "../../../pages/edit-manager";
-import { ViewStudent } from "../../../pages/view-student";
-import { ViewManager } from "../../../pages/view-manager";
-import { Managers } from "../../../pages/managers";
-import { Income } from "../../../pages/income";
-import { Expenses } from "../../../pages/expenses";
-import { Groups } from "../../../pages/groups";
 import { NotFound } from "../../../pages/not-found";
-import { Activity } from "../../../pages/activity";
-import { ActivityView } from "../../../pages/view-activity";
-import { GroupView } from "../../../pages/view-group";
-import { GroupEdit } from "../../../pages/edit-group";
-import { CreateGroupPage } from "../../../pages/add-group";
 import { ProtectedRoute } from "./protectedRoute";
-import { ExpenseUpdate } from "../../../pages/edit-expense";
-import { ExpenseView } from "../../../pages/view-expense";
-import { CreatePaymentPage } from "../../../pages/add-income";
-import { IncomeEdit } from "../../../pages/edit-income";
-import { IncomeView } from "../../../pages/view-income";
+import { lazyImport } from "../../../shared/lib/lazy-import";
+import { SuspenseWrapper } from "../../../shared/lib/suspense-wrapper";
+
+// Lazy imports for pages
+const Login = lazyImport(() => import("../../../pages/login/ui/loginPage"), "Login");
+const DashboardPage = lazyImport(() => import("../../../pages/dashboard"), "DashboardPage");
+const Students = lazyImport(() => import("../../../pages/students"), "Students");
+const CreateStudentPage = lazyImport(() => import("../../../pages/add-student"), "CreateStudentPage");
+const StudentUpdatePage = lazyImport(() => import("../../../pages/edit-student"), "StudentUpdatePage");
+const CreateUserPage = lazyImport(() => import("../../../pages/add-manager"), "CreateUserPage");
+const EditManager = lazyImport(() => import("../../../pages/edit-manager"), "EditManager");
+const ViewStudent = lazyImport(() => import("../../../pages/view-student"), "ViewStudent");
+const ViewManager = lazyImport(() => import("../../../pages/view-manager"), "ViewManager");
+const Managers = lazyImport(() => import("../../../pages/managers"), "Managers");
+const Income = lazyImport(() => import("../../../pages/income"), "Income");
+const Expenses = lazyImport(() => import("../../../pages/expenses"), "Expenses");
+const Groups = lazyImport(() => import("../../../pages/groups"), "Groups");
+const Activity = lazyImport(() => import("../../../pages/activity"), "Activity");
+const ActivityView = lazyImport(() => import("../../../pages/view-activity"), "ActivityView");
+const GroupView = lazyImport(() => import("../../../pages/view-group"), "GroupView");
+const GroupEdit = lazyImport(() => import("../../../pages/edit-group"), "GroupEdit");
+const CreateGroupPage = lazyImport(() => import("../../../pages/add-group"), "CreateGroupPage");
+const ExpenseUpdate = lazyImport(() => import("../../../pages/edit-expense"), "ExpenseUpdate");
+const ExpenseView = lazyImport(() => import("../../../pages/view-expense"), "ExpenseView");
+const CreatePaymentPage = lazyImport(() => import("../../../pages/add-income"), "CreatePaymentPage");
+const IncomeEdit = lazyImport(() => import("../../../pages/edit-income"), "IncomeEdit");
+const IncomeView = lazyImport(() => import("../../../pages/view-income"), "IncomeView");
 
 const router = createBrowserRouter([
   {
     path: ROUTES.login,
     element: (
-      <AuthLayout>
-        <Login />
-      </AuthLayout>
+      <SuspenseWrapper>
+        <AuthLayout>
+          <Login />
+        </AuthLayout>
+      </SuspenseWrapper>
     ),
   },
   {
     path: ROUTES.home,
     element: (
-      <ProtectedRoute>
-        <MainLayout />
-      </ProtectedRoute>
+      <SuspenseWrapper>
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      </SuspenseWrapper>
     ),
     children: [
-      {
-        index: true,
-        element: <DashboardPage />,
-      },
-      {
-        path: ROUTES.dashboard,
-        element: <DashboardPage />,
-      },
-      {
-        path: ROUTES.addManager,
-        element: <CreateUserPage />,
-      },
-      {
-        path: ROUTES.managers,
-        element: <Managers />,
-      },
-      {
-        path: ROUTES.editManager,
-        element: <EditManager />,
-      },
-      {
-        path: ROUTES.viewManager,
-        element: <ViewManager />,
-      },
-      {
-        path: ROUTES.activity,
-        element: <Activity />,
-      },
+      { index: true, element: <DashboardPage /> },
+      { path: ROUTES.dashboard, element: <DashboardPage /> },
+      { path: ROUTES.addManager, element: <CreateUserPage /> },
+      { path: ROUTES.managers, element: <Managers /> },
+      { path: ROUTES.editManager, element: <EditManager /> },
+      { path: ROUTES.viewManager, element: <ViewManager /> },
+      { path: ROUTES.activity, element: <Activity /> },
       { path: ROUTES.viewActivity, element: <ActivityView /> },
-      {
-        path: ROUTES.students,
-        element: <Students />,
-      },
-      {
-        path: ROUTES.addStudent,
-        element: <CreateStudentPage />,
-      },
+      { path: ROUTES.students, element: <Students /> },
+      { path: ROUTES.addStudent, element: <CreateStudentPage /> },
       { path: ROUTES.editStudent, element: <StudentUpdatePage /> },
       { path: ROUTES.viewStudent, element: <ViewStudent /> },
-      {
-        path: ROUTES.income,
-        element: <Income />,
-      },
+      { path: ROUTES.income, element: <Income /> },
       { path: ROUTES.addIncome, element: <CreatePaymentPage /> },
       { path: ROUTES.viewIncome, element: <IncomeView /> },
       { path: ROUTES.editIncome, element: <IncomeEdit /> },
-      {
-        path: ROUTES.expenses,
-        element: <Expenses />,
-      },
+      { path: ROUTES.expenses, element: <Expenses /> },
       { path: ROUTES.viewExpense, element: <ExpenseView /> },
       { path: ROUTES.editExpense, element: <ExpenseUpdate /> },
-      {
-        path: ROUTES.groups,
-        element: <Groups />,
-      },
+      { path: ROUTES.groups, element: <Groups /> },
       { path: ROUTES.addGroup, element: <CreateGroupPage /> },
       { path: ROUTES.viewGroup, element: <GroupView /> },
       { path: ROUTES.editGroup, element: <GroupEdit /> },
     ],
   },
-  {
-    path: ROUTES.notFound,
-    element: <NotFound full={true} />,
-  },
+  { path: ROUTES.notFound, element: <NotFound full={true} /> },
 ]);
 
 export function AppRouter() {
