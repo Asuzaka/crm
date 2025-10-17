@@ -29,9 +29,7 @@ export function MultiFieldSelect<T extends FieldValues>({
       control={control}
       render={({ field }) => {
         const enrolled: string[] = field.value || [];
-        const availableOptions = options.filter(
-          (o) => !enrolled.includes(o._id)
-        );
+        const availableOptions = options.filter((o) => !enrolled.includes(o._id));
 
         const addItem = (item: SearchType) => {
           if (enrolled.length < maxItems) {
@@ -42,26 +40,16 @@ export function MultiFieldSelect<T extends FieldValues>({
 
         const removeItem = (id: string) => {
           field.onChange(enrolled.filter((oid) => oid !== id));
-          setAdded((e: SearchType[]) =>
-            e.filter((each: SearchType) => each._id !== id)
-          );
+          setAdded((e: SearchType[]) => e.filter((each: SearchType) => each._id !== id));
         };
 
         return (
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">{label}</h3>
-            <p className="text-xs text-gray-500 mb-2">
-              {enrolled.length} / {maxItems} selected
-            </p>
-
+          <>
             {/* Enrolled */}
             {enrolled.length > 0 ? (
               <ul className="mb-4 bg-gray-50 rounded-md p-2 divide-y divide-gray-200">
                 {added.map((opt) => (
-                  <li
-                    key={opt._id}
-                    className="flex items-center justify-between py-2"
-                  >
+                  <li key={opt._id} className="flex items-center justify-between py-2">
                     <span>{opt.name}</span>
                     <button
                       type="button"
@@ -91,10 +79,7 @@ export function MultiFieldSelect<T extends FieldValues>({
             {availableOptions.length > 0 && (
               <ul className="bg-gray-50 rounded-md p-2 max-h-60 overflow-y-auto divide-y divide-gray-200">
                 {availableOptions.map((opt) => (
-                  <li
-                    key={opt._id}
-                    className="flex items-center justify-between py-2"
-                  >
+                  <li key={opt._id} className="flex items-center justify-between py-2">
                     <span>{opt.name}</span>
                     <button
                       type="button"
@@ -110,7 +95,7 @@ export function MultiFieldSelect<T extends FieldValues>({
             {debouncedQuery.length > 0 && availableOptions.length == 0 && (
               <p className="text-sm text-gray-500">No results</p>
             )}
-          </div>
+          </>
         );
       }}
     />
