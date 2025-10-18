@@ -1,4 +1,7 @@
-# crm
+<h1 align="center">CRM</h1>
+<p align="center">Customer Relationship Management Web App</p>
+
+![Dashboard](./screenshots/preview.png)
 
 ## 🚀 Overview
 
