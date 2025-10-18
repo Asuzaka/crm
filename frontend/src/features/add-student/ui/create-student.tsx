@@ -28,7 +28,7 @@ export function CreateForm() {
       <StudentForm register={register} errors={errors} control={control} />
       {/* --- Submit --- */}
       <div className="pt-4">
-        <Button type="submit" loading={isPending} loadingText="Creating Student Account...">
+        <Button type="submit" full loading={isPending} loadingText="Creating Student Account...">
           Create Student Account
         </Button>
       </div>

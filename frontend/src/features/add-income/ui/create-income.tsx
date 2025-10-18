@@ -26,7 +26,7 @@ export function CreateIncome() {
       <IncomeForm register={register} errors={errors} control={control} />
       {/* --- Submit --- */}
       <div className="pt-4">
-        <Button type="submit" loading={isPending} loadingText="Creating Payment...">
+        <Button type="submit" full loading={isPending} loadingText="Creating Payment...">
           Create Payment
         </Button>
       </div>

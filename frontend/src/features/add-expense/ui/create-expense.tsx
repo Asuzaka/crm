@@ -30,7 +30,7 @@ export function CreateForm({ onCloseModal }: { onCloseModal?: () => void }) {
         <Button variant="outline" onClick={onCloseModal}>
           Cancel
         </Button>
-        <Button type="submit" loading={isPending} loadingText="Creating  Expense...">
+        <Button type="submit" full loading={isPending} loadingText="Creating  Expense...">
           Create Expense
         </Button>
       </div>
