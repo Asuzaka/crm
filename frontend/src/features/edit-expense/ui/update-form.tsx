@@ -1,8 +1,8 @@
+import type { getExpenseType } from "../../../shared/api/types/expense";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getDirtyValues } from "../../../shared/lib/get-dirty-values";
 import { mapExpense, useExpenseUpdate, type ExpenseUpdateSchemaType } from "..";
-import type { getExpenseType } from "../../../shared/api/types/expense";
 import { ExpenseCreateSchema, type ExpenseCreateSchemaType } from "../../add-expense";
 import { ExpenseForm } from "../../../widgets/expense-form";
 import { Button } from "../../../shared/components/button";
@@ -22,6 +22,8 @@ export function UpdateForm({ data, id }: { id: string; data: getExpenseType }) {
 
   const Submit = (data: ExpenseUpdateSchemaType) => {
     const patchData = getDirtyValues(dirtyFields, data);
+
+    if (!Object.keys(patchData).length) return;
 
     mutate(patchData);
   };

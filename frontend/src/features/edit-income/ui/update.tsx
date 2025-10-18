@@ -24,6 +24,8 @@ export function Update({ id, data }: { id: string; data: getPaymentType }) {
   const Submit = (data: IncomeCreateSchemaType) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
+    if (!Object.keys(patchData).length) return;
+
     mutate(patchData);
   };
 

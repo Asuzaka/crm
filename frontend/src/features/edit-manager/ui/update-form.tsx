@@ -23,6 +23,8 @@ export function UpdateForm({ data, id }: { id: string; data: getUserType }) {
   const Submit = (data: UserUpdateSchemaType) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
+    if (!Object.keys(patchData).length) return;
+
     mutate(patchData);
   };
 

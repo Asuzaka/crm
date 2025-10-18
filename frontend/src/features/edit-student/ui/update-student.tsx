@@ -23,6 +23,8 @@ export function UpdateForm({ data, id }: { id: string; data: getStudentType }) {
   const Submit = (data: StudentUpdateSchemaType) => {
     const patchData = getDirtyValues(dirtyFields, data);
 
+    if (!Object.keys(patchData).length) return;
+
     mutate(patchData);
   };
 
