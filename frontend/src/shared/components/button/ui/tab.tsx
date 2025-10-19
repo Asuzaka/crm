@@ -1,5 +1,5 @@
-import type { TabButtonProps } from "../model/types/type";
 import { TAB_ACTIVE, TAB_BASE, TAB_INACTIVE } from "../constants/classes";
+import type { TabButtonProps } from "../model/types/type";
 import clsx from "clsx";
 
 export function TabButton({ active, onClick, children, icon }: TabButtonProps) {

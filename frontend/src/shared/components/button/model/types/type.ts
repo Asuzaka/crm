@@ -11,7 +11,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export interface TabButtonProps {
   active: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   children: ReactNode;
   icon?: ReactNode;
 }
