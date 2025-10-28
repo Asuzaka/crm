@@ -1,6 +1,29 @@
+import { IUser, permission, Permissions } from "../types/schemas";
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
-import { IUser } from "../types/schemas";
+
+const permissionSchema: Schema<permission> = new Schema(
+  {
+    access: { type: Boolean, default: false },
+    create: { type: Boolean, default: false },
+    update: { type: Boolean, default: false },
+    delete: { type: Boolean, default: false },
+  },
+  { _id: false }
+);
+
+const PermissionsSchema: Schema<Permissions> = new Schema(
+  {
+    students: permissionSchema,
+    users: permissionSchema,
+    dashboard: permissionSchema,
+    expences: permissionSchema,
+    income: permissionSchema,
+    groups: permissionSchema,
+    history: permissionSchema,
+  },
+  { _id: false }
+);
 
 const UserSchema: Schema<IUser> = new Schema(
   {
@@ -27,26 +50,13 @@ const UserSchema: Schema<IUser> = new Schema(
       enum: ["owner", "manager"],
       default: "manager",
     },
-    responsible: [
+    groups: [
       {
         type: Schema.ObjectId,
         ref: "Group",
       },
     ],
-    permissions: {
-      addPayments: {
-        type: Boolean,
-        default: false,
-      },
-      addStudents: {
-        type: Boolean,
-        default: false,
-      },
-      deleteStudents: {
-        type: Boolean,
-        default: false,
-      },
-    },
+    permissions: PermissionsSchema,
     lastLogin: {
       type: Date,
     },
@@ -86,10 +96,7 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-UserSchema.methods.confirmPassword = async function (
-  candidate: string,
-  password: string
-) {
+UserSchema.methods.confirmPassword = async function (candidate: string, password: string) {
   return await bcrypt.compare(candidate, password);
 };
 
