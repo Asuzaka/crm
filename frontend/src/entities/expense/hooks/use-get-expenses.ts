@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getExpenses } from "../../../shared/api/endpoints/expense";
+import { getExpenses } from "../api/api";
 
 export function useGetExpenses(page: number, limit: number, query: string) {
   return useQuery({

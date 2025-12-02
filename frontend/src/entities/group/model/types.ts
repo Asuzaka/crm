@@ -1,6 +1,7 @@
 export type status = "active" | "paused" | "archived";
 
-export interface IGroup {
+export interface Group {
+  _id: string;
   name: string;
   teacher: { _id: string; name: string };
   students: { _id: string; name: string }[];
@@ -13,6 +14,13 @@ export interface IGroup {
   status: status;
 }
 
-export interface Group extends IGroup {
-  _id: string;
+// API
+import type { ExtendedApiType, StandardApiType } from "../../../shared/api/types";
+
+export interface getGroupsType extends ExtendedApiType {
+  data: Group[];
+}
+
+export interface getGroupType extends StandardApiType {
+  data: Group;
 }

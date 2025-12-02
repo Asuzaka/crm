@@ -1,12 +1,6 @@
 import type { UserForName } from "../../user";
 
-export type action =
-  | "CREATE"
-  | "UPDATE"
-  | "DELETE"
-  | "LOGIN"
-  | "LOGOUT"
-  | "OTHER";
+export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT" | "OTHER";
 
 export interface ActivityRecord {
   _id: string;
@@ -18,4 +12,15 @@ export interface ActivityRecord {
   metadata: Record<string, string>;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// API
+import type { ExtendedApiType, StandardApiType } from "../../../shared/api/types";
+
+export interface getRecordsType extends ExtendedApiType {
+  data: ActivityRecord[];
+}
+
+export interface getRecordType extends StandardApiType {
+  data: ActivityRecord;
 }

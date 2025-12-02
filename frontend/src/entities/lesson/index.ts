@@ -1,2 +1,3 @@
-export { useGetLessons } from "./hooks/use-get-lessons";
-export type { ILesson, Lesson } from "./model/types";
+export * from "./api/api";
+export * from "./hooks/use-get-lessons";
+export * from "./model/types";

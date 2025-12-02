@@ -1,2 +1,4 @@
-export type { UserForName, User, IUser } from "./model/types";
-export { useGetUsers } from "./hooks/use-get-users";
+export * from "./api/api";
+export * from "./model/types";
+export * from "./hooks/use-get-users";
+export * from "./helper/get-query-ready";

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRecordsOfUser } from "../../../shared/api/endpoints/record";
+import { getRecordsOfUser } from "../api/api";
 
 export function useGetUserRecords(id: string) {
   return useQuery({

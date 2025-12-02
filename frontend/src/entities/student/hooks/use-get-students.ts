@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getStudents } from "../../../shared/api/endpoints/student";
+import { getStudents } from "@/entities/student";
 
 export function useGetStudents(page: number, limit: number, query: string) {
   return useQuery({

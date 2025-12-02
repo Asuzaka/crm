@@ -10,14 +10,14 @@ export type category =
   | "Taxes"
   | "Other";
 
-export interface IExpense {
+export interface Expense {
+  _id: string;
   description: string;
   amount: number;
-  currency: string;
   category: category;
   recipientType: "Manager/Staff" | "External Vendor";
-  manager?: { _id: string; name: string }; // only if Manager/Staff
-  vendorName?: string; // only if External Vendor
+  manager?: { _id: string; name: string };
+  vendorName?: string;
   date: Date;
   paymentMethod: "cash" | "bank" | "card" | "other";
   notes?: string;
@@ -26,6 +26,13 @@ export interface IExpense {
   updatedAt: Date;
 }
 
-export interface Expense extends IExpense {
-  _id: string;
+// API
+import type { ExtendedApiType, StandardApiType } from "../../../shared/api/types";
+
+export interface getExpensesType extends ExtendedApiType {
+  data: Expense[];
+}
+
+export interface getExpenseType extends StandardApiType {
+  data: Expense;
 }

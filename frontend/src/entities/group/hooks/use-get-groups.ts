@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getGroups } from "../../../shared/api/endpoints/group";
+import { getGroups } from "../api/api";
 
 export function useGetGroups(page: number, limit: number, query: string) {
   return useQuery({
