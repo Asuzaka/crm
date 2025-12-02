@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUsers } from "../../../shared/api/endpoints/user";
+import { getUsers } from "../api/api";
 
 export function useGetUsers(page: number, limit: number, query: string) {
   return useQuery({

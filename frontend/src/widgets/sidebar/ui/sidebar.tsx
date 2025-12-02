@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
 import { MenuIcon, XIcon } from "lucide-react";
@@ -58,7 +59,7 @@ export function Sidebar() {
         <div className="flex flex-col w-64">
           <div className="flex flex-col h-0 flex-1 bg-blue-700">
             <div className="flex items-center h-16 flex-shrink-0 px-4 bg-blue-800">
-              <span className="text-white text-lg font-bold">Seul Center</span>
+              <span className="text-white text-lg font-bold">Learning Center</span>
             </div>
             <div className="flex-1 flex flex-col overflow-y-auto">
               <nav className="flex-1 px-2 py-4 space-y-1">
@@ -68,10 +69,10 @@ export function Sidebar() {
                     <Link
                       key={item.name}
                       to={item.href}
-                      className={`
-                        flex items-center px-4 py-2 text-sm font-medium rounded-md 
-                        ${isActive ? "bg-blue-800 text-white" : "text-blue-100 hover:bg-blue-600"}
-                      `}
+                      className={clsx(
+                        "flex items-center px-4 py-2 text-sm font-medium rounded-md",
+                        isActive ? "bg-blue-800 text-white" : "text-blue-100 hover:bg-blue-600"
+                      )}
                     >
                       <item.icon className="mr-3 h-5 w-5" />
                       {item.name}

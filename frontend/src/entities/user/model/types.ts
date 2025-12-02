@@ -1,26 +1,45 @@
 export type role = "owner" | "manager";
 
 export interface Permissions {
-  addStudents: boolean;
-  deleteStudents: boolean;
-  addPayments: boolean;
+  students: permission;
+  users: permission;
+  dashboard: permission;
+  expences: permission;
+  income: permission;
+  groups: permission;
+  history: permission;
 }
 
-export interface User extends IUser {
+export interface permission {
+  access: boolean;
+  create: boolean;
+  update: boolean;
+  delete: boolean;
+}
+
+export interface User {
   _id: string;
-}
-
-export interface IUser {
   email: string;
   name: string;
   role: role;
-  responsible: { _id: string; name: string }[];
+  groups: { _id: string; name: string }[];
   permissions: Permissions;
-  lastLogin: Date;
+  passwordChangedAt?: Date;
+  lastLogin?: Date;
+  activity?: number;
   createdAt: Date;
   updatedAt: Date;
-  passwordChangedAt: Date;
-  activity: number;
 }
 
 export type UserForName = Pick<User, "name" | "_id" | "email">;
+
+// API
+import type { ExtendedApiType, StandardApiType } from "../../../shared/api/types";
+
+export interface getUserType extends StandardApiType {
+  data: User;
+}
+
+export interface getUsersType extends ExtendedApiType {
+  data: User[];
+}

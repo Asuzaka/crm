@@ -9,3 +9,14 @@ export interface Payment {
   method: "cash" | "card" | "bank";
   notes?: string;
 }
+
+// API
+import type { ExtendedApiType, StandardApiType } from "../../../shared/api/types";
+
+export interface getPaymentsType extends ExtendedApiType {
+  data: Payment[];
+}
+
+export interface getPaymentType extends StandardApiType {
+  data: Payment;
+}

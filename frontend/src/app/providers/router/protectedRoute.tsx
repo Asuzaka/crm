@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Navigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
 import { ROUTES } from "../../../shared/consts/routes";
-import { Loader } from "../../../shared/components/loader";
+import { Loader } from "@/shared/ui";
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
   const { currentUser, loading } = useAuthStore();

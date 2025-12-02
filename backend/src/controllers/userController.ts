@@ -13,7 +13,7 @@ import { Record } from "../models/records";
 
 export const getUsers = catchAsync(async (req: AuthenticatedRequest, res: Response, _next: NextFunction) => {
   // filter out "owner"
-  const query = User.find({ role: "manager" }).populate("activity").populate("responsible", "_id name");
+  const query = User.find().populate("activity").populate("groups", "_id name");
 
   const featuresForCount = new apiFeatures(query, req.query).filter().search(["name", "email"]);
 
@@ -48,7 +48,7 @@ export const getUser = catchAsync(async (req: AuthenticatedRequest, res: Respons
     return next(new CustomError(INVALIDID, BAD_REQUEST));
   }
 
-  const user: IUser | null = await User.findById(id).populate("responsible activity");
+  const user: IUser | null = await User.findById(id).populate("groups activity");
 
   if (user == null) {
     return next(new CustomError(NODOCUMENTFOUND("user"), NOT_FOUND));
@@ -76,7 +76,7 @@ export const createUser = catchAsync(async (req: AuthenticatedRequest, res: Resp
     description: `Created "${user.email}" manager.`,
     metadata: {
       email: user.email,
-      responsible: user.responsible,
+      groups: user.groups,
       permissions: user.permissions,
     },
   });
@@ -107,7 +107,7 @@ export const updateMe = catchAsync(async (req: AuthenticatedRequest, res: Respon
     description: `Updated "${updatedUser.email}" manager.`,
     metadata: {
       email: updatedUser.email,
-      responsible: updatedUser.responsible,
+      groups: updatedUser.groups,
       permissions: updatedUser.permissions,
     },
   });
@@ -147,7 +147,7 @@ export const updateUser = catchAsync(async (req: AuthenticatedRequest, res: Resp
     description: `Updated "${updatedUser.email}" manager.`,
     metadata: {
       email: updatedUser.email,
-      responsible: updatedUser.responsible,
+      groups: updatedUser.groups,
       permissions: updatedUser.permissions,
     },
   });
@@ -180,7 +180,7 @@ export const deleteUser = catchAsync(async (req: AuthenticatedRequest, res: Resp
     metadata: {
       permissions: u.permissions,
       lastLogin: u.lastLogin,
-      responsible: u.responsible,
+      groups: u.groups,
     },
   }));
 

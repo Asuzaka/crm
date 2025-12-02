@@ -1,21 +1,28 @@
-export type status = "active" | "archived";
+export type status = "active" | "blocked";
 
-export interface IStudent {
+export interface Student {
+  _id: string;
   name: string;
+  email: string;
   groups: { _id: string; name: string }[];
-  phoneNumber: string;
-  additionalNumber: string;
-  fathersName: string;
-  fathersNumber: string;
-  mothersName: string;
-  mothersNumber: string;
+  phone: string;
+  guardian: string;
+  guardianPhone: string;
   birthDate: Date;
   adress: string;
   status: status;
-  notes: string;
+  lastLogin?: Date;
+  notes?: string;
   coins: number;
 }
 
-export interface Student extends IStudent {
-  _id: string;
+// API
+import type { ExtendedApiType, StandardApiType } from "@/shared/api/types";
+
+export interface getStudentsType extends ExtendedApiType {
+  data: Student[];
+}
+
+export interface getStudentType extends StandardApiType {
+  data: Student;
 }

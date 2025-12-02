@@ -1,14 +1,25 @@
 import { Types, Document } from "mongoose";
 
 export type role = "owner" | "manager";
-export type status = "active" | "archived";
+export type status = "active" | "blocked";
 export type grade = 1 | 2 | 3 | 4 | 5;
 export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT" | "OTHER";
 
-export interface IPermissions {
-  addStudents: boolean;
-  deleteStudents: boolean;
-  addPayments: boolean;
+export interface permission {
+  access: boolean;
+  create: boolean;
+  update: boolean;
+  delete: boolean;
+}
+
+export interface Permissions {
+  students: permission;
+  users: permission;
+  dashboard: permission;
+  expences: permission;
+  income: permission;
+  groups: permission;
+  history: permission;
 }
 
 export interface IUser extends Document {
@@ -17,30 +28,32 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: role;
-  responsible: Types.ObjectId[];
-  permissions: IPermissions;
+  groups: Types.ObjectId[];
+  permissions: Permissions;
   lastLogin: Date;
-  createdAt: Date;
-  updatedAt: Date;
   passwordChangedAt: Date;
   confirmPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IStudent extends Document {
   _id: Types.ObjectId;
   name: string;
+  email: string;
+  password: string;
   groups: Types.ObjectId[];
-  phoneNumber: string;
-  additionalNumber: string;
-  fathersName: string;
-  fathersNumber: string;
-  mothersName: string;
-  mothersNumber: string;
+  phone: string;
+  guardian: string;
+  guardianPhone: string;
   birthDate: Date;
   adress: string;
   status: status;
-  notes: string;
+  notes?: string;
   coins: number;
+  lastLogin?: Date;
+  passwordChangedAt?: Date;
+  confirmPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
 }
 
 export interface IGroup extends Document {
@@ -49,6 +62,7 @@ export interface IGroup extends Document {
   teacher: Types.ObjectId;
   students: Types.ObjectId[];
   schedule: { day: string; time: string }[];
+  // course: Types.ObjectId;
   description: string;
   start: Date;
   room: string;
@@ -66,7 +80,6 @@ export interface ILesson extends Document {
     student: Types.ObjectId;
     present: boolean;
     grade?: number;
-    // comment?: string;
   }[];
 }
 
@@ -89,9 +102,9 @@ export interface IExpense extends Document {
   currency: string;
   category: string;
   recipientType: "Manager/Staff" | "External Vendor";
-  manager?: Types.ObjectId; // only if Manager/Staff
-  vendorName?: string; // only if External Vendor
-  paymentMethod: "cash" | "bank" | "card" | "Other";
+  manager?: Types.ObjectId;
+  vendorName?: string;
+  paymentMethod: "cash" | "bank" | "card" | "other";
   notes?: string;
   createdBy: string;
   createdAt: Date;

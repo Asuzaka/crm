@@ -1,23 +1,15 @@
 import { useMemo } from "react";
-import {
-  UserIcon,
-  UsersIcon,
-  DollarSignIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
-  ClockIcon,
-} from "lucide-react";
+import { UserIcon, UsersIcon, DollarSignIcon, TrendingUpIcon, TrendingDownIcon, ClockIcon } from "lucide-react";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
 import { useAuthStore } from "../../../app/providers/store/authStore";
 import { useGetAllStats } from "../hooks/use-get-all-stats";
-import { Loader } from "../../../shared/components/loader";
 import { Error } from "../../error";
+import { Loader } from "@/shared/ui";
 
 export const Dashboard = () => {
-  const [moneyQuery, methodsQuery, statsQuery, activityQuery] =
-    useGetAllStats();
+  const [moneyQuery, methodsQuery, statsQuery, activityQuery] = useGetAllStats();
 
   const { currentUser } = useAuthStore();
 
@@ -68,21 +60,11 @@ export const Dashboard = () => {
     [methodsQuery.data]
   );
 
-  if (
-    moneyQuery.isLoading ||
-    methodsQuery.isLoading ||
-    statsQuery.isLoading ||
-    activityQuery.isLoading
-  ) {
+  if (moneyQuery.isLoading || methodsQuery.isLoading || statsQuery.isLoading || activityQuery.isLoading) {
     return <Loader />;
   }
 
-  if (
-    moneyQuery.isError ||
-    methodsQuery.isError ||
-    statsQuery.isError ||
-    activityQuery.isError
-  ) {
+  if (moneyQuery.isError || methodsQuery.isError || statsQuery.isError || activityQuery.isError) {
     return (
       <Error
         title="Failed to get Stats"
@@ -106,17 +88,13 @@ export const Dashboard = () => {
     },
     {
       name: "Monthly Income",
-      value: `$${
-        moneyQuery.data?.data.reduce((acc, m) => acc + m.income, 0) ?? 0
-      }`,
+      value: `$${moneyQuery.data?.data.reduce((acc, m) => acc + m.income, 0) ?? 0}`,
       icon: TrendingUpIcon,
       color: "bg-yellow-500",
     },
     {
       name: "Monthly Expenses",
-      value: `$${
-        moneyQuery.data?.data.reduce((acc, m) => acc + m.expense, 0) ?? 0
-      }`,
+      value: `$${moneyQuery.data?.data.reduce((acc, m) => acc + m.expense, 0) ?? 0}`,
       icon: TrendingDownIcon,
       color: "bg-red-500",
     },
@@ -127,12 +105,8 @@ export const Dashboard = () => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Welcome back, {currentUser?.name}
-        </h1>
-        <p className="text-gray-600">
-          Here's an overview of your learning center's performance.
-        </p>
+        <h1 className="text-2xl font-semibold text-gray-800">Welcome back, {currentUser?.name}</h1>
+        <p className="text-gray-600">Here's an overview of your learning center's performance.</p>
       </div>
 
       {/* Stats Grid */}
@@ -157,9 +131,7 @@ export const Dashboard = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
             <DollarSignIcon className="h-5 w-5 text-gray-500 mr-2" />
-            <h2 className="text-lg font-medium text-gray-800">
-              Income vs Expenses
-            </h2>
+            <h2 className="text-lg font-medium text-gray-800">Income vs Expenses</h2>
           </div>
           <div className="h-72">
             <ResponsiveLine
@@ -189,9 +161,7 @@ export const Dashboard = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
             <UsersIcon className="h-5 w-5 text-gray-500 mr-2" />
-            <h2 className="text-lg font-medium text-gray-800">
-              Students by Group
-            </h2>
+            <h2 className="text-lg font-medium text-gray-800">Students by Group</h2>
           </div>
           <div className="h-72">
             <ResponsiveBar
@@ -225,9 +195,7 @@ export const Dashboard = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
             <DollarSignIcon className="h-5 w-5 text-gray-500 mr-2" />
-            <h2 className="text-lg font-medium text-gray-800">
-              Payment Methods
-            </h2>
+            <h2 className="text-lg font-medium text-gray-800">Payment Methods</h2>
           </div>
           <div className="h-72">
             <ResponsivePie
@@ -259,9 +227,7 @@ export const Dashboard = () => {
         <div className="bg-white rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center">
             <ClockIcon className="h-5 w-5 text-gray-500 mr-2" />
-            <h2 className="text-lg font-medium text-gray-800">
-              Recent Activity
-            </h2>
+            <h2 className="text-lg font-medium text-gray-800">Recent Activity</h2>
           </div>
           <div className="p-4 max-h-72 overflow-y-auto">
             <ul className="divide-y divide-gray-200">
@@ -270,19 +236,12 @@ export const Dashboard = () => {
                   <div className="flex flex-col space-y-1">
                     <div className="flex justify-between">
                       <p className="text-sm font-medium text-gray-900">
-                        {activity.entityType}{" "}
-                        {activity.actionType.toLocaleLowerCase()}
+                        {activity.entityType} {activity.actionType.toLocaleLowerCase()}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(activity.createdAt).toLocaleString()}
-                      </p>
+                      <p className="text-xs text-gray-500">{new Date(activity.createdAt).toLocaleString()}</p>
                     </div>
-                    <p className="text-sm text-gray-600">
-                      {activity.description}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      by {activity.user?.name}
-                    </p>
+                    <p className="text-sm text-gray-600">{activity.description}</p>
+                    <p className="text-xs text-gray-500">by {activity.user?.name}</p>
                   </div>
                 </li>
               ))}

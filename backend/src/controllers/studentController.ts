@@ -36,7 +36,9 @@ export const getStudents = catchAsync(async (req: AuthenticatedRequest, res: Res
 
   query = query.populate("groups", "_id name");
 
-  const featuresForCount = new apiFeatures(query, req.query).filter().search(["name", "phoneNumber"]);
+  const featuresForCount = new apiFeatures(query, req.query)
+    .filter()
+    .search(["name", "phone", "guardian", "guardianPhone"]);
 
   // Count total before pagination
   const totalResults = await featuresForCount.getQuery().clone().countDocuments();
@@ -81,18 +83,20 @@ export const getStudent = catchAsync(async (req: AuthenticatedRequest, res: Resp
 export const createStudent = catchAsync(async (req: AuthenticatedRequest, res: Response, _next: NextFunction) => {
   // Case request made From "Group"
   // Case request made from general students list
+
+  const email = (req.body.name + req.body.phone.slice(-4) + "@crm.student").trim().toLowerCase();
+
   const student: IStudent = await Student.create({
     name: req.body.name,
     groups: req.body.groups,
+    email: email,
+    password: req.body.guardian.trim() + req.body.phone.slice(-4),
     birthDate: req.body.birthDate,
     notess: req.body.notes,
     adress: req.body.adress,
-    mothersName: req.body.mothersName,
-    mothersNumber: req.body.mothersNumber,
-    fathersName: req.body.fathersName,
-    fathersNumber: req.body.fathersNumber,
-    phoneNumber: req.body.phoneNumber,
-    additionalNumber: req.body.additionalNumber,
+    guardian: req.body.guardian,
+    guardianPhone: req.body.guardianPhone,
+    phone: req.body.phone,
     notes: req.body.notes,
   });
 
@@ -110,7 +114,7 @@ export const createStudent = catchAsync(async (req: AuthenticatedRequest, res: R
 });
 
 export const updateStudent = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const filtered: Partial<IStudent> = filterout(req.body, "coins");
+  const filtered: Partial<IStudent> = filterout(req.body, "coins", "password");
   const { id } = req.params;
 
   if (!id) {
@@ -194,11 +198,14 @@ export const searchStudents = catchAsync(async (req: AuthenticatedRequest, res: 
 });
 
 // good trick  AuthenticatedRequest["user"]["permissions"] -> the type describing object not runtime object !!
-export const requirePermission = (permission: keyof AuthenticatedRequest["user"]["permissions"]): RequestHandler => {
+export const requirePermission = (
+  permission: keyof AuthenticatedRequest["user"]["permissions"],
+  key: keyof AuthenticatedRequest["user"]["permissions"]["users"]
+): RequestHandler => {
   return (req, res, next) => {
     const authReq = req as AuthenticatedRequest; // cast when needed
-    console.log(authReq.user, authReq.user.permissions[permission]);
-    if (!authReq.user || !authReq.user.permissions[permission]) {
+    console.log(authReq.user, authReq.user.permissions[permission][key]);
+    if (!authReq.user || !authReq.user.permissions[permission][key]) {
       return next(new CustomError(NOPERMISSION, FORBIDDEN));
     }
     next();

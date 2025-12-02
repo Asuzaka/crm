@@ -1,29 +1,83 @@
 export const ROUTES = {
+  // General
   home: "/",
   login: "/login",
   dashboard: "/dashboard",
-  addManager: "/register",
-  managers: "/managers",
-  editManager: "/managers/:id/edit",
-  viewManager: "/managers/:id",
-  students: "/students",
-  activity: "/activity",
-  viewActivity: "/activity/:id",
-  income: "/income",
-  addIncome: "/incomes/new",
-  viewIncome: "/incomes/:id",
-  editIncome: "/incomes/:id/edit",
-  expenses: "/expenses",
-  viewExpense: "/expenses/:id",
-  editExpense: "/expenses/:id/edit",
-  groups: "/groups",
-  addGroup: "/groups/new",
-  viewGroup: "/groups/:id",
-  editGroup: "/groups/:id/edit",
-  addStudent: "/students/new",
-  editStudent: "/students/:id/edit",
-  viewStudent: "/students/:id",
   notFound: "*",
+
+  // Users
+  users: {
+    main: "/users",
+    create: "/users/new",
+    view: "/users/:id",
+    edit: "/users/:id/edit",
+
+    d: {
+      view: (id: string) => `/users/${id}`,
+      edit: (id: string) => `/users/${id}/edit`,
+    },
+  },
+
+  // Students
+  students: {
+    main: "/students",
+    create: "/students/new",
+    view: "/students/:id",
+    edit: "/students/:id/edit",
+
+    d: {
+      view: (id: string) => `/students/${id}`,
+      edit: (id: string) => `/students/${id}/edit`,
+    },
+  },
+
+  // History
+  history: {
+    main: "/history",
+    view: "/history/:id",
+
+    d: {
+      view: (id: string) => `/history/${id}`,
+    },
+  },
+
+  // Income
+  income: {
+    main: "/income",
+    create: "/incomes/new",
+    view: "/incomes/:id",
+    edit: "/incomes/:id/edit",
+
+    d: {
+      view: (id: string) => `/incomes/${id}`,
+      edit: (id: string) => `/incomes/${id}/edit`,
+    },
+  },
+
+  // Expenses
+  expenses: {
+    main: "/expenses",
+    view: "/expenses/:id",
+    edit: "/expenses/:id/edit",
+
+    d: {
+      view: (id: string) => `/expenses/${id}`,
+      edit: (id: string) => `/expenses/${id}/edit`,
+    },
+  },
+
+  // Groups
+  groups: {
+    main: "/groups",
+    create: "/groups/new",
+    view: "/groups/:id",
+    edit: "/groups/:id/edit",
+
+    d: {
+      view: (id: string) => `/groups/${id}`,
+      edit: (id: string) => `/groups/${id}/edit`,
+    },
+  },
 } as const;
 
-export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];
+export type AppRoute = string | (typeof ROUTES)[keyof typeof ROUTES];

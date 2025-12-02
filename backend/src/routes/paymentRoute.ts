@@ -7,22 +7,19 @@ import {
   getPayments,
   updatePayments,
 } from "../controllers/paymentController";
-import { requirePermission } from "../controllers/studentController";
+import { acessTo } from "../controllers/authController";
 
 const router = express.Router();
 
 // auth
 router.use(protect);
 
-router
-  .route("/")
-  .get(getPayments)
-  .post(requirePermission("addPayments"), createPayments);
+router.route("/").get(getPayments).post(acessTo("owner"), createPayments);
 router
   .route("/:id")
   .get(getPayment)
-  .patch(requirePermission("addPayments"), updatePayments)
-  .delete(requirePermission("addPayments"), deletePayments);
+  .patch(acessTo("owner"), updatePayments)
+  .delete(acessTo("owner"), deletePayments);
 router.route("/s/:id").get(getPayments);
 
 export { router };
