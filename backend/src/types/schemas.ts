@@ -1,7 +1,7 @@
 import { Types, Document } from "mongoose";
 
 export type role = "owner" | "manager";
-export type status = "active" | "archived";
+export type status = "active" | "blocked";
 export type grade = 1 | 2 | 3 | 4 | 5;
 export type action = "CREATE" | "UPDATE" | "DELETE" | "LOGIN" | "LOGOUT" | "OTHER";
 
@@ -43,19 +43,17 @@ export interface IStudent extends Document {
   email: string;
   password: string;
   groups: Types.ObjectId[];
-  phoneNumber: string;
-  additionalNumber: string;
-  fathersName: string;
-  fathersNumber: string;
-  mothersName: string;
-  mothersNumber: string;
+  phone: string;
+  guardian: string;
+  guardianPhone: string;
   birthDate: Date;
   adress: string;
   status: status;
-  notes: string;
+  notes?: string;
   coins: number;
-  createdAt: Date;
-  updatedAt: Date;
+  lastLogin?: Date;
+  passwordChangedAt?: Date;
+  confirmPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
 }
 
 export interface IGroup extends Document {
