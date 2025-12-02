@@ -1,6 +1,6 @@
-import type { ActivityRecord } from "../../../../../../entities/record";
+import type { ActivityRecord } from "@/entities/record";
+import { returnColorOfAction } from "@/pages/history";
 import clsx from "clsx";
-import { returnColorOfAction } from "../../../../../../pages/history/activity/helper/return-color";
 
 export function ActivityRow({ activity }: { activity: ActivityRecord }) {
   return (

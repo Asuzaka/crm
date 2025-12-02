@@ -1,26 +1,36 @@
-import { HomeIcon, UsersIcon, LayersIcon, DollarSignIcon, UserIcon, ClipboardListIcon, UserPlusIcon, CreditCardIcon } from "lucide-react";
 import type { User } from "../../../entities/user";
+import {
+  HomeIcon,
+  UsersIcon,
+  LayersIcon,
+  DollarSignIcon,
+  UserIcon,
+  ClipboardListIcon,
+  CreditCardIcon,
+} from "lucide-react";
+import { ROUTES } from "../../../shared/consts/routes";
+
+type panels = "dashboard" | "students" | "groups" | "income" | "expences" | "users" | "history";
+
+export interface NavigationPanelType {
+  key: panels;
+  name: string;
+  href: string;
+  icon: React.ElementType;
+}
 
 export function getNavigation(currentUser: User | null) {
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
-    { name: "Students", href: "/students", icon: UsersIcon },
-    { name: "Groups", href: "/groups", icon: LayersIcon },
-    { name: "Income", href: "/income", icon: DollarSignIcon },
+  const navigation: NavigationPanelType[] = [
+    { key: "dashboard", name: "Dashboard", href: ROUTES.dashboard, icon: HomeIcon },
+    { key: "students", name: "Students", href: ROUTES.students.main, icon: UsersIcon },
+    { key: "groups", name: "Groups", href: ROUTES.groups.main, icon: LayersIcon },
+    { key: "income", name: "Income", href: ROUTES.income.main, icon: DollarSignIcon },
+    { key: "expences", name: "Expenses", href: ROUTES.expenses.main, icon: CreditCardIcon },
+    { key: "users", name: "Users", href: ROUTES.users.main, icon: UserIcon },
+    { key: "history", name: "History", href: ROUTES.history.main, icon: ClipboardListIcon },
   ];
 
-  if (currentUser?.role === "owner") {
-    navigation.push(
-      {
-        name: 'Expenses',
-        href: '/expenses',
-        icon: CreditCardIcon,
-      },
-      { name: "Managers", href: "/managers", icon: UserIcon },
-      { name: "Activity History", href: "/activity", icon: ClipboardListIcon },
-      { name: "Register Manager", href: "/register", icon: UserPlusIcon },
-    );
-  }
+  if (!currentUser) return [];
 
-  return navigation;
+  return navigation.filter((panel) => currentUser.permissions[panel.key].access);
 }

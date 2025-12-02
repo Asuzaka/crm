@@ -1,5 +1,5 @@
+import { Button } from "@/shared/ui";
 import type { User } from "../../../../../../entities/user";
-import { Button } from "../../../../../../shared/components/button";
 import { GroupCard } from "./card";
 
 interface GroupsProps {

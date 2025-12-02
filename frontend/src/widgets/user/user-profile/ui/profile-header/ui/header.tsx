@@ -1,6 +1,6 @@
 import type { User } from "../../../../../../entities/user";
 import type { TabKey } from "../../../../../../pages/user";
-import { TabButton } from "../../../../../../shared/components/button/ui/tab";
+import { TabButton } from "../../../../../../shared/ui";
 import { DeleteUser } from "../../../../../../features/user";
 import { Link } from "react-router";
 import { EditIcon } from "lucide-react";

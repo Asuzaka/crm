@@ -1,6 +1,6 @@
+import { updateLessons } from "@/entities/lesson";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { updateLessons } from "../../../shared/api/endpoints/lesson";
 
 export function useUpdateLessons() {
   return useMutation({

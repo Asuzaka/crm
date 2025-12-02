@@ -4,35 +4,50 @@ import { createBrowserRouter } from "react-router";
 import { AuthLayout } from "../../layout/auth-layout/ui/authLayout";
 import { MainLayout } from "../../layout/main-layout";
 import { ROUTES } from "../../../shared/consts/routes";
-import { NotFound } from "../../../pages/not-found";
+import { NotFound } from "../../../pages/error";
 import { ProtectedRoute } from "./protectedRoute";
 import { lazyImport } from "../../../shared/lib/lazy-import";
 import { SuspenseWrapper } from "../../../shared/lib/suspense-wrapper";
 
 // Lazy imports for pages
-const Login = lazyImport(() => import("../../../pages/login/ui/loginPage"), "Login");
+// Auth
+const Login = lazyImport(() => import("@/pages/auth"), "Login");
+
+// Dashboard
 const DashboardPage = lazyImport(() => import("../../../pages/dashboard"), "DashboardPage");
-const Students = lazyImport(() => import("../../../pages/students"), "Students");
-const CreateStudentPage = lazyImport(() => import("../../../pages/add-student"), "CreateStudentPage");
-const StudentUpdatePage = lazyImport(() => import("../../../pages/edit-student"), "StudentUpdatePage");
-const CreateUserPage = lazyImport(() => import("../../../pages/add-manager"), "CreateUserPage");
-const EditManager = lazyImport(() => import("../../../pages/edit-manager"), "EditManager");
-const ViewStudent = lazyImport(() => import("../../../pages/view-student"), "ViewStudent");
-const ViewManager = lazyImport(() => import("../../../pages/view-manager"), "ViewManager");
-const Managers = lazyImport(() => import("../../../pages/managers"), "Managers");
-const Income = lazyImport(() => import("../../../pages/income"), "Income");
-const Expenses = lazyImport(() => import("../../../pages/expenses"), "Expenses");
-const Groups = lazyImport(() => import("../../../pages/groups"), "Groups");
-const Activity = lazyImport(() => import("../../../pages/activity"), "Activity");
-const ActivityView = lazyImport(() => import("../../../pages/view-activity"), "ActivityView");
-const GroupView = lazyImport(() => import("../../../pages/view-group"), "GroupView");
-const GroupEdit = lazyImport(() => import("../../../pages/edit-group"), "GroupEdit");
-const CreateGroupPage = lazyImport(() => import("../../../pages/add-group"), "CreateGroupPage");
-const ExpenseUpdate = lazyImport(() => import("../../../pages/edit-expense"), "ExpenseUpdate");
-const ExpenseView = lazyImport(() => import("../../../pages/view-expense"), "ExpenseView");
-const CreatePaymentPage = lazyImport(() => import("../../../pages/add-income"), "CreatePaymentPage");
-const IncomeEdit = lazyImport(() => import("../../../pages/edit-income"), "IncomeEdit");
-const IncomeView = lazyImport(() => import("../../../pages/view-income"), "IncomeView");
+
+// Users
+const UsersPage = lazyImport(() => import("../../../pages/user"), "Users");
+const AddUserPage = lazyImport(() => import("../../../pages/user"), "AddUser");
+const EditUserPage = lazyImport(() => import("../../../pages/user"), "EditUser");
+const ViewUserPage = lazyImport(() => import("../../../pages/user"), "ViewUser");
+
+// Students
+const StudentsPage = lazyImport(() => import("../../../pages/student"), "Students");
+const CreateStudentPage = lazyImport(() => import("../../../pages/student"), "CreateStudentPage");
+const EditStudentPage = lazyImport(() => import("../../../pages/student"), "StudentUpdatePage");
+const ViewStudentPage = lazyImport(() => import("../../../pages/student"), "ViewStudent");
+
+// Groups
+const GroupsPage = lazyImport(() => import("../../../pages/group"), "Groups");
+const CreateGroupPage = lazyImport(() => import("../../../pages/group"), "CreateGroupPage");
+const EditGroupPage = lazyImport(() => import("../../../pages/group/edit-group"), "GroupEdit");
+const ViewGroupPage = lazyImport(() => import("../../../pages/group"), "GroupView");
+
+// History
+const HistoryPage = lazyImport(() => import("../../../pages/history"), "History");
+const ViewHistoryPage = lazyImport(() => import("../../../pages/history"), "HistoryView");
+
+// Income
+const IncomePage = lazyImport(() => import("../../../pages/income"), "Income");
+const CreateIncomePage = lazyImport(() => import("../../../pages/income"), "CreatePaymentPage");
+const EditIncomePage = lazyImport(() => import("../../../pages/income"), "IncomeEdit");
+const ViewIncomePage = lazyImport(() => import("../../../pages/income"), "IncomeView");
+
+// Expenses
+const ExpensesPage = lazyImport(() => import("../../../pages/expense"), "Expenses");
+const EditExpensePage = lazyImport(() => import("../../../pages/expense"), "ExpenseUpdate");
+const ViewExpensePage = lazyImport(() => import("../../../pages/expense"), "ExpenseView");
 
 const router = createBrowserRouter([
   {
@@ -55,29 +70,42 @@ const router = createBrowserRouter([
       </SuspenseWrapper>
     ),
     children: [
+      // Dashboard
       { index: true, element: <DashboardPage /> },
       { path: ROUTES.dashboard, element: <DashboardPage /> },
-      { path: ROUTES.addManager, element: <CreateUserPage /> },
-      { path: ROUTES.managers, element: <Managers /> },
-      { path: ROUTES.editManager, element: <EditManager /> },
-      { path: ROUTES.viewManager, element: <ViewManager /> },
-      { path: ROUTES.activity, element: <Activity /> },
-      { path: ROUTES.viewActivity, element: <ActivityView /> },
-      { path: ROUTES.students, element: <Students /> },
-      { path: ROUTES.addStudent, element: <CreateStudentPage /> },
-      { path: ROUTES.editStudent, element: <StudentUpdatePage /> },
-      { path: ROUTES.viewStudent, element: <ViewStudent /> },
-      { path: ROUTES.income, element: <Income /> },
-      { path: ROUTES.addIncome, element: <CreatePaymentPage /> },
-      { path: ROUTES.viewIncome, element: <IncomeView /> },
-      { path: ROUTES.editIncome, element: <IncomeEdit /> },
-      { path: ROUTES.expenses, element: <Expenses /> },
-      { path: ROUTES.viewExpense, element: <ExpenseView /> },
-      { path: ROUTES.editExpense, element: <ExpenseUpdate /> },
-      { path: ROUTES.groups, element: <Groups /> },
-      { path: ROUTES.addGroup, element: <CreateGroupPage /> },
-      { path: ROUTES.viewGroup, element: <GroupView /> },
-      { path: ROUTES.editGroup, element: <GroupEdit /> },
+
+      // Users
+      { path: ROUTES.users.main, element: <UsersPage /> },
+      { path: ROUTES.users.create, element: <AddUserPage /> },
+      { path: ROUTES.users.view, element: <ViewUserPage /> },
+      { path: ROUTES.users.edit, element: <EditUserPage /> },
+
+      // Students
+      { path: ROUTES.students.main, element: <StudentsPage /> },
+      { path: ROUTES.students.create, element: <CreateStudentPage /> },
+      { path: ROUTES.students.view, element: <ViewStudentPage /> },
+      { path: ROUTES.students.edit, element: <EditStudentPage /> },
+
+      // Groups
+      { path: ROUTES.groups.main, element: <GroupsPage /> },
+      { path: ROUTES.groups.create, element: <CreateGroupPage /> },
+      { path: ROUTES.groups.view, element: <ViewGroupPage /> },
+      { path: ROUTES.groups.edit, element: <EditGroupPage /> },
+
+      // History
+      { path: ROUTES.history.main, element: <HistoryPage /> },
+      { path: ROUTES.history.view, element: <ViewHistoryPage /> },
+
+      // Income
+      { path: ROUTES.income.main, element: <IncomePage /> },
+      { path: ROUTES.income.create, element: <CreateIncomePage /> },
+      { path: ROUTES.income.view, element: <ViewIncomePage /> },
+      { path: ROUTES.income.edit, element: <EditIncomePage /> },
+
+      // Expenses
+      { path: ROUTES.expenses.main, element: <ExpensesPage /> },
+      { path: ROUTES.expenses.view, element: <ViewExpensePage /> },
+      { path: ROUTES.expenses.edit, element: <EditExpensePage /> },
     ],
   },
   { path: ROUTES.notFound, element: <NotFound full={true} /> },

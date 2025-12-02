@@ -1,6 +1,6 @@
+import { Button } from "@/shared/ui";
 import { AlertTriangleIcon, ArrowLeftIcon, HomeIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { Button } from "../../../shared/components/button";
 
 interface ErrorProps {
   title?: string;

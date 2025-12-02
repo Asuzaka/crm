@@ -1,9 +1,9 @@
 import type { User } from "../../../../../../entities/user";
 import { useGetUserRecords } from "../../../../../../entities/record";
 import { Error } from "../../../../../../pages/error";
-import { Loader } from "../../../../../../shared/components/loader";
 import { ActivityTable } from "./table";
 import { EmptyState } from "./empty-state";
+import { Loader } from "@/shared/ui";
 
 interface ActivityProps {
   user: User;
