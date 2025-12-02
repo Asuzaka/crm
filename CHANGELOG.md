@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.1.0 (2025-12-02)
+
+
+### Features
+
+* **backend/startup:** add initOwner for automatic owner creation ([eb8e54d](https://github.com/Asuzaka/crm/commit/eb8e54df422bb1048e0d30ec39ffcbd30a806dd4))
+* import with alias ([ca850e4](https://github.com/Asuzaka/crm/commit/ca850e4163a50249a542489b43afd80ead75eca7))
+* model update permissions system ([6c60c66](https://github.com/Asuzaka/crm/commit/6c60c66c7439b15f2f8d327669d81d9d8481a510))
+* mongodb with docker ([825dc99](https://github.com/Asuzaka/crm/commit/825dc9961dc41857b6121f22563d21dddaef2b7d))
+* **shared/lib:** add lazyImport helper for named exports ([0a04b27](https://github.com/Asuzaka/crm/commit/0a04b270d176cc36b2261a463923379169ccc167))
+* **shared/ui:** add SuspenseWrapper for lazy-loaded pages ([2467713](https://github.com/Asuzaka/crm/commit/24677136521cc783649da06e01f22612990ba3c0))
+* **student:** add email/password fields and password hashing ([2c26e87](https://github.com/Asuzaka/crm/commit/2c26e8794046e5ae0647ac7406189b53350a5cb6))
+* **ui:** add shared button and tab components ([25d4d67](https://github.com/Asuzaka/crm/commit/25d4d67c203015fb2fb933f3d19419c7f709dfba))
+* **ui:** add shared no-result component ([2e7f185](https://github.com/Asuzaka/crm/commit/2e7f18551ab80ef1bd81fe98a2a7ccc4a577d9ba))
+
+
+### Bug Fixes
+
+* **backend/database:** await connection before initialization ([8ceaee7](https://github.com/Asuzaka/crm/commit/8ceaee794fc045787f34429393752b023aa84661))
+* **config:** add missed lint and test commands ([f34b8e3](https://github.com/Asuzaka/crm/commit/f34b8e34cce4c97ffcdfba7f1e6b232f861e6d72))
+* **config:** switch backend to CommonJS module system for ts-node-dev compatibility ([a107c46](https://github.com/Asuzaka/crm/commit/a107c468a715c94f2a75e098d05821d79b1181a6))
+* **frontend:** resolve TypeScript build errors in config and widgets ([98d876e](https://github.com/Asuzaka/crm/commit/98d876e8e6c1e83772206ae6bf810c2c8132aa5c))
+* **lint:** resolve ESLint errors across components ([eef16b3](https://github.com/Asuzaka/crm/commit/eef16b3f7dae89f3a7850fa520d55d74fa5389a8))
+* **lint:** resolve ESLint errors in frontend ([f25b94d](https://github.com/Asuzaka/crm/commit/f25b94d9be75209608a426875f7529ba25eda1d0))
+* **payment:** use role-based access (acessTo owner) for payment routes ([ce88c93](https://github.com/Asuzaka/crm/commit/ce88c9324e5217f4a773344308f59288d2af8361))
+* prevent sending empty patchData object (closes [#7](https://github.com/Asuzaka/crm/issues/7)) ([9e2888a](https://github.com/Asuzaka/crm/commit/9e2888a408bea94961638226ad510c8cf1958a10))
+* **schemas.ts:** add import of Document from mongoose to resolve type error ([d6f8a46](https://github.com/Asuzaka/crm/commit/d6f8a46ade060fa52a363e110850a19be4ccad4e))
+* **student:** enforce granular permissions and update create/search fields ([bc0111e](https://github.com/Asuzaka/crm/commit/bc0111ecda5ba98672eb1233708a3e6a69920702))
+* **tsconfig:** resolve import path errors by adjusting moduleResolution ([d2a2bad](https://github.com/Asuzaka/crm/commit/d2a2bad391323c812f976d06cff280e6769ed721))
+* **ui:** improve multi-field component ([8469b09](https://github.com/Asuzaka/crm/commit/8469b09ae2b6e044f05d506b3adb8ab298960596))
+* users request include all users ([310658a](https://github.com/Asuzaka/crm/commit/310658a69be94ccc9eb6030a8d2d36582afce11e))
+
 ## 1.1.0 (2025-10-19)
 
 
