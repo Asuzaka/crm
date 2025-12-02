@@ -17,11 +17,11 @@ router.use(protect);
 
 router
   .route("/")
-  .get(getStudents)
-  .post(requirePermission("addStudents"), createStudent)
-  .delete(requirePermission("deleteStudents"), deleteStudent);
-router.route("/group/:id").get(getStudents);
+  .get(requirePermission("students", "access"), getStudents)
+  .post(requirePermission("students", "create"), createStudent)
+  .delete(requirePermission("students", "delete"), deleteStudent);
+router.route("/group/:id").get(requirePermission("students", "access"), getStudents);
 router.route("/search").get(searchStudents);
-router.route("/:id").get(getStudent).patch(requirePermission("addStudents"), updateStudent);
+router.route("/:id").get(getStudent).patch(requirePermission("students", "update"), updateStudent);
 
 export { router };
